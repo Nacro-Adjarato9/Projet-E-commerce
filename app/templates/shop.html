@@ -9,6 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
                             <!-- C'est ici que tu met la boucle for -->
                             <!-- (section supprimée car doublon; voir la section dynamique ci-dessus) -->
+                            {% for product in products %}
                                         <a href="#" class="">
                                             {% if product.image %}
                                                 <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
