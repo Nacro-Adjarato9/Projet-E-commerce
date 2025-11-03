@@ -1,0 +1,198 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+/* === Body & Text === */
+body {
+    background-color: #f5f5dc; /* beige clair */
+    color: #3e2723; /* marron foncé */
+    font-family: Arial, sans-serif;
+}
+
+/* === Sidebar === */
+.sidebar {
+    background-color: #3e2723; /* marron foncé */
+    color: #f5f5dc;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.nav-link {
+    color: #f5f5dc;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #5d4037; /* marron moyen */
+    border-radius: 5px;
+    color: #fff;
+}
+
+.btn-outline-beige {
+    border-color: #f5f5dc;
+    color: #f5f5dc;
+    transition: 0.3s;
+}
+
+.btn-outline-beige:hover {
+    background-color: #f5f5dc;
+    color: #3e2723;
+}
+
+/* === Table === */
+.table-dark {
+    background-color: #3e2723;
+    color: #f5f5dc;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #d7ccc8; /* beige moyen */
+}
+
+/* === Text Colors === */
+.text-brown {
+    color: #3e2723;
+}
+
+.text-beige {
+    color: #f5f5dc;
+}
+
+/* === Statistiques Cards === */
+.stat-card {
+    background-color: #d7ccc8;
+    border-radius: 10px;
+    color: #3e2723;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: scale(1.05);
+}
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- Sidebar -->
+    <nav class="col-md-3 col-lg-2 d-md-block sidebar p-3">
+      <h4 class="text-center mb-4 text-beige">Espace Vendeur</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <a class="nav-link text-beige" href="{% url 'add_product' %}">➕ Ajouter un article</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a class="nav-link text-beige" href="#mes-articles">📦 Mes articles</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a class="nav-link text-beige" href="#commandes">🛍️ Articles achetés</a>
+        </li>
+        <li class="nav-item mt-3">
+          <a class="btn btn-outline-beige w-100" href="{% url 'logout' %}">Se déconnecter</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main class="col-md-9 col-lg-10 ms-sm-auto px-md-4 py-4">
+      <h2 class="mb-4">Bienvenue <span class="text-brown">{{ user.username }}</span></h2>
+
+      <!-- Statistiques -->
+      <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <h5>Total Produits</h5>
+              <h3>{{ products.count }}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <h5>Total Commandes</h5>
+              <h3>{{ orders.count }}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <h5>Total Ventes</h5>
+              <h3>
+                {% with total=0 %}
+                  {% for order in orders %}
+                    {% with total=total|add:order.total_price %}
+                    {% endwith %}
+                  {% endfor %}
+                  {{ total }} FCFA
+                {% endwith %}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mes Articles -->
+      <section id="mes-articles" class="mb-5">
+        <h4 class="mb-3 text-brown">📦 Mes Articles</h4>
+        {% if products %}
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th>Nom</th>
+                  <th>Description</th>
+                  <th>Prix</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for product in products %}
+                  <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description|truncatechars:50 }}</td>
+                    <td>{{ product.price }} FCFA</td>
+                    <td>{{ product.created_at|date:"d/m/Y" }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p>Aucun produit ajouté pour le moment.</p>
+        {% endif %}
+      </section>
+
+      <!-- Articles achetés -->
+      <section id="commandes">
+        <h4 class="mb-3 text-brown">Articles achetés</h4>
+        {% if orders %}
+          <ul class="list-group">
+            {% for order in orders %}
+              <li class="list-group-item">
+                <strong>Commande du {{ order.created_at|date:"d/m/Y" }}</strong> — Total : {{ order.total_price }} FCFA
+                {% if order.items.exists %}
+                  <ul class="mt-2">
+                    {% for item in order.items.all %}
+                      <li>{{ item.product.name }} x{{ item.quantity }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Aucune commande trouvée.</p>
+        {% endif %}
+      </section>
+
+    </main>
+  </div>
+</div>
+
+{% endblock %}

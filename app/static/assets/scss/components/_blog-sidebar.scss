@@ -1,0 +1,204 @@
+
+/*
+************
+*************************
+12. blog-sidebar
+******************************************************* 
+*************************************************************** */
+
+@use '../abstracts/variables' as *;
+
+.bz-blog-sidebar-wrapper {
+    padding: 40px;
+    border: 1px solid #D5D5D5;
+    @media #{$xs, $lg} {
+        padding: 40px 30px;
+    }
+    @media #{$sm} {
+        padding: 40px 40px;
+    }
+}
+.bz-sidebar-search-inner {
+    position: relative;
+    z-index: 1;
+    input {
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        padding: 0 20px;
+        border: 1px solid #D5D5D5;
+        padding-right: 50px;
+    }
+    button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 50px;
+        height: 60px;
+        border: 0;
+        background-color: transparent;
+        font-size: 16px;
+    }
+}
+.bz-sidebar-title {
+    font-size: 22px;
+    font-weight: 600;
+    position: relative;
+    margin-bottom: 20px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #D5D5D5;
+}
+.bz-sidebar {
+    &:not(:last-child) {
+        margin-bottom: 35px;
+    }
+    ul {
+        li {
+            line-height: 1.4;
+            &:not(:last-child) {
+                margin-bottom: 10px;
+            }
+            a {
+                &:hover {
+                    color: #829B85;
+                }
+            }
+        }
+    }
+    &:is(.bz-sidebar-category) {
+        ul {
+            li {
+                a {
+                    transition: 0.3s;
+                    position: relative;
+                    z-index: 1;
+                    &:after {
+                        position: absolute;
+                        left: 0;
+                        bottom: 0;
+                        width: 0;
+                        height: 2px;
+                        background-color: #829B85;
+                        content: "";
+                        transition: 0.3s;
+                    }
+                }
+                &:hover {
+                    a {
+                        color: #829B85;
+                        &::after {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.bz-sidebar-posts-wrapper {
+    display: flex;
+    &:not(:last-child) {
+        margin-bottom: 15px;
+    }
+}
+.bz-sidebar-posts-img {
+    flex: 0 0 75px;
+    height: 80px;
+    max-width: 75px;
+    margin-right: 15px;
+    img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        transition: 0.3s;
+    }
+    &:hover {
+        img {
+            filter: grayscale(100%);
+        }
+    }
+}
+.bz-sidebar-posts-title {
+    font-size: 16px;
+    border-bottom: 1px solid #D5D5D5;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+    &:hover {
+        a {
+            color: #829B85;
+        }
+    }
+}
+.bz-sidebar-posts-date {
+    font-size: 14px;
+    font-weight: 400;
+    color: #919191;
+}
+
+.bz-tags {
+    a {
+        height: 40px;
+        line-height: 40px;
+        border: 1px solid #D5D5D5;
+        padding: 0 15px;
+        display: inline-block;
+        margin-right: 5px;
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+        &:hover {
+            background-color: var(--clr-color-orange);
+            color: #fff;
+            border-color: var(--clr-color-orange);
+        }
+    }
+}
+
+
+
+/* Gallery Sidebar */
+
+
+.bz-gallery-images {
+    .bz-gallery-img {
+        height: 80px;
+        i {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+        &:before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            content: "";
+            background-color: rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        &:hover {
+            &:before {
+                background-color: rgba(0,0,0,0.3);
+            }
+            i {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        &.bz-gallery-img-3 {
+            height: 160px;
+        }
+    }
+}

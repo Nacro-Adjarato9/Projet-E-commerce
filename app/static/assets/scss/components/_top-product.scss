@@ -1,0 +1,84 @@
+/*=============================
+04. trending
+ ============================= */
+
+ @use '../abstracts/variables' as *;
+ @use '../abstracts/mixins' as *;
+
+.bz-top-product-item-img {
+    margin-bottom: 40px;
+}
+.bz-top-product-item-content {
+    .title {
+        font-size: 24px;
+        color: #222;
+        font-weight: 600;
+        margin-bottom: 5px;
+        &:hover a {
+            color: #FB4A19;
+        }
+        @media #{$md, $xs}{
+            font-size: 22px;
+        }
+    }
+    span {
+        display: block;
+        font-size: 16px;
+        color: #888;
+        margin-bottom: 20px;
+        text-transform: capitalize;
+    }
+}
+.bz-product-shop-btn {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #222;
+    position: relative;
+    margin-bottom: 5px;
+    &::after {
+        position: absolute;
+        left: 0;
+        bottom: -5px;
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: #222;
+        @include transition(.3s);
+    }
+    &:hover {
+        color: #FB4A19;
+        &::after {
+            background: #FB4A19;
+        }
+    }
+    @media #{$md, $xs}{
+        font-size: 16px;
+    }
+}
+  .bz-top-product-inner {
+	display: inline-block;
+	margin: auto;
+    @media #{$xs}{
+        margin-left: 0;
+        margin-right: auto;
+    }
+}
+.bz-top-product-item {
+    @media #{$md}{
+        &.mr-70 {
+            margin-right: 30px;
+        }
+        &.ml-70 {
+            margin-left: 30px;
+        }
+    }
+    @media #{$xs}{
+        &.mr-70 {
+            margin-right: 0;
+        }
+        &.ml-70 {
+            margin-left: 0;
+        }
+    }
+}

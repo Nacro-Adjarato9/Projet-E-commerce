@@ -1,0 +1,94 @@
+/*=============================
+04. subscribe
+ ============================= */
+
+ @use '../abstracts/variables' as *;
+ @use '../abstracts/mixins' as *;
+
+ .bz-subscribe-wrap-2 {
+	background-size: cover;
+	background-position: center left;
+	background-repeat: no-repeat;
+}
+ 
+.bz-subscribe-content{
+    &-title-2 {
+        font-size: 34px;
+        color: #222222;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    &-2 {
+        padding: 60px 0 60px 80px;
+        & p {
+            font-size: 16px;
+            color: #6B6B6B;
+            margin-bottom: 20px;
+        }
+    }
+    @media #{$md}{
+        &-title-2 {
+            font-size: 30px;
+        }
+    }
+    @media #{$xs}{
+        &-title-2 {
+            font-size: 20px;
+        }
+        &-2 {
+            padding: 40px 20px 40px 20px;
+            p {
+                font-size: 15px;
+                margin-bottom: 10px;
+            }
+        }
+    }
+    @media #{$sm}{
+        &-title-2 {
+            font-size: 25px;
+        }
+    }
+}
+.bz-subscribe-content-2 form {
+    position: relative;
+    &::before {
+        font-family: "Font Awesome 5 Pro";
+        content: "\f0e0";
+        position: absolute;
+        left: 0;
+        top: 48%;
+        transform: translateY(-50%);
+        color: #b2b2b2;
+        font-size: 16px;
+    }
+    .bz-subscribe-input-2 {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #D4D4D4;
+        color: #b2b2b2;
+        font-size: 14px;
+        line-height: 40px;
+        height: 40px;
+        padding-left: 25px;
+        @include placeholder {
+            color: #b2b2b2;
+            font-size: 12px;
+            opacity: 1;
+            transition: .3s;
+        }
+    }
+    .bz-subscribe-btn-2 {
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: transparent;
+        border: none;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: #222222;
+        font-weight: 500;
+        line-height: 40px;
+        height: 40px;
+    }
+}

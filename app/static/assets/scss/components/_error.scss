@@ -1,0 +1,29 @@
+/*
+************
+*************************
+23. error
+******************************************************* 
+*************************************************************** */
+
+.bz-error-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+.bz-error-btn {
+    height: 60px;
+    line-height: 60px;
+    background-color: var(--clr-theme-primary);
+    display: inline-block;
+    padding: 0 55px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    &:hover {
+        background-color: var(--clr-color-orange);
+        color: #fff;
+    }
+    &:focus {
+        color: #fff;
+    }
+}

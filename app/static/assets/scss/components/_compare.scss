@@ -1,0 +1,95 @@
+/*
+************
+*************************
+19. compare
+******************************************************* 
+*************************************************************** */
+
+@use '../abstracts/variables' as *;
+
+.bz-compare-table {
+    overflow-x: auto;
+    table {
+        width: 100%;
+        text-align: center;
+        border-left: 1px solid #D5D5D5;
+        border-top: 1px solid #D5D5D5;
+        @media #{$xs, $md, $lg} {
+            min-width: 930px;
+        }
+        thead {
+            th {
+                padding: 0;
+                border-bottom: 0;
+                vertical-align: middle;
+            }
+        }
+        tbody {
+            border-radius: 5px;
+            border: 1px solid #D5D5D5;
+            border-bottom: 0;
+            tr {
+                border-bottom: 1px solid #D5D5D5;
+            }
+        }
+    }
+    .table {
+        & > :not(caption) > * > *:not(th) {
+            padding: 25px 15px;
+            border: 0;
+            vertical-align: middle;
+            min-width: 220px;
+            border-right: 1px solid #D5D5D5;
+            line-height: 1.7;
+        }
+        & > :not(caption) > * > * {
+            border-right: 1px solid #D5D5D5;
+        }
+    }
+}
+
+.compare-image {
+    position: relative;
+    z-index: 1;
+}
+.compare-close {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    background-color: var(--clr-theme-primary);
+    line-height: 22px;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+        background-color: var(--clr-color-orange);
+    }
+    i {
+        font-size: 14px;
+    }
+}
+.compare-heading-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+.compare-product-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0;
+    &:hover {
+        a {
+            color: var(--clr-theme-primary);
+        }
+    }
+}
+
+.bz-compare-table.table-full {
+    .table {
+        margin-bottom: 0;
+    }
+}

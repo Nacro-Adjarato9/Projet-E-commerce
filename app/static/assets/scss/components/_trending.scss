@@ -1,0 +1,111 @@
+/*=============================
+04. trending
+ ============================= */
+
+ @use '../abstracts/variables' as *;
+ @use '../abstracts/mixins' as *;
+
+//  home 2 trending 
+
+.bz-trending-wrap-2 {
+	display: flex;
+	justify-content: space-between;
+    @media #{$md}{
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+    @media #{$xs}{
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+.bz-trending-item-2 {
+    width: 34%;
+    @media #{$md}{
+        width: calc(50% - 10px);
+    }
+    @media #{$xs}{
+        width: 100%;
+    }
+}
+.bz-trending-item-2.bz-item-2 {
+    width: 29%;
+    @media #{$md}{
+        width: calc(50% - 10px);
+        order: 3;
+    }
+    @media #{$xs}{
+        width: 100%;
+    }
+} 
+.bz-trending-item-2.bz-item-2 .bz-trending-item-content-2 {
+	@media #{$xl}{
+	    width: 300px;
+    }
+	@media #{$lg}{
+        padding: 25px 30px;
+	    width: 250px;
+    }
+}
+.bz-trending-item-2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.bz-trending-item-content-2 {
+	margin-top: -75px;
+	position: relative;
+    width: 335px;
+	padding: 25px 40px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    @media #{$lg}{
+        padding: 25px 30px;
+	    width: 300px;
+    }
+    @media #{$xs}{
+        padding: 25px 30px;
+	    width: 300px;
+    }
+}
+
+.bz-trending-item-content-2 .title {
+    font-size: 24px;
+    color: #222222;
+    line-height: 1.3;
+    font-weight: 600;
+    margin-bottom: 15px;
+    &:hover > a{
+        color: #FB4A19;
+    }
+    @media #{$lg, $md, $xs}{
+        font-size: 22px;
+    }
+  }
+  .bz-trending-item-content-2 .more-link-2 {
+    font-size: 16px;
+    color: #222222;
+    font-weight: 600;
+    font-family: $marcellus;
+    display: inline-block;
+    position: relative;
+    line-height: 28px;
+    &::after {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        content: '';
+        background-color: #222222;
+        height: 1px;
+        width: 100%;
+        transition: .3s ease-in-out;;
+    }
+    &:hover {
+        color: #FB4A19;
+        &::after {
+            background-color: #FB4A19;
+        }
+    }
+  }
+

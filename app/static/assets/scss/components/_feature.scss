@@ -1,0 +1,144 @@
+/*
+************
+*************************
+05. feature
+******************************************************* 
+*************************************************************** */
+ @use '../abstracts/variables' as *;
+
+ .bz {
+    &-feature {
+
+        
+        &-space {
+            padding-bottom: 45px;
+        }
+        &-single {
+            &-box {
+                position: relative;
+                &:hover {
+                    .bz-feature-single-box-img {
+                        height: 330px;
+                    }
+                }
+                &-img {
+                    height: 260px;
+                    transition: .3s ease-in-out;
+                    & img {
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+                &-content {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    text-align: center;
+                    padding: 40px 0 15px;
+                    background: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.7));
+                    transition: .3s ease-in-out;
+
+                    &-title {
+                        font-size: 18px;
+                        color: var(--clr-common-white);
+                        font-family: inherit;
+                        font-weight: 500;
+                        line-height: 1.38;
+                        margin-bottom: 0;
+                        &:hover {
+                            a {
+                                color: var(--clr-color-orange);
+                            }
+                        }
+
+                    }
+                    &-items {
+                        display: inline-block;
+                        color: var(--clr-common-white);
+                        font-size: 14px;
+                        line-height: 1;
+                    }
+                }
+            }
+        }
+
+        & .swiper-slide-active {
+            & .bz-feature-single-box-img {
+                min-height: 330px;
+            }
+        }
+    }
+ }
+
+
+//  section title 
+
+.bz-section-title {
+    & h3 {
+        font-size: 34px;
+        line-height: 1.2;
+        color: var(--clr-common-black-deep);
+        margin-bottom: 15px;
+        position: relative;
+        padding-top: 10px;
+
+        @media #{$xs} {
+            font-size: 30px;
+        }
+
+        &::before {
+            position: absolute;
+            content: "";
+            left: 0;
+            right: 0;
+            top: 0;
+            margin: 0 auto;
+            width: 95px;
+            height: 1px;
+            background: var(--clr-theme-primary);
+        }
+    }
+    & p {
+        font-size: 16px;
+        margin-bottom: 0;
+        color: var(--clr-body-text);
+    }
+}
+
+
+// pagination 
+
+.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets.bz-feature-pagination {
+	bottom: 0;
+	left: 0;
+	width: 100%;
+    line-height: 0;
+}
+
+
+.swiper-container-horizontal > .swiper-pagination-bullets.bz-feature-pagination {
+    & .swiper-pagination-bullet {
+        width: 40px;
+        height: 6px;
+        background: var(--clr-bg-gray-18);
+        opacity: 1;
+        border-radius: 15px;
+        margin: 0 5px;
+        transition: .3s;
+
+        &-active {
+            background: var(--clr-bg-gray-6);
+            width: 15px;
+        }
+    }
+}
+
+.bz-feature-active.swiper-container.bz-feature-space.bz-feature-dot .swiper-pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.bz-feature-active.swiper-container.bz-feature-space.bz-feature-dot .swiper-pagination span.swiper-pagination-bullet.swiper-pagination-bullet-active::after {
+    display: none;
+}

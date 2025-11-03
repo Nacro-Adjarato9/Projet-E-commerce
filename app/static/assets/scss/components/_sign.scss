@@ -1,0 +1,80 @@
+/*
+************
+*************************
+22. sign
+******************************************************* 
+*************************************************************** */
+
+@use '../abstracts/variables' as *;
+
+.bz-login-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+.bz-login-single {
+    label {
+        font-size: 16px;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 20px;
+    }
+    input {
+        width: 100%;
+        height: 60px;
+        border: 1px solid #D4D4D4;
+        padding: 0 25px;
+        margin-bottom: 22px;
+    }
+}
+.bz-login-wrapper {
+    .bz-submit-form-default-single {
+        .condition-box {
+            label.condition {
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+            }
+            .has-condition {
+                width: 15px;
+                height: 15px;
+            }
+        }
+    }
+}
+.bz-forgot-pss {
+    a {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        &:hover {
+            color: #829B85;
+        }
+    }
+}
+.bz-login-btn {
+    width: 100%;
+    height: 60px;
+    border: 0;
+    background-color: var(--clr-theme-primary);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    &:hover {
+        background-color: var(--clr-color-orange);
+    }
+}
+
+.bz-have-account {
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    text-align: center;
+    display: block;
+}
+.bz-loginlink {
+    display: inline-block;
+    color: var(--clr-color-orange);
+    &:hover {
+        color: var(--clr-theme-primary);
+    }
+}

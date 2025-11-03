@@ -1,0 +1,522 @@
+{% load static %}
+<!Doctype html>
+<html class="no-js" lang="zxx">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>NaraMarket</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+		<!-- CSS here -->
+        {% load static %}
+
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/odometer.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/cross2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/swipper.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/ui-range-slider.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/datepicker.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    </head>
+    
+    <body>
+        <!-- bz-sidebar-informations-area-start -->
+        <div class="bz-sidebar-informations side-info">
+            <div class="bz-sidebar-logo-wrapper">
+                <div class="row">
+                    <div class="col-xl-6 col-8">
+                        <div class="bz-sidebar-logo">
+                            <a href="index.html"><img src="{% static 'assets/img/logo/logoN.png' %}" alt="logo-img"></a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-4">
+                        <div class="bz-sidebar-close-wrapper text-end">
+                            <button class="bz-sidebar-close side-info-close"><i class="fal fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="bz-middle-wrap mb-25 mt-40">
+                <div class="bz-middle-wrap-form bz-middle-wrap-sidebar">
+                    <div class="bz-middle-wrap-form-caregories">
+                        <ul>
+                            <li><a href="#0" id="bz-cat-click-sidebar"><span class="bz-search-all-cat-sidebar">Categories</span> <i class="far fa-angle-down"></i></a>
+                            </li>
+                        </ul>
+                        <div class="bz-category-wrapper-sidebar">
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="fashion_sidebar" value="Fashion">
+                                <label for="fashion_sidebar">Fashion</label>
+                            </div>
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="furniture_sidebar" value="Furniture">
+                                <label for="furniture_sidebar">Furniture</label>
+                            </div>
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="grocery_sidebar" value="Grocery">
+                                <label for="grocery_sidebar">Grocery</label>
+                            </div>
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="electronics_sidebar" value="Electronics">
+                                <label for="electronics_sidebar">Electronics</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bz-middle-wrap-form-search">
+                        <form action="#">
+                            <input type="search" placeholder="Search..." >
+                            <button type="submit"><i class="far fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bz-sidebar-menu-wrapper">
+                <div class="bz-mobile-menu"></div>
+            </div>
+        </div>
+        <div class="offcanvas-overlay"></div>
+        <!-- bz-sidebar-informations-area-end -->
+
+        <!-- header area start -->
+        <header class="header-area">
+            <div class="bz-topbar-area">
+                <div class="container container-full-1">
+                    <div class="row align-items-center">
+                        <div class="col-xl-6 col-lg-6 col-md-7">
+                            <div class="bz-topbar-left">
+                                <div class="bz-topbar-left-text">
+                                    <p>Save 50% Sitewide! Ends in:</p>
+                                </div>
+                                
+                                <div class="count_down_box" data-countdown="2023/09/16"></div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-5">
+                            <div class="bz-topbar-right d-flex justify-content-end align-items-center">
+                                <div class="bz-topbar-right-item">
+                                    <a class="bz-topbar-right-item-link" href="#0">Track your order</a>
+                                </div>
+                                <div class="bz-topbar-right-item">
+                                    <select name="Language" class="bz-topbar-right-item-link has-nice-select">
+                                        <option value="1">English</option>
+                                        <option value="2">Bangla</option>
+                                        <option value="3">Arabic</option>
+                                    </select>
+                                </div>
+                                <div class="bz-topbar-right-item">
+                                    <select name="Language" class="bz-topbar-right-item-link has-nice-select">
+                                        <option value="1">USD</option>
+                                        <option value="2">TAKA</option>
+                                        <option value="3">Riyal</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bz-middle-area">
+                <div class="container container-full-1">
+                    <div class="row align-items-center">
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-4">
+                            <div class="bz-middle-logo">
+                                <a href="index.html"><img src="{% static 'assets/img/logo/logoN.png' %}" alt="img"></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-7 d-none d-lg-block">
+                            <div class="bz-middle-wrap">
+                                <div class="bz-middle-wrap-bar">
+                                    <a href="#0" class="side-toggle"><i class="far fa-bars"></i></a>
+                                </div>
+                                <div class="bz-middle-wrap-form">
+                                    <div class="bz-middle-wrap-form-caregories">
+                                        <ul>
+                                            <li><a href="#0" class="bz-cat-click" id="bz-cat-click"><span class="bz-search-all-cat">All Categories</span> <i class="far fa-angle-down"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="bz-category-wrapper">
+                                            <div class="bz-cat-item">
+                                                <input type="radio" class="cat-filter" name="cat-filter" id="fashion" value="Fashion">
+                                                <label for="fashion">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">01</span>Fashion
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                            <div class="bz-cat-item">
+                                                <input type="radio" name="cat-filter"  class="cat-filter" id="furniture" value="Furniture">
+                                                <label for="furniture">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">02</span>Furniture
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                            <div class="bz-cat-item">
+                                                <input type="radio" name="cat-filter"  class="cat-filter" id="grocery" value="Grocery">
+                                                <label for="grocery">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">03</span>Grocery
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                            <div class="bz-cat-item">
+                                                <input type="radio" name="cat-filter"  class="cat-filter" id="electronics" value="Electronics">
+                                                <label for="electronics">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">04</span>Electronics
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bz-middle-wrap-form-search">
+                                        <form action="#">
+                                            <input type="search" placeholder="I'm shopping for..." >
+                                            <button type="submit"><i class="far fa-search"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-8">
+                            <div class="bz-middle-right text-end">
+                                <a class="bz-middle-right-link" href="wishlist.html"><i class="fal fa-heart"></i><span>0</span>
+                                </a>
+                                <a class="bz-middle-right-link" href="cart.html"><i class="fal fa-shopping-cart"></i><span>0</span></a>
+                                <div class="bz-user-wrapper d-inline-block">
+                                    <a class="bz-middle-right-link bz-user" href="#0"><i class="fal fa-user"></i></a>
+                                    <div class="bz-user-dropdown">
+                                        <a href="signup.html">Login</a>
+                                        <a href="#0">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bz-header-main">
+                <div class="container container-full-1">
+                    <div class="row align-items-center">
+                        <div class="col-2 d-lg-none">
+                            <div class="bz-header-bar">
+                                <a href="#0" class="side-toggle"><i class="far fa-bars"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-8 d-none d-lg-block">
+                            <div class="bz-header-menu">
+                                <nav id="bz-mobile-menu" class="bz-mobile-menu">
+                                    <ul>
+                                        <li class="has-dropdown"><a href="{% url 'index' %}">Accuiel</a>
+                                            <ul class="submenu">
+                                                <li><a href="{% url 'index' %}">Accuiel</a></li>
+                                                
+                                            </ul>
+                                        </li>
+                                        <li class="has-dropdown">
+                                            <a href="{% url 'shop' %}">Boutique</a>
+                                            <ul class="submenu">
+                                                <li><a href="{% url 'shop' %}">Boutique</a></li>
+                                                
+                                            </ul>
+                                        </li>
+                                        
+                                        
+                                        <li class="has-dropdown">
+                                            <a href="#0">Pages </a>
+                                            <ul class="submenu">
+                                                <li><a href="{% url 'inscription' %}">Signup</a></li>
+                                                <li><a href="error.html">Error</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-10">
+                            <div class="bz-header-support text-end">
+                                <span class="teltext"><i class="far fa-phone-alt"></i> <span>Support:</span>+ <a href="tel:(00)123456789">(00) 123 456 789</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header area end -->
+
+        <!-- main area start  -->
+        <main>
+        <!-- breadcrumb area start -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="bz-breadcrumb-wrap d-flex justify-content-between align-items-center">
+                            <div class="bz-breadcrumb-content">
+                                <h3 class="bz-breadcrumb-content-title">Cart</h3>
+                                <span class="bz-breadcrumb-content-subtitle">
+                                    Le marché qui relie les créateurs et les passionnés.
+                                </span>
+                            </div>
+                            <div class="bz-breadcrumb-list">
+                                <a href="{% url 'index' }">Accuiel</a>
+                                <span>Panier</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- breadcrumb area end -->
+
+        <!-- cart area start -->
+        <div class="cart-area pt-60 pb-70">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="bz-shopping-cart-table cart-page table-full mb-20">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Produit</th>
+                                        <th>Prix</th>
+                                        <th>Quantite</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="bz-shopping-cart-product-box">
+                                                <div class="action-close"><i class="fal fa-times"></i></div>
+                                                <div class="image">
+                                                    <img src="{% static 'assets/img/season/2.jpg' %}" alt="img">
+                                                </div>
+                                                <div class="title-wrap">
+                                                    <h4 class="title"><a href="{% url 'shop' %}">Armoir</a></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="bz-product-cart-price">
+                                                <span>$56.78</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="bz-shop-details-content-quantity-box">
+                                                <form action="#">
+                                                    <a href="#0" class="plus"><i class="fal fa-plus"></i></a>
+                                                    <input type="text" readonly name="quantity" value="1">
+                                                    <a  href="#0" class="minus"><i class="fal fa-minus"></i></a>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="bz-product-cart-price">
+                                                <span>100.000F</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="bz-shopping-cart-product-box">
+                                                <div class="action-close"><i class="fal fa-times"></i></div>
+                                                <div class="image">
+                                                    <img src="{% static 'assets/img/season/1.jpg' %}" alt="img">
+                                                </div>
+                                                <div class="title-wrap">
+                                                    <h4 class="title"><a href="{% url 'shop' %}">Télévison</a></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="bz-product-cart-price">
+                                                <span>100.000F</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="bz-shop-details-content-quantity-box">
+                                                <form action="#">
+                                                    <a href="#0" class="plus"><i class="fal fa-plus"></i></a>
+                                                    <input type="text" readonly name="quantity" value="1">
+                                                    <a  href="#0" class="minus"><i class="fal fa-minus"></i></a>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="bz-product-cart-price">
+                                                <span>150000F</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="apply-coupon-button mt-30">
+                                <form action="#">
+                                    <input type="text" placeholder="Coupon Code"><button type="submit">Coupon de reduction</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="bz-cart-total-box-wrapper ml-30 mb-40">
+                            <h4 class="bz-cart-total-box-title">Facture</h4>
+                            <div class="bz-cart-total-box-inner-box">
+                                <ul>
+                                    <li class="b-bottom"><span class="cart-total-label">total</span><span class="cart-total-value">100.00FCFA</span></li>
+                                    <li><span class="cart-total-label">reduction</span><span class="cart-total-value">Free</span></li>
+                                    <li><span class="cart-total-label"></span><span class="cart-total-value">10%</span></li>
+                                    <li>
+                                        <div class="cart-total-change-address text-end">
+                                            <span class="cart-total-change-address-text">Change Address</span>
+                                            <div class="cart-total-change-address-values">
+                                                <select>
+                                                    <option>Selectionne la ville</option>
+                                                    <option>Grand-bassam</option>
+                                                    <option>Abidjan</option>
+                                                    <option>bouake</option>
+                                                </select>
+                                                <input type="text" placeholder="Town / City">
+                                                <input type="text" placeholder="ZIP Code">
+                                                <button class="cart-update-btn">Nouvelle Address</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="b-top"><span class="cart-total-label">Total</span><span class="cart-total-value">150.000FCFA</span></li>
+                                </ul>
+                            </div>
+                            <div class="cart-total-button">
+                                <a href="{% url 'inscription' %}" class="cart-total-btn">Inscrition</a>
+                                <a href="{% url 'chechkout' %}" class="cart-total-btn">Proceder au Paiement</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- cart area end -->
+
+       
+
+       
+        </main>
+        <!-- main area end -->
+
+
+        <!-- footer area start -->
+        <footer class="bz-footer">
+            <div class="container">
+                <div class="bz-footer-top pt-60 pb-20">
+                    <div class="row justify-content-between">
+                        <div class="col-xl-4 col-lg-4 col-md-7 col-sm-7">
+                            <div class="bz-footer-widget mb-40">
+                                <div class="bz-footer-logo mb-25">
+                                    <a href="index.html"><img src="{% static 'assets/img/logo/logoN.png' %}" alt="Logo"></a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-2 col-md-5 col-sm-5">
+                            <div class="bz-footer-widget mb-40">
+                                <h4 class="bz-footer-widget-title mb-25">Boutique</h4>
+                                <div class="bz-footer-widget-list">
+                                    <ul>
+                                        <li><a href="{% url 'shop' %}">Categories MODE</a></li>
+                                        <li><a href="{% url 'shop' %}">Categories INFORMATIQUE</a></li>
+                                        <li><a href="{% url 'shop' %}">Categories MAISON</a></li>
+                                        <li><a href="{% url 'shop' %}">Categories ELECTRONIQUES</a></li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-2 col-md-7 col-sm-7">
+                            <div class="bz-footer-widget mb-40">
+                                <h4 class="bz-footer-widget-title mb-25">A propos de nous</h4>
+                                <div class="bz-footer-widget-list">
+                                    <ul>
+                                        <li><a href="contact.html">A propos</a></li>
+                                        
+                                        <li><a href="shop.html">tout nos Collection</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-3 col-md-5 col-sm-5">
+                            <div class="bz-footer-widget mb-40">
+                                <h4 class="bz-footer-widget-title mb-25">Ce que nous proposons</h4>
+                                <div class="bz-footer-widget-list">
+                                    <p>la plateforme qui connecte les vendeurs et les acheteurs dans un espace simple, sûr et moderne</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bz-footer-copyright">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 col-sm-7">
+                            <p class="bz-footer-copyright-text text-center text-sm-start">Tous droits reservés par Nacro Adjaratou</p>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-5">
+                            <div class="bz-footer-copyright-social text-sm-end text-center">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-vimeo-v"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer area end -->
+
+        <!-- back to top start -->
+        <div class="progress-wrap">
+            <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+            </svg>
+        </div>
+        <!-- back to top end -->
+        
+		<!-- JS here -->
+         {% load static %}
+        <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/swipper-bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
+<script src="{% static 'assets/js/wow.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrollUp.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'assets/js/odometer.min.js' %}"></script>
+<script src="{% static 'assets/js/appear.min.js' %}"></script>
+<script src="{% static 'assets/js/datepicker.min.js' %}"></script>
+<script src="{% static 'assets/js/select2.min.js' %}"></script>
+<script src="{% static 'assets/js/cross2.min.js' %}"></script>
+<script src="{% static 'assets/js/countdown.js' %}"></script>
+<script src="{% static 'assets/js/jquery-ui-slider-range.js' %}"></script>
+<script src="{% static 'assets/js/back-to-top.min.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+    </body>
+</html>

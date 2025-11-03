@@ -1,0 +1,70 @@
+
+/*
+************
+*************************
+15. apps
+******************************************************* 
+*************************************************************** */
+
+ @use '../abstracts/variables' as *;
+
+ .bz {
+    &-apps {
+        background-color: rgba(130, 155, 133, 0.3);
+
+        &-content {
+
+            &.pt-60 {
+                @media #{$lg} {
+                    padding-top: 35px;
+                }
+            }
+            &.pb-70 {
+                @media #{$lg} {
+                    padding-bottom: 45px;
+                }
+            }
+
+            &-title {
+                font-size: 34px;
+                line-height: 1.35;
+                margin-bottom: 20px;
+
+                @media #{$lg} {
+                    font-size: 30px;
+                    line-height: 1.33;
+                    margin-bottom: 15px;
+                }
+                @media #{$xs} {
+                    font-size: 28px;
+                    line-height: 1.36;
+                    margin-bottom: 15px;
+                }
+                @media #{$sm} {
+                    font-size: 32px;
+                    line-height: 1.25;
+                }
+    
+            }
+            &-text {
+                font-size: 16px;
+                color: var(--clr-common-black-deep);
+                margin-bottom: 40px;
+
+                @media #{$lg} {
+                    margin-bottom: 30px;
+                }
+                @media #{$xs} {
+                    margin-bottom: 30px;
+                }
+    
+            }
+            &-download {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+
+            }
+        }
+    }
+ }

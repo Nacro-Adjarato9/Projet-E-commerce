@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-center mb-4"> Ajouter un nouvel article</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        <label class="form-label">Nom du produit</label>
+        {{ form.name }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        {{ form.description }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Prix (FCFA)</label>
+        {{ form.price }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Image du produit</label>
+        {{ form.image }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Catégorie</label>
+        {{ form.category }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Étiquettes</label>
+        {{ form.tags }}
+        <small class="text-muted">Exemple : "homme, jean, bleu"</small>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100"> Enregistrer</button>
+    </form>
+
+    
+  </div>
+</div>
+{% endblock %}

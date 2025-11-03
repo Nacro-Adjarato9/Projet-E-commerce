@@ -1,0 +1,120 @@
+/*
+************
+*************************
+06. post
+******************************************************* 
+*************************************************************** */
+ @use '../abstracts/variables' as *;
+
+ .bz {
+    &-post {
+        &-area {
+
+        }
+        &-wrap {
+            position: relative;
+            background-color: rgba(130, 155, 133, 0.3);
+            min-height: 350px;
+            z-index: 1;
+            
+
+            @media #{$md} {
+                margin-bottom: 30px;
+            }
+            @media #{$xs} {
+                margin-bottom: 30px;
+            }
+            &::before {
+                @media #{$xs} {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    content: "";
+                    background-color: var(--clr-theme-primary);
+                    z-index: 1;
+                    opacity: 0.5;
+                }
+                @media #{$sm} {
+                    display: none;
+                }
+            }
+
+            &-content {
+                padding-left: 30px;
+                z-index: 10;
+
+                @media #{$lg} {
+                    padding-left: 20px;
+                }
+                @media #{$xs} {
+                    padding-left: 15px;
+                }
+                @media #{$sm} {
+                    padding-left: 25px;
+                }
+
+                &-link {
+                    color: var(--clr-color-orange);
+                    font-size: 18px;
+                    font-weight: 500;
+                    text-decoration: underline;
+                    margin-bottom: 20px;
+                    display: inline-block;
+
+                    @media #{$lg} {
+                        font-size: 16px;
+                        margin-bottom: 15px;
+                    }
+
+                    &:hover {
+                        color: var(--clr-common-black-deep);
+                        text-decoration: underline;
+                    }
+                }
+                &-title {
+                    font-size: 34px;
+                    color: var(--clr-common-black);
+                    line-height: 1.29;
+                    margin-bottom: 20px;
+
+                    @media #{$lg} {
+                        font-size: 25px;
+                        line-height: 1.4;
+                        margin-bottom: 15px;
+                    }
+                    @media #{$xs} {
+                        font-size: 30px;
+                    }
+                    @media #{$sm} {
+                        font-size: 34px;
+                    }
+                }
+                &-btn {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: var(--clr-common-black-deep);
+                    text-decoration: underline;
+                    display: inline-block;
+
+                    &:hover {
+                        color: var(--clr-color-orange);
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            &-img {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+            }
+        }
+    }
+}
+
+.bz-gallery-images {
+    position: relative;
+    z-index: 1;
+}

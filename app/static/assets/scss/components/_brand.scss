@@ -1,0 +1,37 @@
+/*
+************
+*************************
+14. brand
+******************************************************* 
+*************************************************************** */
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+
+ .bz-brand-img {
+	text-align: center;
+	img {
+		transition: 0.3s;
+		cursor: pointer;
+	}
+	&:hover {
+		img {
+			filter: grayscale(100%);
+		}
+	}
+}
+
+/*
+* home 2
+*/
+
+.bz-brand-area-2 {
+    background: #EDEDED;
+ }
+ .bz-brand-wrap-2 {
+    border-bottom: 1px solid #C2C2C2;
+ }
+ 
+.bz-brand-item-2 {
+    height: 35px;
+}

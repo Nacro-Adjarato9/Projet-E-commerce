@@ -1,0 +1,631 @@
+<!Doctype html>
+<html class="no-js" lang="zxx">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Shared on THEMELOCK.COM - Bajar - Multipurpose E-commerce HTML Template</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+		<!-- CSS here -->
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/odometer.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/cross2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/swipper.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/ui-range-slider.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/datepicker.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    </head>
+    
+    <body>
+        <!-- bz-sidebar-informations-area-start -->
+        <div class="bz-sidebar-informations side-info">
+            <div class="bz-sidebar-logo-wrapper">
+                <div class="row">
+                    <div class="col-xl-6 col-8">
+                        <div class="bz-sidebar-logo">
+                            <a href="index.html"><img src="assets/img/logo/logo.png" alt="logo-img"></a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-4">
+                        <div class="bz-sidebar-close-wrapper text-end">
+                            <button class="bz-sidebar-close side-info-close"><i class="fal fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="bz-middle-wrap mb-25 mt-40">
+                <div class="bz-middle-wrap-form bz-middle-wrap-sidebar">
+                    <div class="bz-middle-wrap-form-caregories">
+                        <ul>
+                            <li><a href="#0" id="bz-cat-click-sidebar"><span class="bz-search-all-cat-sidebar">Categories</span> <i class="far fa-angle-down"></i></a>
+                            </li>
+                        </ul>
+                        <div class="bz-category-wrapper-sidebar">
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="fashion_sidebar" value="Fashion">
+                                <label for="fashion_sidebar">Fashion</label>
+                            </div>
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="furniture_sidebar" value="Furniture">
+                                <label for="furniture_sidebar">Furniture</label>
+                            </div>
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="grocery_sidebar" value="Grocery">
+                                <label for="grocery_sidebar">Grocery</label>
+                            </div>
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="electronics_sidebar" value="Electronics">
+                                <label for="electronics_sidebar">Electronics</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bz-middle-wrap-form-search">
+                        <form action="#">
+                            <input type="search" placeholder="Search..." >
+                            <button type="submit"><i class="far fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bz-sidebar-menu-wrapper">
+                <div class="bz-mobile-menu"></div>
+            </div>
+        </div>
+        <div class="offcanvas-overlay"></div>
+        <!-- bz-sidebar-informations-area-end -->
+
+        <!-- header area start -->
+        <header class="header-area">
+            <div class="bz-topbar-area">
+                <div class="container container-full-1">
+                    <div class="row align-items-center">
+                        <div class="col-xl-6 col-lg-6 col-md-7">
+                            <div class="bz-topbar-left">
+                                <div class="bz-topbar-left-text">
+                                    <p>Save 50% Sitewide! Ends in:</p>
+                                </div>
+                                
+                                <div class="count_down_box" data-countdown="2023/09/16"></div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-5">
+                            <div class="bz-topbar-right d-flex justify-content-end align-items-center">
+                                <div class="bz-topbar-right-item">
+                                    <a class="bz-topbar-right-item-link" href="#0">Track your order</a>
+                                </div>
+                                <div class="bz-topbar-right-item">
+                                    <select name="Language" class="bz-topbar-right-item-link has-nice-select">
+                                        <option value="1">English</option>
+                                        <option value="2">Bangla</option>
+                                        <option value="3">Arabic</option>
+                                    </select>
+                                </div>
+                                <div class="bz-topbar-right-item">
+                                    <select name="Language" class="bz-topbar-right-item-link has-nice-select">
+                                        <option value="1">USD</option>
+                                        <option value="2">TAKA</option>
+                                        <option value="3">Riyal</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bz-middle-area">
+                <div class="container container-full-1">
+                    <div class="row align-items-center">
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-4">
+                            <div class="bz-middle-logo">
+                                <a href="index.html"><img src="assets/img/logo/logo.png" alt="img"></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-7 d-none d-lg-block">
+                            <div class="bz-middle-wrap">
+                                <div class="bz-middle-wrap-bar">
+                                    <a href="#0" class="side-toggle"><i class="far fa-bars"></i></a>
+                                </div>
+                                <div class="bz-middle-wrap-form">
+                                    <div class="bz-middle-wrap-form-caregories">
+                                        <ul>
+                                            <li><a href="#0" class="bz-cat-click" id="bz-cat-click"><span class="bz-search-all-cat">All Categories</span> <i class="far fa-angle-down"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="bz-category-wrapper">
+                                            <div class="bz-cat-item">
+                                                <input type="radio" class="cat-filter" name="cat-filter" id="fashion" value="Fashion">
+                                                <label for="fashion">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">01</span>Fashion
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                            <div class="bz-cat-item">
+                                                <input type="radio" name="cat-filter"  class="cat-filter" id="furniture" value="Furniture">
+                                                <label for="furniture">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">02</span>Furniture
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                            <div class="bz-cat-item">
+                                                <input type="radio" name="cat-filter"  class="cat-filter" id="grocery" value="Grocery">
+                                                <label for="grocery">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">03</span>Grocery
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                            <div class="bz-cat-item">
+                                                <input type="radio" name="cat-filter"  class="cat-filter" id="electronics" value="Electronics">
+                                                <label for="electronics">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">04</span>Electronics
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bz-middle-wrap-form-search">
+                                        <form action="#">
+                                            <input type="search" placeholder="I'm shopping for..." >
+                                            <button type="submit"><i class="far fa-search"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-8">
+                            <div class="bz-middle-right text-end">
+                                <a class="bz-middle-right-link" href="wishlist.html"><i class="fal fa-heart"></i><span>0</span>
+                                </a>
+                                <a class="bz-middle-right-link" href="cart.html"><i class="fal fa-shopping-cart"></i><span>0</span></a>
+                                <div class="bz-user-wrapper d-inline-block">
+                                    <a class="bz-middle-right-link bz-user" href="#0"><i class="fal fa-user"></i></a>
+                                    <div class="bz-user-dropdown">
+                                        <a href="signup.html">Login</a>
+                                        <a href="#0">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bz-header-main">
+                <div class="container container-full-1">
+                    <div class="row align-items-center">
+                        <div class="col-2 d-lg-none">
+                            <div class="bz-header-bar">
+                                <a href="#0" class="side-toggle"><i class="far fa-bars"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-8 d-none d-lg-block">
+                            <div class="bz-header-menu">
+                                <nav id="bz-mobile-menu" class="bz-mobile-menu">
+                                    <ul>
+                                        <li class="has-dropdown"><a href="index.html">Home</a>
+                                            <ul class="submenu">
+                                                <li><a href="index.html">Home 01</a></li>
+                                                <li><a href="index-2.html">Home 02</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="has-dropdown">
+                                            <a href="shop.html">Shop</a>
+                                            <ul class="submenu">
+                                                <li><a href="shop.html">Shop Default</a></li>
+                                                <li><a href="shop-sidebar.html">Shop Sidebar</a></li>
+                                                <li><a href="shop-details.html">Shop Details</a></li>
+                                                <li><a href="cart.html">Cart</a></li>
+                                                <li><a href="wishlist.html">Wishlist</a></li>
+                                                <li><a href="compare.html">Compare</a></li>
+                                                <li><a href="checkout.html">Checkout</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="has-dropdown">
+                                            <a href="blog.html">Blog </a>
+                                            <ul class="submenu">
+                                                <li><a href="blog.html">Blog Default</a></li>
+                                                <li><a href="blog-list.html">Blog List</a></li>
+                                                <li><a href="blog-left.html">Blog Sidebar</a></li>
+                                                <li><a href="blog-list-left.html">Blog List Sidebar</a></li>
+                                                <li><a href="blog-details.html">Blog details</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="has-dropdown">
+                                            <a href="#0">Pages </a>
+                                            <ul class="submenu">
+                                                <li><a href="signup.html">Signup</a></li>
+                                                <li><a href="error.html">Error</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-10">
+                            <div class="bz-header-support text-end">
+                                <span class="teltext"><i class="far fa-phone-alt"></i> <span>Support:</span>+ <a href="tel:(00)123456789">(00) 123 456 789</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header area end -->
+
+        <!-- main area start  -->
+        <main>
+        <!-- breadcrumb area start -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="bz-breadcrumb-wrap d-flex justify-content-between align-items-center">
+                            <div class="bz-breadcrumb-content">
+                                <h3 class="bz-breadcrumb-content-title">Checkout</h3>
+                                <span class="bz-breadcrumb-content-subtitle">
+                                    Fashion is the armor to survive the reality of everyday life.
+                                </span>
+                            </div>
+                            <div class="bz-breadcrumb-list">
+                                <a href="index.html">Home</a>
+                                <span>Checkout</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- breadcrumb area end -->
+
+        <!-- checkout area start -->
+        <div class="bz-checkout-area pt-60 pb-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="bz-checkout-wrapper mb-50">
+                            <div class="bz-checkout-billing-account mb-25">
+                                <div class="row align-items-center">
+                                    <div class="col-xl-6 col-lg-6 col-md-5 col-sm-5">
+                                        <h5 class="bz-checkout-billing-text">Billing Address</h5>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-7 col-sm-7">
+                                        <h5 class="bz-checkout-billing-acc-text text-sm-end">Already have an account? <a href="signup.html">Login</a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bz-checkout-content">
+                                <div class="bz-input-single">
+                                    <label>Enter Name</label>
+                                    <input type="text" placeholder="Enter name">
+                                </div>
+                                <div class="bz-input-single">
+                                    <label>Email Address</label>
+                                    <input type="text" placeholder="Email address">
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="bz-input-single">
+                                            <label>State</label>
+                                            <select class="select-search">
+                                                <option>Country</option>
+                                                <option>United States</option>
+                                                <option>United America</option>
+                                                <option>Bangladesh</option>
+                                                <option>Indoneshia</option>
+                                                <option>Australiya</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="bz-input-single">
+                                            <label>Town/City</label>
+                                            <select class="select-search">
+                                                <option>Honululu</option>
+                                                <option>Sydney</option>
+                                                <option>Dhaka</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="bz-input-single">
+                                            <label>Phone Number</label>
+                                            <input type="number" placeholder="Phone number">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="bz-input-single">
+                                            <label>Zip Code</label>
+                                            <input type="number" placeholder="Zip code">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bz-input-single">
+                                    <label>Company Name (Optional)</label>
+                                    <input type="text" placeholder="Company name">
+                                </div>
+                                <div class="bz-input-single">
+                                    <label>Street Address</label>
+                                    <input type="text" placeholder="Street address">
+                                </div>
+                                <div class="bz-submit-form-default-single mb-25 mt-25">
+                                    <div class="condition-box">
+                                        <input type="checkbox" id="acc" class="has-condition condition">
+                                        <label for="acc" class="condition">Create a new account?</label>
+                                    </div>
+                                </div>
+                                <div class="bz-submit-form-default-single mb-45">
+                                    <div class="condition-box">
+                                        <input type="checkbox" id="add" class="has-condition condition">
+                                        <label for="add" class="condition">Ship to a different address?</label>
+                                    </div>
+                                </div>
+                                <div class="bz-input-single">
+                                    <h4 class="bz-checkout-textarea-title mb-25">Additional Information</h4>
+                                    <textarea placeholder="Order notes"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="bz-cart-total-box-wrapper ml-30 mb-50">
+                            <h4 class="bz-cart-total-box-title">Your Order</h4>
+                            <div class="bz-cart-total-box-inner-box">
+                                <ul>
+                                    <li><span class="cart-total-label">Women Slim Shirt</span><span class="cart-total-value">$56.78</span></li>
+                                    <li class="b-bottom"><span class="cart-total-label">Women T-shirt</span><span class="cart-total-value">$56.78</span></li>
+
+                                    <li><span class="cart-total-label">Subtotal</span><span class="cart-total-value">$113.56</span></li>
+                                    <li><span class="cart-total-label">Shipping Cost</span><span class="cart-total-value">Free</span></li>
+                                    <li><span class="cart-total-label">Vat</span><span class="cart-total-value">0%</span></li>
+                                    <li class="b-top"><span class="cart-total-label">Total</span><span class="cart-total-value">$56.78</span></li>
+                                </ul>
+                                <div class="bz-cart-payments border-top">
+                                    <ul>
+                                        <li>
+                                            <input type="radio" id="bank" name="payment">
+                                            <label for="bank">Direct Bank Transfer</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" id="paypal" name="payment">
+                                            <label for="paypal">Paypal</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" id="payoneer" name="payment">
+                                            <label for="payoneer">Payoneer</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <p class="payment-text">Your personal data will be used to process your
+                                    order, support your experience throughout this
+                                    website and for other purposes described in our
+                                    <a href="#">privacy policy</a>.</p>
+                            </div>
+                            <div class="cart-total-button">
+                                <button class="cart-total-btn">Place Order</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- checkout area end -->
+
+        <!-- bz-feature-area-start -->
+        <div class="bz-shop-feature pb-70">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="bz-shop-feature-item mb-40">
+                            <div class="bz-shop-feature-item-heading">
+                                <i class="fal fa-tshirt bz-shop-feature-item-heading-icon"></i>
+                                <h5 class="bz-shop-feature-item-heading-title"><a href="shop.html">Quality Materials</a></h5>
+                            </div>
+                            <p class="bz-shop-feature-item-text">Lorem Ipsum available the majority have suffered
+                                alteration in some form by injected humour random
+                                ised words which don't look even slightly.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="bz-shop-feature-item mb-40">
+                            <div class="bz-shop-feature-item-heading">
+                                <i class="far fa-shopping-bag bz-shop-feature-item-heading-icon"></i>
+                                <h5 class="bz-shop-feature-item-heading-title"><a href="contact.html">Free Shipping</a></h5>
+                            </div>
+                            <p class="bz-shop-feature-item-text">Lorem Ipsum available the majority have suffered
+                                alteration in some form by injected humour random
+                                ised words which don't look even slightly.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="bz-shop-feature-item mb-40">
+                            <div class="bz-shop-feature-item-heading">
+                                <i class="fal fa-usd-square bz-shop-feature-item-heading-icon"></i>
+                                <h5 class="bz-shop-feature-item-heading-title"><a href="contact.html">Secure Payment</a></h5>
+                            </div>
+                            <p class="bz-shop-feature-item-text">Lorem Ipsum available the majority have suffered
+                                alteration in some form by injected humour random
+                                ised words which don't look even slightly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- bz-featrure-area-end -->
+
+        <!-- Apps download area start -->
+        <section class="apps-area">
+            <div class="bz-apps">
+                <div class="container">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-xl-5 col-lg-6 col-md-9">
+                            <div class="bz-apps-content text-center pt-60 pb-70">
+                                <h3 class="bz-apps-content-title">
+                                    Make your online shop easier with our mobile app
+                                </h3>
+                                <p class="bz-apps-content-text">
+                                    We offer high-quality films and the best documentary selection, and the ability to browse alphabetically and by genre
+                                </p>
+                                <div class="bz-apps-content-download">
+                                    <img src="assets/img/apps/download-1.png" alt="img">
+                                    <img src="assets/img/apps/download-2.png" alt="img">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 offset-xl-1 col-lg-6 d-none d-lg-block">
+                            <div class="bz-apps-img w_img">
+                                <img src="assets/img/apps/appsBg.png" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Apps download area end -->
+
+        </main>
+        <!-- main area end -->
+
+
+        <!-- footer area start -->
+        <footer class="bz-footer">
+            <div class="container">
+                <div class="bz-footer-top pt-60 pb-20">
+                    <div class="row justify-content-between">
+                        <div class="col-xl-4 col-lg-4 col-md-7 col-sm-7">
+                            <div class="bz-footer-widget mb-40">
+                                <div class="bz-footer-logo mb-25">
+                                    <a href="index.html"><img src="assets/img/logo/logo.png" alt="Logo"></a>
+                                </div>
+                                <p class="bz-footer-widget-address mb-20">Themeforest, Envanto HQ <br>
+                                    24 Fifth st., Los Angeles, USA</p>
+                                <div class="bz-footer-widget-phone mb-40">
+                                    <a href="tel:+00(00)12356789">+00 (00) 123 456 789</a>
+                                    <a href="tel:+00(00)123456789">+00 (00) 123 456 789</a>
+                                </div>
+                                <div class="bz-footer-widget-payment">
+                                    <h4 class="bz-footer-widget-payment-title mb-25">Secure online payment</h4>
+                                    <img src="assets/img/footer/payment.png" alt="img">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-2 col-md-5 col-sm-5">
+                            <div class="bz-footer-widget mb-40">
+                                <h4 class="bz-footer-widget-title mb-25">Products</h4>
+                                <div class="bz-footer-widget-list">
+                                    <ul>
+                                        <li><a href="shop.html">Prices Drop</a></li>
+                                        <li><a href="shop.html">New Products</a></li>
+                                        <li><a href="shop.html">Best Sales</a></li>
+                                        <li><a href="shop.html">New Season</a></li>
+                                        <li><a href="shop.html">New Arrivals</a></li>
+                                        <li><a href="shop.html">Top Trending</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-2 col-md-7 col-sm-7">
+                            <div class="bz-footer-widget mb-40">
+                                <h4 class="bz-footer-widget-title mb-25">About Bazar</h4>
+                                <div class="bz-footer-widget-list">
+                                    <ul>
+                                        <li><a href="contact.html">About us</a></li>
+                                        <li><a href="contact.html">Work with us</a></li>
+                                        <li><a href="contact.html">Our policies</a></li>
+                                        <li><a href="contact.html">Press</a></li>
+                                        <li><a href="contact.html">Offices</a></li>
+                                        <li><a href="shop.html">A-Z Collection</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-3 col-md-5 col-sm-5">
+                            <div class="bz-footer-widget mb-40">
+                                <h4 class="bz-footer-widget-title mb-25">Information</h4>
+                                <div class="bz-footer-widget-list">
+                                    <ul>
+                                        <li><a href="contact.html">Contact Us</a></li>
+                                        <li><a href="contact.html">Privacy Policy</a></li>
+                                        <li><a href="wishlist.html">Wishlist</a></li>
+                                        <li><a href="checkout.html">Checkout</a></li>
+                                        <li><a href="contact.html">Shipping & Returns</a></li>
+                                        <li><a href="contact.html">Help And Advice</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bz-footer-copyright">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 col-sm-7">
+                            <p class="bz-footer-copyright-text text-center text-sm-start">&copy; 2022 All Rights Reserved by <a href="https://themeforest.net/user/_themephi">Themephi</a></p>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-5">
+                            <div class="bz-footer-copyright-social text-sm-end text-center">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-vimeo-v"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer area end -->
+        
+        <!-- back to top start -->
+        <div class="progress-wrap">
+            <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+            </svg>
+        </div>
+        <!-- back to top end -->
+
+		<!-- JS here -->
+        <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/swipper-bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
+<script src="{% static 'assets/js/wow.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrollUp.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'assets/js/odometer.min.js' %}"></script>
+<script src="{% static 'assets/js/appear.min.js' %}"></script>
+<script src="{% static 'assets/js/datepicker.min.js' %}"></script>
+<script src="{% static 'assets/js/select2.min.js' %}"></script>
+<script src="{% static 'assets/js/cross2.min.js' %}"></script>
+<script src="{% static 'assets/js/countdown.js' %}"></script>
+<script src="{% static 'assets/js/jquery-ui-slider-range.js' %}"></script>
+<script src="{% static 'assets/js/back-to-top.min.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+    </body>
+</html>

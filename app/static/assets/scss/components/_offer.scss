@@ -1,0 +1,118 @@
+/*=============================
+04. trending
+ ============================= */
+
+ @use '../abstracts/variables' as *;
+ @use '../abstracts/mixins' as *;
+
+.offer_count_down_box {
+    background: var(--clr-theme-primary);
+    padding: 10px 20px;
+    border-radius: 3px;
+
+    @media #{$md} {
+        padding: 10px 15px;
+    }
+
+    & .count_down {
+        display: inline-block;
+        color: #fff;
+        margin-right: 50px;
+        padding-right: 50px;
+        border-right: 1px solid var(--clr-bg-gray-8);
+        @media #{$xs}{
+          margin-right: 0;
+          padding-right: 0;
+          border-right: 0;
+          margin-bottom: 30px;
+          padding-bottom: 30px;
+          border-bottom: 1px solid var(--clr-bg-gray-8);
+          display: block;
+          &:last-child{
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: 0;
+          }
+        }
+        @media #{$sm}{
+          padding-right: 30px;
+          margin-right: 30px;
+          padding-bottom: 0;
+          margin-bottom: 0;
+          border-right: 1px solid var(--clr-bg-gray-8);
+          border-bottom: 0;
+          display: inline-block;
+        }
+
+        &:last-child{
+            margin-right: 0;
+            padding-right: 0;
+            border-right: 0;
+        }
+    }
+}
+.bz-offer-area-2 {
+	padding: 160px 0;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.offer_count_down_box {
+	background: #fff;
+	padding: 17px 60px 12px;
+	border-radius: 3px;
+	display: inline-block;
+  @media #{$xs}{
+    padding: 30px 30px;
+    display: block;
+  }
+  @media #{$sm}{
+    padding: 17px 50px 12px;
+  }
+}
+.offer_count_down_box .count_down span {
+	display: inline-block;
+	color: #222;
+	font-size: 30px;
+}
+
+.bz-offer-content-2 {
+    text-align: center;
+  }
+  .bz-offer-subtitle-2 {
+    display: inline-block;
+    background: #222;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    text-transform: capitalize;
+    margin-bottom: 21px;
+  }
+  .bz-offer-title-2 {
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 22px;
+    @media #{$xs}{
+      font-size: 30px;
+    }
+  }
+  .bz-offer-price-2 {
+    display: inline-block;
+    color: #FB4A19;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 35px;
+  }
+  .bz-offer-price-2 del {
+    color: #888;
+    margin-left: 30px;
+  }
+  .offer_count_down_box .count_down p {
+    display: block;
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 0;
+  }

@@ -1,0 +1,65 @@
+/*=============================
+**. instagram
+ ============================= */
+
+ @use '../abstracts/variables' as *;
+ @use '../abstracts/mixins' as *;
+
+.bz-instagram-wrap {
+    position: relative;
+}
+.bz-instagram-inner {
+	display: flex;
+	gap: 20px;
+    @media #{$xs} {
+        flex-direction: column;
+    }
+    @media #{$sm} {
+        flex-direction: row;
+    }
+}
+.bz-instagram-inner-wrap {
+	display: flex;
+	gap: 20px;
+    @media #{$xs}{
+        flex-direction: column;
+    }
+}
+.bz-instagram-content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #222;
+    padding: 35px 85px;
+    text-align: center;
+    &-icon i {
+        display: block;
+        color: #fff;
+        text-align: center;
+        font-size: 35px;
+    }
+    &-title {
+        font-size: 18px;
+        color: #fff;
+        font-weight: 400;
+        margin-bottom: 15px;
+        line-height: 1.2;
+        &:hover a {
+            color: #FB4A19;
+        }
+    }
+    &-tag {
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 0;
+        line-height: 1.2;
+        &:hover a {
+            color: #FB4A19;
+        }
+    }
+    @media #{$xl}{
+        padding: 20px 60px;
+    }
+}

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NaraMarket — Qui sommes-nous ?</title>
+  <style>
+    :root{
+      --beige: #F5F5DC;
+      --noir: #0B0B0B;
+      --marron: #6B3E26;
+      --accent: rgba(107,62,38,0.08);
+      --max-w: 900px;
+      --radius: 14px;
+      --pad: 28px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--beige),#fff);color:var(--noir)}
+    .wrap{max-width:var(--max-w);margin:48px auto;padding:var(--pad);background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.96));box-shadow:0 10px 30px rgba(11,11,11,0.08);border-radius:var(--radius);border:1px solid var(--accent)}
+
+    .brand{display:flex;gap:18px;align-items:center}
+    .logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,var(--marron),#8B5A3C);display:flex;align-items:center;justify-content:center;color:var(--beige);font-weight:700;font-size:20px;box-shadow:0 6px 18px rgba(107,62,38,0.12)}
+    h1{margin:0;font-size:28px;letter-spacing:-0.5px}
+    .tag{color:var(--marron);font-weight:600;margin-top:6px}
+
+    .slogans{margin-top:24px;display:grid;gap:12px}
+    .slogan{background:var(--accent);padding:14px;border-radius:10px;font-style:italic;border-left:4px solid var(--marron)}
+
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:24px;margin-top:22px}
+    .card{background:var(--accent);padding:18px;border-radius:12px}
+    p.lead{font-size:16px;line-height:1.6;margin:0 0 12px 0}
+    ul{margin:12px 0 0 20px}
+    li{margin-bottom:10px}
+
+    .sidebar{display:flex;flex-direction:column;gap:12px}
+    .pill{background:linear-gradient(90deg,rgba(107,62,38,0.12),rgba(11,11,11,0.02));padding:12px;border-radius:10px;border:1px solid rgba(107,62,38,0.06)}
+    .cta{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;background:var(--marron);color:var(--beige);text-decoration:none;font-weight:600}
+
+    .muted{font-size:13px;color:rgba(11,11,11,0.6);margin-top:14px}
+
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr;}
+      .sidebar{order:2}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="brand">
+      <div class="logo">NM</div>
+      <div>
+        <h1>NaraMarket</h1>
+        <div class="tag">Le marché en ligne pour la mode, la tech et les créateurs locaux</div>
+      </div>
+    </header>
+
+    <section class="slogans">
+      <div class="slogan">« NaraMarket – La qualité rencontre la confiance. »</div>
+      <div class="slogan">« Achetez malin, vendez librement, vivez Nara. »</div>
+      <div class="slogan">« Des articles de qualité, un paiement sécurisé, une expérience fluide. »</div>
+      <div class="slogan">« NaraMarket, votre partenaire du commerce moderne. »</div>
+      <div class="slogan">« Donnez vie à vos créations, trouvez ce qui vous inspire. »</div>
+    </section>
+
+    <section class="grid">
+      <article>
+        <div class="card">
+          <p class="lead"><strong>Qui sommes‑nous ?</strong><br>
+          NaraMarket est une place de marché conviviale qui rapproche les vendeurs et les clients au quotidien. Notre mission : offrir une vitrine simple, sûre et professionnelle aux commerçants (artisans, boutiques de mode, boutiques tech) tout en permettant aux acheteurs de dénicher des produits de qualité, à des prix justes.</p>
+
+          <p class="lead"><strong>Ce que nous faisons</strong></p>
+          <ul>
+            <li><strong>Mise en ligne facile :</strong> les vendeurs publient leurs articles (photos, description, prix) en quelques étapes.</li>
+            <li><strong>Catégories variées :</strong> mode, accessoires, appareils électroniques, maison et créations locales.</li>
+            <li><strong>Paiement sécurisé :</strong> NaraMarket intègre des options de paiement sûres pour protéger acheteurs et vendeurs.</li>
+            <li><strong>Support vendeur :</strong> outils de gestion de boutique, suivi des commandes et assistance personnalisée.</li>
+            <li><strong>Expérience client :</strong> recherche intuitive, fiches produit complètes et service après‑vente réactif.</li>
+          </ul>
+
+          <p class="lead"><strong>Nos valeurs</strong><br>
+          Transparence, qualité et proximité. Nous soutenons les petites entreprises et les créateurs locaux en leur donnant une plateforme fiable et professionnelle.</p>
+
+          <p class="muted">Version courte : NaraMarket — une marketplace élégante et sécurisée pour acheter et vendre mode, tech et créations locales.</p>
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        <div class="pill">
+          <strong>Pour le vendeur</strong>
+          <p class="muted">Créez votre boutique, gérez vos produits, suivez les ventes.</p>
+        </div>
+
+        <div class="pill">
+          <strong>Pour le client</strong>
+          <p class="muted">Parcourez des sélections soignées, achetez en confiance et bénéficiez d'un support.</p>
+        </div>
+
+        <div class="pill" style="text-align:center">
+          <div style="font-weight:700;margin-bottom:6px">Prêt à commencer ?</div>
+          <a class="cta" href="{% url 'inscription' %}">Rejoindre NaraMarket</a>
+        </div>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
