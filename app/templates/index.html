@@ -171,18 +171,26 @@
                                 <div class="bz-user-wrapper d-inline-block">
                                     <a class="bz-middle-right-link bz-user" href="#0"><i class="fal fa-user"></i></a>
                                     <div class="bz-user-dropdown">
-                                        <a href="{% url 'inscription' %}">inscription</a>
-                                        <a href="{% url 'add_product' %}">Ajouter Produit</a>
-
-                                      <!---- {% if user.is_authenticated and user.role == 'vendeur' %} -->
-                                           <!---- <a href="{% url 'add_product' %}" class="btn btn-primary">Ajouter un article</a>-->
-                                       <!----{% endif %} -->
-                                        
-                                        <!--{% if user.is_authenticated and user.role == 'vendeur' %}-->
-                                         <a href="{% url 'vendeur_dashboard' %}" class="btn btn-warning">Tableau de bord vendeur</a>
-                                        <!--{% endif %}-->
-
-
+                                        {% if user.is_authenticated %}
+                                            <!-- Menu pour utilisateur connecté -->
+                                            <div style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">
+                                                👤 {{ user.username }}
+                                            </div>
+                                            
+                                            {% if user.profile.role == 'vendeur' %}
+                                                <a href="{% url 'vendeur_dashboard' %}">📊 Dashboard Vendeur</a>
+                                                <a href="{% url 'add_product' %}">➕ Ajouter un article</a>
+                                            {% else %}
+                                                <a href="{% url 'shop' %}">🛍️ Boutique</a>
+                                                <a href="{% url 'cart' %}">🛒 Mon panier</a>
+                                            {% endif %}
+                                            
+                                            <a href="{% url 'logout' %}" style="color: #dc3545;">🚪 Se déconnecter</a>
+                                        {% else %}
+                                            <!-- Menu pour utilisateur non connecté -->
+                                            <a href="{% url 'login' %}">🔐 Se connecter</a>
+                                            <a href="{% url 'inscription' %}">📝 Créer un compte</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -212,9 +220,9 @@
                                             <a href="#">Boutique</a>
                                             
                                             <ul class="submenu">    
-                                                <li><a href="shop.html">Boutique</a></li>
-                                                <li><a href="cart.html">Cart</a>panier</li>
-                                                <li><a href="checkout.html">Checkout</a></li>
+                                                <li><a href="{% url 'shop' %}">Boutique</a></li>
+                                                <li><a href="{% url 'cart' %}">Cart</a>panier</li>
+                                                <li><a href="{% url 'chechkout' %}">Checkout</a></li>
                                             </ul>
                                         </li>
                                        
@@ -259,7 +267,7 @@
                                                       </span>
                                                     </h2>
                                                     <p class="bz-single-slider-main-content-text">NaraMarket : Découvrez un univers où la tendance rencontre la praticité, où chaque achat vous rapproche de vos passions, de la mode à la technologie, en toute simplicité</p>
-                                                    <a href="shop.html" class="bz-btn">Boutique</a>
+                                                    <a href="{% url 'shop' %}" class="bz-btn">Boutique</a>
                                                 </div>
                                             </div>
                                             <div class="col-xxl-5 col-xl-4 col-lg-5 col-md-4 d-none d-md-block">
@@ -284,10 +292,10 @@
                                         <div class="bz-single-slider-main-feature-item">
                                             <div class="bz-single-slider-main-feature-item-heading">
                                                 <i class="fal fa-tshirt bz-single-slider-main-feature-item-heading-icon"></i>
-                                                <h5 class="bz-single-slider-main-feature-item-heading-title"><a href="shop.html">Qualite Materiel</a></h5>
+                                                <h5 class="bz-single-slider-main-feature-item-heading-title"><a href="{% url 'shop' %}">Qualite Materiel</a></h5>
                                             </div>
                                             <div class="bz-single-slider-main-feature-item-text">
-                                                <p>La garantie d’un matériel de qualité, pour ceux qui exigent le meilleur</p>
+                                                <p>La garantie d'un matériel de qualité, pour ceux qui exigent le meilleur</p>
                                             </div>
                                         </div>
                                         <div class="bz-single-slider-main-feature-item">
@@ -312,7 +320,7 @@
                                         <img src="{% static 'assets/img/slider/sliderr.png' %}" alt="img">
                                     </div>
                                     <div class="bz-single-slider-sidebar-btn text-center">
-                                        <a href="shop.html" class="bz-btn">Boutique</a>
+                                        <a href="{% url 'shop' %}" class="bz-btn">Boutique</a>
                                     </div>
                                 </div>
                             </div>
@@ -342,7 +350,7 @@
                                             <img src="{% static 'assets/img/feature/salon.jpeg' %}" alt="img">
                                         </div>
                                         <div class="bz-feature-single-box-content">
-                                            <h4 class="bz-feature-single-box-content-title"><a href="shop.html">Boutique</a></h4>
+                                            <h4 class="bz-feature-single-box-content-title"><a href="{% url 'shop' %}">Boutique</a></h4>
                                             <span class="bz-feature-single-box-content-items">24 Items</span>
                                         </div>
                                     </div>
@@ -353,7 +361,7 @@
                                             <img src="{% static 'assets/img/feature/meublee.jpeg' %}" alt="img">
                                         </div>
                                         <div class="bz-feature-single-box-content">
-                                            <h4 class="bz-feature-single-box-content-title"><a href="shop.html">MAISON</a></h4>
+                                            <h4 class="bz-feature-single-box-content-title"><a href="{% url 'shop' %}">MAISON</a></h4>
                                             <span class="bz-feature-single-box-content-items">5 Items</span>
                                         </div>
                                     </div>
@@ -364,7 +372,7 @@
                                             <img src="{% static 'assets/img/feature/machinecafe.jpeg' %}" alt="img">
                                         </div>
                                         <div class="bz-feature-single-box-content">
-                                            <h4 class="bz-feature-single-box-content-title"><a href="shop.html">MAISON</a></h4>
+                                            <h4 class="bz-feature-single-box-content-title"><a href="{% url 'shop' %}">MAISON</a></h4>
                                             <span class="bz-feature-single-box-content-items">13 Items</span>
                                         </div>
                                     </div>
@@ -375,7 +383,7 @@
                                             <img src="{% static 'assets/img/feature/table.jpeg' %}" alt="img">
                                         </div>
                                         <div class="bz-feature-single-box-content">
-                                            <h4 class="bz-feature-single-box-content-title"><a href="shop.html">MAISON</a></h4>
+                                            <h4 class="bz-feature-single-box-content-title"><a href="{% url 'shop' %}">MAISON</a></h4>
                                             <span class="bz-feature-single-box-content-items">3 Items</span>
                                         </div>
                                     </div>
@@ -386,7 +394,7 @@
                                             <img src="{% static 'assets/img/feature/meublee.jpeg' %}" alt="img">
                                         </div>
                                         <div class="bz-feature-single-box-content">
-                                            <h4 class="bz-feature-single-box-content-title"><a href="shop.html">MAISON</a></h4>
+                                            <h4 class="bz-feature-single-box-content-title"><a href="{% url 'shop' %}">MAISON</a></h4>
                                             <span class="bz-feature-single-box-content-items">50 articles</span>
                                         </div>
                                     </div>
@@ -408,10 +416,10 @@
                         <div class="col-xl-6 col-lg-6">
                             <div class="bz-post-wrap d-flex align-items-center">
                                 <div class="bz-post-wrap-content">
-                                    <a href="shop.html" class="bz-post-wrap-content-link">30% de reduction sur tout les article</a>
+                                    <a href="{% url 'shop' %}" class="bz-post-wrap-content-link">30% de reduction sur tout les article</a>
                                     <h3 class="bz-post-wrap-content-title">toute  <br>
                                         Collection</h3>
-                                    <a href="shop.html" class="bz-post-wrap-content-btn">Boutique</a>
+                                    <a href="{% url 'shop' %}" class="bz-post-wrap-content-btn">Boutique</a>
                                 </div>
                                 <div class="bz-post-wrap-img">
                                     <img src="{% static 'assets/img/post/télé.jpeg' %}" alt="img">
@@ -421,10 +429,10 @@
                         <div class="col-xl-6 col-lg-6">
                             <div class="bz-post-wrap d-flex align-items-center">
                                 <div class="bz-post-wrap-content">
-                                    <a href="shop.html" class="bz-post-wrap-content-link">Nouvaute</a>
+                                    <a href="{% url 'shop' %}" class="bz-post-wrap-content-link">Nouvaute</a>
                                     <h3 class="bz-post-wrap-content-title">Collection MAISON <br>
                                         </h3>
-                                    <a href="shop.html" class="bz-post-wrap-content-btn">Regardez</a>
+                                    <a href="{% url 'shop' %}" class="bz-post-wrap-content-btn">Regardez</a>
                                 </div>
                                 <div class="bz-post-wrap-img">
                                     <img src="{% static 'assets/img/post/meubletele.jpeg' %}" alt="img">

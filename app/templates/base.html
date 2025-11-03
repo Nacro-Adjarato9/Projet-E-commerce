@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>NaraMarket</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}">
+
+  <!-- CSS here -->
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/odometer.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/cross2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/swipper.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/ui-range-slider.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/datepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <!-- Offcanvas/Sidebar start -->
+  <div class="bz-sidebar-informations side-info">
+    <div class="bz-sidebar-logo-wrapper">
+      <div class="row">
+        <div class="col-xl-6 col-8">
+          <div class="bz-sidebar-logo">
+            <a href="{% url 'index' %}"><img src="{% static 'assets/img/logo/logoN.png' %}" alt="logo-img"></a>
+          </div>
+        </div>
+        <div class="col-xl-6 col-4">
+          <div class="bz-sidebar-close-wrapper text-end">
+            <button class="bz-sidebar-close side-info-close"><i class="fal fa-times"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bz-middle-wrap mb-25 mt-40">
+      <div class="bz-middle-wrap-form bz-middle-wrap-sidebar">
+        <div class="bz-middle-wrap-form-caregories">
+          <ul>
+            <li><a href="#0" id="bz-cat-click-sidebar"><span class="bz-search-all-cat-sidebar">Categories</span> <i class="far fa-angle-down"></i></a></li>
+          </ul>
+        </div>
+        <div class="bz-middle-wrap-form-search">
+          <form action="{% url 'shop' %}">
+            <input type="search" placeholder="Rechercher...">
+            <button type="submit"><i class="far fa-search"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="bz-sidebar-menu-wrapper">
+      <div class="bz-mobile-menu"></div>
+    </div>
+  </div>
+  <div class="offcanvas-overlay"></div>
+  <!-- Offcanvas/Sidebar end -->
+
+  <!-- header area start -->
+  <header class="header-area">
+    <div class="bz-middle-area">
+      <div class="container container-full-1">
+        <div class="row align-items-center">
+          <div class="col-xl-2 col-lg-2 col-md-6 col-4">
+            <div class="bz-middle-logo">
+              <a href="{% url 'index' %}"><img src="{% static 'assets/img/logo/logoN.png' %}" alt="img"></a>
+            </div>
+          </div>
+          <div class="col-xl-8 col-lg-8 col-md-7 d-none d-lg-block">
+            <div class="bz-middle-wrap">
+              <div class="bz-middle-wrap-bar">
+                <a href="#0" class="side-toggle"><i class="far fa-bars"></i></a>
+              </div>
+              <div class="bz-middle-wrap-form">
+                <div class="bz-middle-wrap-form-caregories">
+                  <ul>
+                    <li><a href="#0" class="bz-cat-click" id="bz-cat-click"><span class="bz-search-all-cat">All Categories</span> <i class="far fa-angle-down"></i></a></li>
+                  </ul>
+                </div>
+                <div class="bz-middle-wrap-form-search">
+                  <form action="{% url 'shop' %}">
+                    <input type="search" placeholder="Je cherche...">
+                    <button type="submit"><i class="far fa-search"></i></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 col-lg-2 col-md-6 col-8">
+            <div class="bz-middle-right text-end">
+              <a class="bz-middle-right-link" href="#0"><i class="fal fa-heart"></i><span>0</span></a>
+              <a class="bz-middle-right-link" href="{% url 'cart' %}"><i class="fal fa-shopping-cart"></i><span>0</span></a>
+              <div class="bz-user-wrapper d-inline-block">
+                <a class="bz-middle-right-link bz-user" href="#0"><i class="fal fa-user"></i></a>
+                <div class="bz-user-dropdown">
+                  {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Logout</a>
+                  {% else %}
+                    <a href="{% url 'inscription' %}">Inscription</a>
+                    <a href="{% url 'login' %}">Login</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bz-header-main">
+      <div class="container container-full-1">
+        <div class="row align-items-center">
+          <div class="col-2 d-lg-none">
+            <div class="bz-header-bar">
+              <a href="#0" class="side-toggle"><i class="far fa-bars"></i></a>
+            </div>
+          </div>
+          <div class="col-xl-9 col-lg-8 d-none d-lg-block">
+            <div class="bz-header-menu">
+              <nav id="bz-mobile-menu" class="bz-mobile-menu">
+                <ul>
+                  <li><a href="{% url 'index' %}">Accueil</a></li>
+                  <li><a href="{% url 'shop' %}">Boutique</a></li>
+                  <li><a href="{% url 'Apropos' %}">A propos</a></li>
+                  <li><a href="{% url 'cart' %}">Panier</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-10">
+            <div class="bz-header-support text-end">
+              <span class="teltext"><i class="far fa-phone-alt"></i> <span>Support:</span> + <a href="tel:(00)123456789">(00) 123 456 789</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- header area end -->
+
+  <!-- main area start -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <!-- main area end -->
+
+  <!-- footer area start -->
+  <footer class="bz-footer">
+    <div class="container">
+      <div class="bz-footer-top pt-60 pb-20">
+        <div class="row justify-content-between">
+          <div class="col-xl-4 col-lg-4 col-md-7 col-sm-7">
+            <div class="bz-footer-widget mb-40">
+              <div class="bz-footer-logo mb-25">
+                <a href="{% url 'index' %}"><img src="{% static 'assets/img/logo/logoN.png' %}" alt="Logo"></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-2 col-md-5 col-sm-5">
+            <div class="bz-footer-widget mb-40">
+              <h4 class="bz-footer-widget-title mb-25">Boutique</h4>
+              <div class="bz-footer-widget-list">
+                <ul>
+                  <li><a href="{% url 'shop' %}">Catégories MODE</a></li>
+                  <li><a href="{% url 'shop' %}">Catégories INFORMATIQUE</a></li>
+                  <li><a href="{% url 'shop' %}">Catégories MAISON</a></li>
+                  <li><a href="{% url 'shop' %}">Catégories ÉLECTRONIQUES</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-2 col-md-7 col-sm-7">
+            <div class="bz-footer-widget mb-40">
+              <h4 class="bz-footer-widget-title mb-25">A propos de nous</h4>
+              <div class="bz-footer-widget-list">
+                <ul>
+                  <li><a href="{% url 'Apropos' %}">A propos</a></li>
+                  <li><a href="{% url 'shop' %}">Toutes les collections</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 col-lg-3 col-md-5 col-sm-5">
+            <div class="bz-footer-widget mb-40">
+              <h4 class="bz-footer-widget-title mb-25">Ce que nous proposons</h4>
+              <div class="bz-footer-widget-list">
+                <p>La plateforme qui connecte vendeurs et acheteurs dans un espace simple, sûr et moderne</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bz-footer-copyright">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-6 col-sm-7">
+            <p class="text-center text-sm-start">Tous droits réservés par Nacro Adjaratou</p>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-5">
+            <div class="text-sm-end text-center">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-vimeo-v"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- footer area end -->
+
+  <!-- back to top start -->
+  <div class="progress-wrap">
+    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+    </svg>
+  </div>
+  <!-- back to top end -->
+
+  <!-- JS here -->
+  <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+  <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/js/swipper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
+  <script src="{% static 'assets/js/wow.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery.scrollUp.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+  <script src="{% static 'assets/js/odometer.min.js' %}"></script>
+  <script src="{% static 'assets/js/appear.min.js' %}"></script>
+  <script src="{% static 'assets/js/datepicker.min.js' %}"></script>
+  <script src="{% static 'assets/js/select2.min.js' %}"></script>
+  <script src="{% static 'assets/js/cross2.min.js' %}"></script>
+  <script src="{% static 'assets/js/countdown.js' %}"></script>
+  <script src="{% static 'assets/js/jquery-ui-slider-range.js' %}"></script>
+  <script src="{% static 'assets/js/back-to-top.min.js' %}"></script>
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

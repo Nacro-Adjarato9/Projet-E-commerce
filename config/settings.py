@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*1^3)t8mehd&*=5jbpc+0-11_!2&b&of3gmbl%05#dox95^5&1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
 
 
 # Application definition
@@ -128,8 +128,24 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Media files (Uploaded by users)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Login/Logout URLs - Redirection automatique vers la page de connexion
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# Simple cache en mémoire (développement) pour accélérer les vues fréquemment consultées
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'narastore-local-cache',
+    }
+}

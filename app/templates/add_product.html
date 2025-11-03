@@ -1,49 +1,57 @@
-{% extends 'index.html' %}
-{% load static %}
-
-{% block content %}
-<div class="container mt-5">
-  <div class="card shadow-lg p-4">
-    <h2 class="text-center mb-4"> Ajouter un nouvel article</h2>
-
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      
-      <div class="mb-3">
-        <label class="form-label">Nom du produit</label>
-        {{ form.name }}
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Description</label>
-        {{ form.description }}
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Prix (FCFA)</label>
-        {{ form.price }}
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Image du produit</label>
-        {{ form.image }}
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Catégorie</label>
-        {{ form.category }}
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Étiquettes</label>
-        {{ form.tags }}
-        <small class="text-muted">Exemple : "homme, jean, bleu"</small>
-      </div>
-
-      <button type="submit" class="btn btn-success w-100"> Enregistrer</button>
-    </form>
-
-    
-  </div>
-</div>
-{% endblock %}
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un produit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial; background: #0a0a0a; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: rgba(20, 20, 20, 0.9); padding: 40px; border-radius: 15px; }
+        .header { text-align: center; color: #D2B48C; margin-bottom: 30px; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full { grid-column: 1 / -1; }
+        label { color: #D2B48C; margin-bottom: 8px; font-weight: 600; }
+        input, select, textarea { padding: 12px; background: #1a1a1a; border: 2px solid #8B4513; border-radius: 8px; color: #D2B48C; }
+        textarea { min-height: 100px; font-family: inherit; }
+        .btn { padding: 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 20px; }
+        .btn-primary { background: #8B4513; color: white; }
+        .section-title { grid-column: 1 / -1; color: #D2B48C; font-size: 1.3em; margin-top: 20px; border-bottom: 2px solid #8B4513; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1> Ajouter un produit</h1>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div style="padding:10px;background:#28a745;color:white;margin-bottom:15px;border-radius:5px;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="form-grid">
+                <div class="section-title">Informations de base</div>
+                <div class="form-group full"><label>Nom du produit *</label>{{ form.name }}</div>
+                <div class="form-group"><label>Catégorie</label>{{ form.category }}</div>
+                <div class="form-group"><label>Badge</label>{{ form.badge }}</div>
+                <div class="form-group full"><label>Description *</label>{{ form.description }}</div>
+                <div class="section-title">Prix et stock</div>
+                <div class="form-group"><label>Prix (FCFA) *</label>{{ form.price }}</div>
+                <div class="form-group"><label>Ancien prix</label>{{ form.old_price }}</div>
+                <div class="form-group"><label>Réduction (%)</label>{{ form.discount_percentage }}</div>
+                <div class="form-group"><label>Stock *</label>{{ form.stock }}</div>
+                <div class="section-title">Images</div>
+                <div class="form-group"><label>Image principale *</label>{{ form.image }}</div>
+                <div class="form-group"><label>Image 2</label>{{ form.image2 }}</div>
+                <div class="form-group full"><label>Image 3</label>{{ form.image3 }}</div>
+                <div class="form-group full"><label><input type="checkbox" name="is_featured"> Produit mis en avant</label></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="{% url 'vendeur_dashboard' %}" style="display:inline-block;padding:14px;background:#555;color:white;text-decoration:none;border-radius:8px;margin-left:10px;">Retour</a>
+        </form>
+    </div>
+</body>
+</html>

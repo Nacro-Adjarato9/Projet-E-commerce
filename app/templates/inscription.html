@@ -585,11 +585,24 @@
                     Compte créé avec succès ! Redirection en cours...
                 </div>
 
-                <form id="inscriptionForm">
+                <form id="inscriptionForm" method="post" action="{% url 'inscription' %}">
+                    {% csrf_token %}
+                    {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                            <div class="success-message show" style="margin-bottom:10px;">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if form and form.errors %}
+                    <div class="success-message show" style="background:rgba(220,53,69,0.2);border-color:rgba(220,53,69,0.5);color:#fff;">
+                        Veuillez corriger les erreurs du formulaire.
+                    </div>
+                    {% endif %}
                     <!-- Sélection du type d'utilisateur -->
                     <div class="user-type-selector">
                         <div class="user-type-option">
-                            <input type="radio" name="user_type" value="client" id="type_client" checked>
+                            <input type="radio" name="user_type" value="client" id="type_client" {% if not form or form.data.user_type == 'client' %}checked{% endif %}>
                             <label for="type_client" class="user-type-label">
                                 <div class="user-type-icon">👤</div>
                                 <div class="user-type-title">Client</div>
@@ -597,7 +610,7 @@
                             </label>
                         </div>
                         <div class="user-type-option">
-                            <input type="radio" name="user_type" value="vendeur" id="type_vendeur">
+                            <input type="radio" name="user_type" value="vendeur" id="type_vendeur" {% if form and form.data.user_type == 'vendeur' %}checked{% endif %}>
                             <label for="type_vendeur" class="user-type-label">
                                 <div class="user-type-icon">🏪</div>
                                 <div class="user-type-title">Vendeur</div>
@@ -614,12 +627,14 @@
                         
                         <div class="form-group">
                             <label for="username">Nom d'utilisateur <span class="required">*</span></label>
-                            <input type="text" id="username" name="username" class="form-input" placeholder="john_doe" required>
+                            <input type="text" id="username" name="username" class="form-input" placeholder="john_doe" required value="{% if form %}{{ form.data.username|default:'' }}{% endif %}">
+                            {% if form and form.errors.username %}<small style="color:#ffb3b3;">{{ form.errors.username.0 }}</small>{% endif %}
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email <span class="required">*</span></label>
-                            <input type="email" id="email" name="email" class="form-input" placeholder="exemple@email.com" required>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="exemple@email.com" required value="{% if form %}{{ form.data.email|default:'' }}{% endif %}">
+                            {% if form and form.errors.email %}<small style="color:#ffb3b3;">{{ form.errors.email.0 }}</small>{% endif %}
                         </div>
 
                         <div class="form-group">
@@ -636,6 +651,7 @@
                         <div class="form-group">
                             <label for="password2">Confirmer le mot de passe <span class="required">*</span></label>
                             <input type="password" id="password2" name="password2" class="form-input" placeholder="••••••••" required>
+                            {% if form and form.non_field_errors %}<small style="color:#ffb3b3;">{{ form.non_field_errors.0 }}</small>{% endif %}
                         </div>
 
                         <!-- Section Informations personnelles -->
@@ -645,22 +661,22 @@
 
                         <div class="form-group">
                             <label for="first_name">Prénom <span class="required">*</span></label>
-                            <input type="text" id="first_name" name="first_name" class="form-input" placeholder="Jean" required>
+                            <input type="text" id="first_name" name="first_name" class="form-input" placeholder="Jean" required value="{% if form %}{{ form.data.first_name|default:'' }}{% endif %}">
                         </div>
 
                         <div class="form-group">
                             <label for="last_name">Nom <span class="required">*</span></label>
-                            <input type="text" id="last_name" name="last_name" class="form-input" placeholder="Dupont" required>
+                            <input type="text" id="last_name" name="last_name" class="form-input" placeholder="Dupont" required value="{% if form %}{{ form.data.last_name|default:'' }}{% endif %}">
                         </div>
 
                         <div class="form-group">
                             <label for="telephone">Téléphone <span class="required">*</span></label>
-                            <input type="tel" id="telephone" name="telephone" class="form-input" placeholder="+225 XX XX XX XX XX" required>
+                            <input type="tel" id="telephone" name="telephone" class="form-input" placeholder="+225 XX XX XX XX XX" required value="{% if form %}{{ form.data.telephone|default:'' }}{% endif %}">
                         </div>
 
                         <div class="form-group">
                             <label for="date_naissance">Date de naissance <span class="required">*</span></label>
-                            <input type="date" id="date_naissance" name="date_naissance" class="form-input" required>
+                            <input type="date" id="date_naissance" name="date_naissance" class="form-input" required value="{% if form %}{{ form.data.date_naissance|default:'' }}{% endif %}">
                         </div>
 
                         <!-- Section Adresse -->
@@ -670,32 +686,34 @@
 
                         <div class="form-group full-width">
                             <label for="adresse">Adresse complète <span class="required">*</span></label>
-                            <textarea id="adresse" name="adresse" class="form-input" placeholder="Rue, quartier, numéro..." required></textarea>
+                            <textarea id="adresse" name="adresse" class="form-input" placeholder="Rue, quartier, numéro..." required>{% if form %}{{ form.data.adresse|default:'' }}{% endif %}</textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="ville">Ville <span class="required">*</span></label>
-                            <input type="text" id="ville" name="ville" class="form-input" placeholder="Abidjan" required>
+                            <input type="text" id="ville" name="ville" class="form-input" placeholder="Abidjan" required value="{% if form %}{{ form.data.ville|default:'' }}{% endif %}">
                         </div>
 
                         <div class="form-group">
                             <label for="code_postal">Code postal</label>
-                            <input type="text" id="code_postal" name="code_postal" class="form-input" placeholder="00225">
+                            <input type="text" id="code_postal" name="code_postal" class="form-input" placeholder="00225" value="{% if form %}{{ form.data.code_postal|default:'' }}{% endif %}">
                         </div>
 
                         <div class="form-group full-width">
                             <label for="pays">Pays <span class="required">*</span></label>
                             <select id="pays" name="pays" class="form-input" required>
-                                <option value="Côte d'Ivoire">Côte d'Ivoire</option>
-                                <option value="Sénégal">Sénégal</option>
-                                <option value="Mali">Mali</option>
-                                <option value="Burkina Faso">Burkina Faso</option>
-                                <option value="Bénin">Bénin</option>
-                                <option value="Togo">Togo</option>
-                                <option value="Niger">Niger</option>
-                                <option value="Guinée">Guinée</option>
-                                <option value="France">France</option>
-                                <option value="Autre">Autre</option>
+                                {% with sel=form.data.pays %}
+                                <option value="Côte d'Ivoire" {% if sel == "Côte d'Ivoire" %}selected{% endif %}>Côte d'Ivoire</option>
+                                <option value="Sénégal" {% if sel == "Sénégal" %}selected{% endif %}>Sénégal</option>
+                                <option value="Mali" {% if sel == "Mali" %}selected{% endif %}>Mali</option>
+                                <option value="Burkina Faso" {% if sel == "Burkina Faso" %}selected{% endif %}>Burkina Faso</option>
+                                <option value="Bénin" {% if sel == "Bénin" %}selected{% endif %}>Bénin</option>
+                                <option value="Togo" {% if sel == "Togo" %}selected{% endif %}>Togo</option>
+                                <option value="Niger" {% if sel == "Niger" %}selected{% endif %}>Niger</option>
+                                <option value="Guinée" {% if sel == "Guinée" %}selected{% endif %}>Guinée</option>
+                                <option value="France" {% if sel == "France" %}selected{% endif %}>France</option>
+                                <option value="Autre" {% if sel == "Autre" %}selected{% endif %}>Autre</option>
+                                {% endwith %}
                             </select>
                         </div>
 
@@ -711,39 +729,39 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="numero_siret">Siège<span class="required">*</span></label>
-                                <input type="text"  class="form-input" placeholder="EX: Carrefour moderte">
+                                <label for="siege">Siège<span class="required">*</span></label>
+                                <input type="text" id="siege" name="siege" class="form-input" placeholder="EX: Carrefour moderte" value="{% if form %}{{ form.data.siege|default:'' }}{% endif %}">
                             </div>
 
                             <div class="form-group full-width">
-                                <label for="Categories">Categories article</label>
-                                <input type="text"  class="form-input" placeholder="EX: votre Categories d'article principale">
+                                <label for="categories">Categories article</label>
+                                <input type="text" id="categories" name="categories" class="form-input" placeholder="EX: votre Categories d'article principale" value="{% if form %}{{ form.data.categories|default:'' }}{% endif %}">
                             </div>
 
                             <div class="form-group full-width">
                                 <label for="description_entreprise">Description globale marchandise</label>
-                                <textarea id="description_entreprise" name="description_entreprise" class="form-input" placeholder="Décrivez votre activité, vos produits..."></textarea>
+                                <textarea id="description_entreprise" name="description_entreprise" class="form-input" placeholder="Décrivez votre activité, vos produits...">{% if form %}{{ form.data.description_entreprise|default:'' }}{% endif %}</textarea>
                             </div>
                         </div>
                     </div>
 
                     <!-- Checkboxes -->
                     <div class="checkbox-group">
-                        <input type="checkbox" id="newsletter" name="newsletter" class="form-checkbox">
+                        <input type="checkbox" id="newsletter" name="newsletter" class="form-checkbox" {% if form and form.data.newsletter %}checked{% endif %}>
                         <label for="newsletter" class="checkbox-label">
                              Je souhaite recevoir les offres promotionnelles et les nouveautés par email
                         </label>
                     </div>
 
                     <div class="checkbox-group">
-                        <input type="checkbox" id="conditions" name="conditions" class="form-checkbox" required>
+                        <input type="checkbox" id="conditions" name="conditions" class="form-checkbox" required {% if form and form.data.conditions %}checked{% endif %}>
                         <label for="conditions" class="checkbox-label">
                             <span class="required">*</span> J'accepte les <a href="#" onclick="return false;">conditions générales d'utilisation</a> et la <a href="#" onclick="return false;">politique de confidentialité</a>
                         </label>
                     </div>
 
                     <button type="submit" class="submit-btn">Créer mon compte</button>
-                    <a href="{% url 'index' %}" class="submit-btn">connexion</a>
+                    <a href="{% url 'index' %}" class="submit-btn" style="display:inline-block;text-align:center;">connexion</a>
 
 
                     <div class="login-link">
@@ -761,14 +779,16 @@
         const vendeurSection = document.getElementById('vendeurSection');
 
         function toggleVendeurFields() {
+            const nomEntreprise = document.getElementById('nom_entreprise');
+            const siege = document.getElementById('siege');
             if (typeVendeur.checked) {
                 vendeurSection.classList.add('show');
-                document.getElementById('nom_entreprise').required = true;
-                document.getElementById('numero_siret').required = true;
+                if (nomEntreprise) nomEntreprise.required = true;
+                if (siege) siege.required = true;
             } else {
                 vendeurSection.classList.remove('show');
-                document.getElementById('nom_entreprise').required = false;
-                document.getElementById('numero_siret').required = false;
+                if (nomEntreprise) nomEntreprise.required = false;
+                if (siege) siege.required = false;
             }
         }
 
@@ -807,38 +827,7 @@
             }
         });
 
-        // Soumission du formulaire
-        const form = document.getElementById('inscriptionForm');
-        const successMessage = document.getElementById('successMessage');
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Vérifier que les mots de passe correspondent
-            const pwd1 = document.getElementById('password1').value;
-            const pwd2 = document.getElementById('password2').value;
-
-            if (pwd1 !== pwd2) {
-                alert('❌ Les mots de passe ne correspondent pas !');
-                return;
-            }
-
-            // Afficher le message de succès
-            successMessage.classList.add('show');
-
-            // Simuler la création du compte
-            setTimeout(() => {
-                const userType = document.querySelector('input[name="user_type"]:checked').value;
-                const username = document.getElementById('username').value;
-                
-                alert(`✅ Compte créé avec succès !\n\nType: ${userType === 'client' ? 'Client' : 'Vendeur'}\nUtilisateur: ${username}\n\nDans Django, toutes ces informations seraient enregistrées dans la base de données !`);
-                
-                // Reset du formulaire
-                form.reset();
-                successMessage.classList.remove('show');
-                toggleVendeurFields();
-            }, 2000);
-        });
+    // Soumission: laissé au serveur Django (pas d'AJAX ici)
 
         // Initialiser
         toggleVendeurFields();
