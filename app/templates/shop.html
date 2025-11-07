@@ -7,103 +7,509 @@
         <title>NaraMarket</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-                            <!-- C'est ici que tu met la boucle for -->
-                            <!-- (section supprimée car doublon; voir la section dynamique ci-dessus) -->
-                            {% for product in products %}
-                                        <a href="#" class="">
-                                            {% if product.image %}
-                                                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
-                                            {% else %}
-                                                <img src="{% static 'assets/img/apps/pc.jpg' %}" alt="{{ product.name }}">
-                                            {% endif %}
-                                        </a>
-                                        {% if product.badge == 'trending' %}
-                                            <span class="trend">Trending</span>
-                                        {% elif product.badge == 'new' %}
-                                            <span class="new">Nouveau</span>
-                                        {% elif product.discount_percentage and product.discount_percentage > 0 %}
-                                            <span class="dis">{{ product.discount_percentage }}%</span>
-                                        {% endif %}
-                                        <div class="bz-shop-item-list-img-icon">
-                                            <a href="#"><i class="fal fa-heart"></i></a>
-                                            <a href="#"><i class="far fa-sync-alt"></i></a>
-                                            <a href="#"><i class="far fa-expand-arrows-alt"></i></a>
-                                        </div>
-                                    </div>
+		<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+		<!-- CSS here -->
+        {% load static %}
+
+<!-- Styles CSS -->
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/odometer.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/cross2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/swipper.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/ui-range-slider.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/datepicker.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+
+    </head>
+    
+    <body>
+        <!-- bz-sidebar-informations-area-start -->
+        <div class="bz-sidebar-informations side-info">
+            <div class="bz-sidebar-logo-wrapper">
+                <div class="row">
+                    <div class="col-xl-6 col-8">
+                        <div class="bz-sidebar-logo">
+                            <a href="index.html"><img src="{% static 'assets/img/logo/logoN.png' %}" alt="logo-img"></a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-4">
+                        <div class="bz-sidebar-close-wrapper text-end">
+                            <button class="bz-sidebar-close side-info-close"><i class="fal fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="bz-middle-wrap mb-25 mt-40">
+                <div class="bz-middle-wrap-form bz-middle-wrap-sidebar">
+                    <div class="bz-middle-wrap-form-caregories">
+                        <ul>
+                            <li><a href="#0" id="bz-cat-click-sidebar"><span class="bz-search-all-cat-sidebar">Categories</span> <i class="far fa-angle-down"></i></a>
+                            </li>
+                        </ul>
+                        <div class="bz-category-wrapper-sidebar">
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="fashion_sidebar" value="Fashion">
+                                <label for="fashion_sidebar">Fashion</label>
+                            </div>
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="furniture_sidebar" value="Furniture">
+                                <label for="furniture_sidebar">Furniture</label>
+                            </div>
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="grocery_sidebar" value="Grocery">
+                                <label for="grocery_sidebar">Grocery</label>
+                            </div>
+                            <div class="bz-cat-item-sidebar">
+                                <input type="radio" class="cat-filter-sidebar" name="cat-filter-sidebar" id="electronics_sidebar" value="Electronics">
+                                <label for="electronics_sidebar">Electronics</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bz-middle-wrap-form-search">
+                        <form action="#">
+                            <input type="search" placeholder="Search..." >
+                            <button type="submit"><i class="far fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bz-sidebar-menu-wrapper">
+                <div class="bz-mobile-menu"></div>
+            </div>
+        </div>
+        <div class="offcanvas-overlay"></div>
+        <!-- bz-sidebar-informations-area-end -->
+
+        <!-- header area start -->
+        <header class="header-area">
+            
+            <div class="bz-middle-area">
+                <div class="container container-full-1">
+                    <div class="row align-items-center">
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-4">
+                            <div class="bz-middle-logo">
+                                <a href="index.html"><img src="{% static 'assets/img/logo/logoN.png' %}" alt="img"></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-7 d-none d-lg-block">
+                            <div class="bz-middle-wrap">
+                                <div class="bz-middle-wrap-bar">
+                                    <a href="#0" class="side-toggle"><i class="far fa-bars"></i></a>
                                 </div>
-                                <div class="col-xl-6">
-                                    <div class="bz-shop-item-list-content">
-                                        <h4 class="bz-shop-item-list-title"><a href="#">{{ product.name }}</a></h4>
-                                        <div class="bz-shop-item-list-hover ">
-                                            <div class="bz-shop-item-list-hover-price">
-                                                <span>{{ product.price }} FCFA</span>
-                                                {% if product.old_price %}
-                                                    <del>{{ product.old_price }} FCFA</del>
-                                                {% endif %}
+                                <div class="bz-middle-wrap-form">
+                                    <div class="bz-middle-wrap-form-caregories">
+                                        <ul>
+                                            <li><a href="#0" class="bz-cat-click" id="bz-cat-click"><span class="bz-search-all-cat">All Categories</span> <i class="far fa-angle-down"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="bz-category-wrapper">
+                                            <div class="bz-cat-item">
+                                                <input type="radio" class="cat-filter" name="cat-filter" id="fashion" value="Fashion">
+                                                <label for="fashion">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">01</span>Fashion
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                            <div class="bz-cat-item">
+                                                <input type="radio" name="cat-filter"  class="cat-filter" id="furniture" value="Furniture">
+                                                <label for="furniture">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">02</span>Furniture
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                            <div class="bz-cat-item">
+                                                <input type="radio" name="cat-filter"  class="cat-filter" id="grocery" value="Grocery">
+                                                <label for="grocery">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">03</span>Grocery
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
+                                            </div>
+                                            <div class="bz-cat-item">
+                                                <input type="radio" name="cat-filter"  class="cat-filter" id="electronics" value="Electronics">
+                                                <label for="electronics">
+                                                    <span class="bz-cat-upper-text">
+                                                        <span class="bz-cat-number">04</span>Electronics
+                                                    </span>
+                                                    <span class="bz-cat-img" data-background="assets/img/apps/cat1.png"></span>
+                                                </label>
                                             </div>
                                         </div>
-                                        {% if product.description %}
-                                            <p class="bz-shop-item-list-content-text">{{ product.description|truncatewords:15 }}</p>
-                                        {% endif %}
-                                        <div class="bz-shop-item-list-content-rating">
-                                            {% with rating=product.rating|default:0|floatformat:0 %}
-                                                {% for i in "12345" %}
-                                                    {% if forloop.counter <= rating|add:0 %}
-                                                        <a href="#"><i class="fas fa-star"></i></a>
-                                                    {% else %}
-                                                        <a href="#"><i class="far fa-star"></i></a>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endwith %}
-                                            <span>{{ product.rating|default:"0" }} Rating</span>
-                                        </div>
-                                        <a href="{% url 'add_to_cart' product.id %}" class="bz-shop-item-list-content-cart">Ajouter au panier</a>
-                                        <p class="text-muted mt-2"><small>Vendu par: {{ product.seller.username }}</small></p>
+                                    </div>
+                                    <div class="bz-middle-wrap-form-search">
+                                        <form action="#">
+                                            <input type="search" placeholder="I'm shopping for..." >
+                                            <button type="submit"><i class="far fa-search"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-8">
+                            <div class="bz-middle-right text-end">
+                                <a class="bz-middle-right-link" href="wishlist.html"><i class="fal fa-heart"></i><span>0</span>
+                                </a>
+                                <a class="bz-middle-right-link" href="{% url 'cart' %}"><i class="fal fa-shopping-cart"></i><span>0</span></a>
+                                <div class="bz-user-wrapper d-inline-block">
+                                    <a class="bz-middle-right-link bz-user" href="#0"><i class="fal fa-user"></i></a>
+                                    <div class="bz-user-dropdown">
+                                        <a href="{% url 'inscription' %} ">inscription</a>
+                                        <a href="#0">Logout</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                            {% empty %}
-                    <div class="col-12">
-                        <div class="alert alert-info text-center">
-                            <h4>Aucun produit disponible pour le moment</h4>
-                            <p>Revenez plus tard pour découvrir nos nouveaux produits !</p>
+                </div>
+            </div>
+            <div class="bz-header-main">
+                <div class="container container-full-1">
+                    <div class="row align-items-center">
+                        <div class="col-2 d-lg-none">
+                            <div class="bz-header-bar">
+                                <a href="#0" class="side-toggle"><i class="far fa-bars"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-8 d-none d-lg-block">
+                            <div class="bz-header-menu">
+                                <nav id="bz-mobile-menu" class="bz-mobile-menu">
+                                    <ul>
+                                        <li><a href="{% url 'index' %}">Accueil</a></li>
+                                        
+                                        <li class="has-dropdown">
+                                            <a href="{% url 'shop' %}">Boutique</a>
+                                            <ul class="submenu">    
+                                                <li><a href="{% url 'shop' %}">Tous les produits</a></li>
+                                                <li><a href="{% url 'cart' %}">Mon panier</a></li>
+                                                <li><a href="{% url 'chechkout' %}">Commander</a></li>
+                                            </ul>
+                                        </li>
+                                        
+                                        <li><a href="{% url 'Apropos' %}">Qui sommes-nous</a></li>
+                                        
+                                        {% if user.is_authenticated %}
+                                            {% if user.profile.role == 'vendeur' %}
+                                                <li class="has-dropdown">
+                                                    <a href="{% url 'vendeur_dashboard' %}">Espace Vendeur</a>
+                                                    <ul class="submenu">
+                                                        <li><a href="{% url 'vendeur_dashboard' %}">Tableau de bord</a></li>
+                                                        <li><a href="{% url 'add_product' %}">Ajouter un article</a></li>
+                                                    </ul>
+                                                </li>
+                                            {% endif %}
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-10">
+                            <div class="bz-header-support text-end">
+                                <span class="teltext"><i class="far fa-phone-alt"></i> <span>Support:</span>+ <a href="tel:(00)123456789">(00) 123 456 789</a></span>
+                            </div>
                         </div>
                     </div>
-                            {% endfor %}
+                </div>
             </div>
-        </div>
-    </div>
-</div>
+        </header>
+        <!-- header area end -->
 
-                            <!-- C'est ici que tu met la boucle for -->
-                             {% load static %}
-                        
-                            <div class="tab-content" id="nav-product-tabContent">
-                                <div class="tab-pane fade show active" id="nav-grid" role="tabpanel" aria-labelledby="nav-grid-tab">
-                                    <div class="shop-grid-product-tab-wrapper">
+        <!-- main area start  -->
+        <main>
+            <!-- breadcrumb area start -->
+            <div class="breadcrumb-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="bz-breadcrumb-wrap d-flex justify-content-between align-items-center">
+                                <div class="bz-breadcrumb-content">
+                                    <h3 class="bz-breadcrumb-content-title">
+                                        Women Clothing Collection
+                                    </h3>
+                                    <span class="bz-breadcrumb-content-subtitle">
+                                        Fashion is the armor to survive the reality of everyday life.
+                                    </span>
+                                </div>
+                                <div class="bz-breadcrumb-list">
+                                    <a href="{% url 'index' %}">Accuiel</a>
+                                    <span>Shop</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- breadcrumb area end -->
+
+             <!-- shop area start -->
+            <div class="shop-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="bz-shop-topbar-filter-wrapper pt-60 pb-40">
+                                <div class="row align-items-center">
+                                    <div class="col-xl-5 col-md-6 col-sm-6 mb-20 mb-sm-0">
+                                        <div class="bz-shop-topbar-left">
+                                            <div class="bz-shop-topbar-left-icon mb-10">
+                                                <span class="filter-icon-text">
+                                                    <i class="far fa-bars"></i>
+                                                    <i class="fas fa-times"></i>
+                                                    <span>Filter</span>
+                                                </span>
+                                            </div>
+                                            <span class="bz-shop-topbar-left-text">
+                                                Affichage <span class="product-count">{{ products.start_index }}–{{ products.end_index }}</span> sur {{ total_count }} produits
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7 col-md-6 col-sm-6">
+                                        <div class="bz-shop-topbar-right d-flex align-items-center justify-content-md-end">
+                                            <select name="sorting" id="sort-select" class="bz-shop-topbar-right-sorting has-nice-select">
+                                                <option value="">Tri par défaut</option>
+                                                <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Prix croissant</option>
+                                                <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Prix décroissant</option>
+                                                <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Nom A-Z</option>
+                                                <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>Meilleures notes</option>
+                                                <option value="-created_at" {% if current_sort == '-created_at' %}selected{% endif %}>Nouveautés</option>
+                                            </select>
+                                            <nav>
+                                                <div class="nav nav-tabs bz-shop-nav" id="nav-tab" role="tablist">
+                                                    <button class=" active bz-shop-nav-btn" id="nav-grid-tab" data-bs-toggle="tab" data-bs-target="#nav-grid" type="button" role="tab" aria-controls="nav-grid" aria-selected="true"><i class="fas fa-th"></i></button>
+                                                    <button class="bz-shop-nav-btn" id="nav-list-tab" data-bs-toggle="tab" data-bs-target="#nav-list" type="button" role="tab" aria-controls="nav-list" aria-selected="false"><i class="fal fa-list"></i></button>
+                                                </div>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="shop-filter-visibilit-hidden">
+                                <div class="bz-shop-filter-summary mb-40 pt-55 pb-55 pl-60 pr-60 bz-shop-border">
+                                    <div class="bz-shop-sidebar ">
                                         <div class="row">
-                                            <div class="col-xl-4 col-lg-6 col-md-6">
-                                                <div class="bz-season-item mb-40">
-                                                    <div class="bz-season-item-wrapper position-relative">
-                                                        <div class="bz-season-item-img w_img">
-                                                            <a href="{% url 'shop' %}" class=""><img src="{% static 'assets/img/shop/shop-1.jpg' %}" alt="img"></a>
-                                                            <span class="trend"></span>
-                                                        </div>
-                                                        <div class="bz-season-item-hover-wrapper">
-                                                            <div class="bz-season-item-img-icon">
-                                                                <a href="wishlist.html"><i class="fal fa-heart"></i></a>
-                                                                <a href="compare.html"><i class="far fa-sync-alt"></i></a>
-                                                                <a href="#0" class="eye-popup-product"><i class="far fa-expand-arrows-alt"></i></a>
+                                            <div class="col-xl-7 col-lg-7">
+                                                <div class="bz-shop-filter-summary-wrap">
+                                                    <div class="bz-shop-filter-summery-inner-wrap">
+                                                        
+                                                    <div class="bz-shop-filter-summary-wrap-top d-flex justify-content-between">
+                                                        <div class="bz-shop-sidebar-categories mb-30">
+                                                            <h3 class="bz-shop-sidebar-categories-title d-inline-block mb-30">
+                                                                <i class="fas fa-tags"></i> Catégories
+                                                            </h3>
+                                                            <div class="bz-shop-sidebar-categories-list filter-section">
+                                                                <a href="{% url 'shop' %}" class="category-filter {% if not current_category %}active{% endif %}" data-category="all">
+                                                                    <i class="fas fa-th"></i> Tous les produits
+                                                                </a>
+                                                                {% for category in categories %}
+                                                                <a href="?category={{ category.id }}" class="category-filter {% if current_category == category.id|stringformat:'s' %}active{% endif %}" data-category="{{ category.id }}">
+                                                                    {{ category.name }}
+                                                                    <span class="badge bg-primary">{{ category.product_set.count }}</span>
+                                                                </a>
+                                                                {% empty %}
+                                                                <p class="text-muted">Aucune catégorie disponible</p>
+                                                                {% endfor %}
                                                             </div>
-                                                            <div class="bz-season-item-hover">
-                                                                <div class="bz-season-item-hover-cart">
-                                                                    <a href="{% url 'cart'%}">Add to Cart</a>
-                                                                </div>
-                                                                <ul class="product-color-nav">
-                                                                    <li class="cl-light-green active">
-                                                                    <img src="assets/img/shop/shop-1.jpg" alt="img">
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    </div>
+                                                    <div class="bz-shop-sidebar-price mb-30 mb-lg-0">
+                                                        <h3 class="bz-shop-sidebar-price-title d-inline-block mb-30">
+                                                            <i class="fas fa-money-bill-wave"></i> Prix
+                                                        </h3>
+                                                        <div class="sg-widget-shop-filter sg-shop-widget-toogle">
+                                                            <div class="slider-range-bar mb-20" id="shop-slider-range" data-min="0" data-max="1000000"></div>
+                                                            <div class="slider-range-amount">
+                                                                <span class="price">Fourchette:</span>
+                                                                <input type="text" id="s-amount" value="0 - 1000000 FCFA" class="amount">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-xl-5 col-lg-5 ">
+                                                <div class="bz-shop-sidebar-offer pl-90">
+                                                    <div class="bz-shop-sidebar-offer-overlay">
+                                                        <div class="bz-shop-sidebar-offer-img w_img">
+                                                            <img src="{% static 'assets/img/shop/armoir.jpeg' %}" alt="Offre spéciale">
+                                                            <div class="bz-overlay"></div>
+                                                            <span class="offer-price">100000 FCFA</span>
+                                                            <div class="bz-shop-sidebar-offer-content">
+                                                                <span class="bz-shop-sidebar-offer-content-text">Mobilier Premium</span>
+                                                                <a href="{% url 'shop' %}" class="bz-btn bz-btn-sm">Voir la Boutique</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+{% load static %}
+{% load static %}
+{% load shop_extras %}
+
+<div class="tab-content" id="nav-product-tabContent">
+  <div class="tab-pane fade show active" id="nav-grid" role="tabpanel" aria-labelledby="nav-grid-tab">
+    <div class="shop-grid-product-tab-wrapper product-container">
+      {% if products %}
+      <div class="row">
+        {% for product in products %}
+        <div class="col-xl-4 col-lg-6 col-md-6">
+          <div class="bz-season-item mb-40 fade-ready">
+            <div class="bz-season-item-wrapper position-relative">
+              <div class="bz-season-item-img w_img">
+                <a href="{% url 'shop' %}">
+                  {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                  {% else %}
+                    {% with random_img=''|get_random_default_image %}
+                    <img src="{% static 'assets/img/shop/'|add:random_img %}" alt="{{ product.name }}" loading="lazy">
+                    {% endwith %}
+                  {% endif %}
+                </a>
+                {% if product.badge == 'discount' and product.old_price %}
+                  {% widthratio product.price product.old_price 100 as discount_percent %}
+                  <span class="dis">-{{ 100|add:discount_percent|add:"-100" }}%</span>
+                {% elif product.badge == 'trending' %}
+                  <span class="trend">Tendance</span>
+                {% elif product.badge == 'new' %}
+                  <span class="new">Nouveau</span>
+                {% endif %}
+              </div>
+
+              <div class="bz-season-item-hover-wrapper">
+                <div class="bz-season-item-img-icon">
+                  <a href="#" title="Ajouter aux favoris"><i class="fal fa-heart"></i></a>
+                  <a href="#" title="Comparer"><i class="far fa-sync-alt"></i></a>
+                  <a href="#" class="eye-popup-product" title="Aperçu rapide"><i class="far fa-expand-arrows-alt"></i></a>
+                </div>
+
+                <div class="bz-season-item-hover">
+                  {% if user.is_authenticated %}
+                    <div class="bz-season-item-hover-cart">
+                      <a href="{% url 'add_to_cart' product.id %}">
+                        <i class="fas fa-shopping-cart"></i> Ajouter au Panier
+                      </a>
+                    </div>
+                  {% else %}
+                    <div class="bz-season-item-hover-cart">
+                      <a href="{% url 'login' %}" class="text-warning">
+                        <i class="fas fa-sign-in-alt"></i> Connectez-vous
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="bz-season-item-content pt-20">
+              <h4 class="bz-season-item-content-title">
+                <a href="{% url 'shop' %}" title="{{ product.name }}">{{ product.name|truncatewords:5 }}</a>
+              </h4>
+              <div class="bz-season-item-content-rating mb-2">
+                {% with rating=product.rating|default:0|floatformat:0 %}
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= rating|add:0 %}
+                      <a href="#"><i class="fas fa-star"></i></a>
+                    {% else %}
+                      <a href="#"><i class="far fa-star"></i></a>
+                    {% endif %}
+                  {% endfor %}
+                {% endwith %}
+                <span>({{ product.rating|default:"0" }})</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="price-bottom">{{ product.price|floatformat:0 }} FCFA</span>
+                {% if product.old_price and product.old_price > product.price %}
+                  <del class="text-muted">{{ product.old_price|floatformat:0 }} FCFA</del>
+                {% endif %}
+              </div>
+              {% if product.stock %}
+                <div class="stock-info mt-2">
+                  {% if product.stock > 10 %}
+                    <span class="badge bg-success"><i class="fas fa-check"></i> En stock ({{ product.stock }})</span>
+                  {% elif product.stock > 0 %}
+                    <span class="badge bg-warning"><i class="fas fa-exclamation-triangle"></i> Stock limité ({{ product.stock }})</span>
+                  {% endif %}
+                </div>
+              {% else %}
+                <span class="badge bg-danger"><i class="fas fa-times"></i> Rupture de stock</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      
+      <!-- Pagination -->
+      {% if products.has_other_pages %}
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="bz-shop-paginate mt-15 text-center">
+            {% if products.has_previous %}
+              <a href="?page=1{% if current_category %}&category={{ current_category }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}" title="Première page">
+                <i class="fal fa-angle-double-left"></i>
+              </a>
+              <a href="?page={{ products.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}" title="Page précédente">
+                <i class="fal fa-angle-left"></i>
+              </a>
+            {% endif %}
+            
+            {% for num in products.paginator.page_range %}
+              {% if products.number == num %}
+                <span class="current">{{ num }}</span>
+              {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                <a href="?page={{ num }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}">{{ num }}</a>
+              {% endif %}
+            {% endfor %}
+            
+            {% if products.has_next %}
+              <a href="?page={{ products.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}" title="Page suivante">
+                <i class="fal fa-angle-right"></i>
+              </a>
+              <a href="?page={{ products.paginator.num_pages }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}" title="Dernière page">
+                <i class="fal fa-angle-double-right"></i>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      
+      {% else %}
+      <div class="empty-products">
+        <i class="fas fa-box-open"></i>
+        <h3>Aucun produit trouvé</h3>
+        <p>Essayez de modifier vos filtres ou revenez plus tard.</p>
+        <a href="{% url 'shop' %}" class="bz-btn mt-3">Voir tous les produits</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- List View Tab -->
+  <div class="tab-pane fade" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
                                                                     </li>
                                                                     <li class="cl-black">
                                                                     <img src="assets/img/shop/shop-2.jpg" alt="img">
@@ -136,13 +542,10 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <div class="bz-shop-paginate mt-15 text-center">
-                                                    {% if products.has_previous %}
-                                                        <a href="?page={{ products.previous_page_number }}" aria-label="Précédent"><i class="fal fa-angle-left"></i></a>
-                                                    {% endif %}
-                                                    <span>{{ products.number }}</span>
-                                                    {% if products.has_next %}
-                                                        <a href="?page={{ products.next_page_number }}" aria-label="Suivant"><i class="fal fa-angle-right"></i></a>
-                                                    {% endif %}
+                                                    <span>1</span>
+                                                    <a href="{% url 'shop' %}">2</a>
+                                                    <a href="{% url 'shop' %}">3</a>
+                                                    <a href="{% url 'shop' %}"><i class="fal fa-angle-right"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,77 +554,111 @@
                                 <div class="tab-pane fade" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
                                     <div class="shop-grid-product-tab-wrapper shop-list-fullWidth">
                                         <div class="row">
-                                                    {% for product in products %}
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <div class="bz-shop-item-list bz-shop-color mb-40">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-xl-6 mb-30 mb-xl-0">
-                                                                <div class="bz-shop-item-list-img bz-shop-color-img w_img position-relative">
-                                                                    <a href="#" class="">
-                                                                        {% if product.image %}
-                                                                            <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
-                                                                        {% else %}
-                                                                            <img src="{% static 'assets/img/shop/default.jpg' %}" alt="{{ product.name }}">
-                                                                        {% endif %}
-                                                                    </a>
-                                                                    {% if product.badge == 'trending' %}
-                                                                        <span class="trend">Trending</span>
-                                                                    {% elif product.badge == 'new' %}
-                                                                        <span class="new">Nouveau</span>
-                                                                    {% elif product.discount_percentage > 0 %}
-                                                                        <span class="dis">{{ product.discount_percentage }}%</span>
-                                                                    {% endif %}
-                                                                    <div class="bz-shop-item-list-img-icon">
-                                                                        <a href="#"><i class="fal fa-heart"></i></a>
-                                                                        <a href="#"><i class="far fa-sync-alt"></i></a>
-                                                                        <a href="#"><i class="far fa-expand-arrows-alt"></i></a>
-                                                                    </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <div class="bz-shop-item-list bz-shop-color mb-40">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-xl-6 mb-30 mb-xl-0">
+                                                            <div class="bz-shop-item-list-img bz-shop-color-img w_img position-relative">
+                                                                <a href="shop-details.html" class=""><img src="assets/img/shop/shop-1.jpg" alt="img"></a>
+                                                                <span class="trend">Trending</span>
+                                                                <div class="bz-shop-item-list-img-icon">
+                                                                    <a href="wishlist.html"><i class="fal fa-heart"></i></a>
+                                                                    <a href="compare.html"><i class="far fa-sync-alt"></i></a>
+                                                                    <a href="#0" class="eye-popup-product"><i class="far fa-expand-arrows-alt"></i></a>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xl-6">
-                                                                <div class="bz-shop-item-list-content">
-                                                                    <h4 class="bz-shop-item-list-title"><a href="#">{{ product.name }}</a></h4>
-                                                                    <div class="bz-shop-item-list-hover ">
-                                                                        <div class="bz-shop-item-list-hover-price">
-                                                                            <span>{{ product.price }} FCFA</span>
-                                                                            {% if product.old_price %}
-                                                                                <del>{{ product.old_price }} FCFA</del>
-                                                                            {% endif %}
-                                                                        </div>
+                                                        </div>
+                                                        <div class="col-xl-6">
+                                                            <div class="bz-shop-item-list-content">
+                                                                <h4 class="bz-shop-item-list-title"><a href="shop-details.html">Women High-Quality Shirt</a></h4>
+                                                                <div class="bz-shop-item-list-hover ">
+                                                                    <ul class="product-color-nav">
+                                                                        <li class="cl-light-green active">
+                                                                           <img src="assets/img/shop/shop-1.jpg" alt="img">
+                                                                        </li>
+                                                                        <li class="cl-black">
+                                                                           <img src="assets/img/shop/shop-2.jpg" alt="img">
+                                                                        </li>
+                                                                        <li class="cl-red">
+                                                                           <img src="assets/img/shop/shop-3.jpg" alt="img">
+                                                                        </li>
+                                                                     </ul>
+                                                                    <div class="bz-shop-item-list-hover-price">
+                                                                        <span>$56.78</span>
+                                                                        <del>$65.12</del>
                                                                     </div>
-                                                                    
-                                                                    {% if product.description %}
-                                                                        <p class="bz-shop-item-list-content-text">{{ product.description|truncatewords:15 }}</p>
-                                                                    {% endif %}
-        
-                                                                    <div class="bz-shop-item-list-content-rating">
-                                                                        {% with rating=product.rating|floatformat:0 %}
-                                                                            {% for i in "12345" %}
-                                                                                {% if forloop.counter <= rating|add:0 %}
-                                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                                {% else %}
-                                                                                    <a href="#"><i class="far fa-star"></i></a>
-                                                                                {% endif %}
-                                                                            {% endfor %}
-                                                                        {% endwith %}
-                                                                        <span>{{ product.rating }} Rating</span>
-                                                                    </div>
-                                                                    <a href="{% url 'add_to_cart' product.id %}" class="bz-shop-item-list-content-cart">Ajouter au panier</a>
-                                                                    <p class="text-muted mt-2"><small>Vendu par: {{ product.seller.username }}</small></p>
                                                                 </div>
+                                                                
+                                                                
+                                                                
+                                                                <p class="bz-shop-item-list-content-text">Lorem Ipsum available the majority suffered alteration some</p>
+    
+                                                                <div class="bz-shop-item-list-content-rating">
+                                                                    <a href="#"><i class="fas fa-star"></i></a>
+                                                                    <a href="#"><i class="fas fa-star"></i></a>
+                                                                    <a href="#"><i class="fas fa-star"></i></a>
+                                                                    <a href="#"><i class="fas fa-star"></i></a>
+                                                                    <a href="#"><i class="far fa-star"></i></a>
+                                                                    <span>4.5 Rating</span>
+                                                                </div>
+                                                                <a href="{% url 'cart' %}" class="bz-shop-item-list-content-cart">Add to Cart</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                        {% empty %}
-                                                <div class="col-12">
-                                                    <div class="alert alert-info text-center">
-                                                        <h4>Aucun produit disponible pour le moment</h4>
-                                                        <p>Revenez plus tard pour découvrir nos nouveaux produits !</p>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <div class="bz-shop-item-list bz-shop-color mb-40">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-xl-6 mb-30 mb-xl-0">
+                                                            <div class="bz-shop-item-list-img bz-shop-color-img w_img position-relative">
+                                                                <a href="shop-details.html" class=""><img src="assets/img/shop/shop-2.jpg" alt="img"></a>
+                                                                <span class="dis">17%</span>
+                                                                <div class="bz-shop-item-list-img-icon">
+                                                                    <a href="wishlist.html"><i class="fal fa-heart"></i></a>
+                                                                    <a href="compare.html"><i class="far fa-sync-alt"></i></a>
+                                                                    <a href="#0" class="eye-popup-product"><i class="far fa-expand-arrows-alt"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-6">
+                                                            <div class="bz-shop-item-list-content">
+                                                                <h4 class="bz-shop-item-list-title"><a href="shop-details.html">Women High-Quality Slim Shirt</a></h4>
+                                                                <div class="bz-shop-item-list-hover ">
+                                                                    <ul class="product-color-nav">
+                                                                        <li class="cl-light-green active">
+                                                                           <img src="assets/img/shop/shop-2.jpg" alt="img">
+                                                                        </li>
+                                                                        <li class="cl-black">
+                                                                           <img src="assets/img/shop/shop-3.jpg" alt="img">
+                                                                        </li>
+                                                                        <li class="cl-red">
+                                                                           <img src="assets/img/shop/shop-4.jpg" alt="img">
+                                                                        </li>
+                                                                     </ul>
+                                                                    <div class="bz-shop-item-list-hover-price">
+                                                                        <span>$56.78</span>
+                                                                        <del>$65.12</del>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <p class="bz-shop-item-list-content-text">Lorem Ipsum available the majority the suffered alteration some</p>
+    
+                                                                <div class="bz-shop-item-list-content-rating">
+                                                                    <a href="#"><i class="fas fa-star"></i></a>
+                                                                    <a href="#"><i class="fas fa-star"></i></a>
+                                                                    <a href="#"><i class="fas fa-star"></i></a>
+                                                                    <a href="#"><i class="fas fa-star"></i></a>
+                                                                    <a href="#"><i class="far fa-star"></i></a>
+                                                                    <span>4.5 Rating</span>
+                                                                </div>
+                                                                <a href="{% url 'cart' %}" class="bz-shop-item-list-content-cart">Add to Cart</a>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                        {% endfor %}
-                                            <div class="col-xl-6 col-lg-6 col-md-6" style="display:none;">
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
                                                 <div class="bz-shop-item-list bz-shop-color mb-40">
                                                     <div class="row align-items-center">
                                                         <div class="col-xl-6 mb-30 mb-xl-0">
@@ -795,6 +1232,7 @@
 <script src="{% static 'assets/js/jquery-ui-slider-range.js' %}"></script>
 <script src="{% static 'assets/js/back-to-top.min.js' %}"></script>
 <script src="{% static 'assets/js/main.js' %}"></script>
+<script src="{% static 'assets/js/shop.js' %}"></script>
 
     </body>
 </html>

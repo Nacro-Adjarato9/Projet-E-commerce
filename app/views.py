@@ -28,7 +28,35 @@ def login_view(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             user = form.cleaned_data['user']
+            
+            # AVANT de connecter : récupérer le panier session
+            session_cart = request.session.get('cart', {})
+            
             login(request, user)
+            
+            # APRÈS connexion : transférer le panier session vers la BD
+            if session_cart:
+                for product_id, quantity in session_cart.items():
+                    try:
+                        product = Product.objects.get(pk=int(product_id), is_active=True)
+                        cart_item, created = CartItem.objects.get_or_create(
+                            user=user,
+                            product=product
+                        )
+                        if not created:
+                            # Additionner les quantités
+                            cart_item.quantity = F('quantity') + quantity
+                            cart_item.save(update_fields=['quantity'])
+                        else:
+                            cart_item.quantity = quantity
+                            cart_item.save(update_fields=['quantity'])
+                    except Product.DoesNotExist:
+                        pass
+                
+                # Vider le panier session
+                request.session['cart'] = {}
+                request.session.modified = True
+                messages.info(request, "Votre panier a été transféré avec succès.")
             
             # Créer un profil si n'existe pas (cas superuser)
             if not hasattr(user, 'profile'):
@@ -61,6 +89,7 @@ def logout_view(request):
 def shop(request):
     """Affiche tous les produits actifs dans la boutique, avec pagination."""
     from django.core.paginator import Paginator
+    from .models import Category
 
     qs = Product.objects.filter(is_active=True).select_related('seller', 'category').order_by('-created_at')
 
@@ -69,82 +98,192 @@ def shop(request):
     if category_id:
         qs = qs.filter(category_id=category_id)
 
+    # Tri
+    sort_by = request.GET.get('sort', '-created_at')
+    if sort_by == 'price_asc':
+        qs = qs.order_by('price')
+    elif sort_by == 'price_desc':
+        qs = qs.order_by('-price')
+    elif sort_by == 'name':
+        qs = qs.order_by('name')
+    elif sort_by == 'rating':
+        qs = qs.order_by('-rating')
+    else:
+        qs = qs.order_by('-created_at')
+
     # Pagination (9 produits par page)
     page_number = request.GET.get('page', 1)
     paginator = Paginator(qs, 9)
     products = paginator.get_page(page_number)
 
+    # Récupérer toutes les catégories actives
+    categories = Category.objects.filter(is_active=True).order_by('name')
+
     context = {
         'products': products,  # Page object
         'paginator': paginator,
         'total_count': paginator.count,
+        'categories': categories,
+        'current_category': category_id,
+        'current_sort': sort_by,
     }
     return render(request, 'shop.html', context)
 
 def cart(request):
+    """Affiche le panier - base de données pour utilisateurs connectés, session pour les autres"""
     items = []
     subtotal = 0
+    
     if request.user.is_authenticated:
+        # Utilisateur connecté : récupérer depuis la base de données
         items = (CartItem.objects
                  .filter(user=request.user)
                  .select_related('product'))
         subtotal = sum([item.get_total_price() for item in items])
+    else:
+        # Utilisateur non connecté : utiliser la session temporairement
+        cart_data = request.session.get('cart', {})
+        for product_id, quantity in cart_data.items():
+            try:
+                product = Product.objects.get(pk=product_id, is_active=True)
+                # Créer un objet temporaire (non sauvegardé en BD)
+                # Utiliser product.id comme identifiant temporaire
+                class TempCartItem:
+                    def __init__(self, prod, qty):
+                        self.id = prod.id  # ID du produit pour les formulaires
+                        self.product = prod
+                        self.quantity = qty
+                    
+                    def get_total_price(self):
+                        return self.product.price * self.quantity
+                
+                temp_item = TempCartItem(product, quantity)
+                items.append(temp_item)
+                subtotal += product.price * quantity
+            except Product.DoesNotExist:
+                pass
+    
     context = {
         'items': items,
         'subtotal': subtotal,
+        'is_authenticated': request.user.is_authenticated,
     }
     return render(request, 'cart.html', context)
 
 
-@login_required
 def add_to_cart(request, product_id: int):
+    """Ajoute un produit au panier - BD pour connectés, session sinon"""
     product = get_object_or_404(Product, pk=product_id, is_active=True)
-    cart_item, created = CartItem.objects.get_or_create(user=request.user, product=product)
-    if not created:
-        cart_item.quantity = F('quantity') + 1
-        cart_item.save(update_fields=['quantity'])
-        cart_item.refresh_from_db()
-    messages.success(request, f"'{product.name}' a été ajouté au panier.")
+    
+    if request.user.is_authenticated:
+        # Utilisateur connecté : enregistrer directement dans la base de données
+        cart_item, created = CartItem.objects.get_or_create(
+            user=request.user, 
+            product=product
+        )
+        if not created:
+            cart_item.quantity = F('quantity') + 1
+            cart_item.save(update_fields=['quantity'])
+            cart_item.refresh_from_db()
+        messages.success(request, f"'{product.name}' ajouté au panier (BD).")
+    else:
+        # Utilisateur non connecté : stocker dans la session
+        cart = request.session.get('cart', {})
+        product_id_str = str(product_id)
+        
+        if product_id_str in cart:
+            cart[product_id_str] += 1
+        else:
+            cart[product_id_str] = 1
+        
+        request.session['cart'] = cart
+        request.session.modified = True
+        messages.success(request, f"'{product.name}' ajouté au panier (session). Connectez-vous pour sauvegarder.")
+    
     return redirect('cart')
 
 
-@login_required
 def remove_from_cart(request, item_id: int):
-    item = get_object_or_404(CartItem, pk=item_id, user=request.user)
-    item.delete()
-    messages.success(request, "Article retiré du panier.")
+    """Retire un article du panier"""
+    if request.user.is_authenticated:
+        # Utilisateur connecté : supprimer de la BD
+        item = get_object_or_404(CartItem, pk=item_id, user=request.user)
+        item.delete()
+        messages.success(request, "Article retiré du panier.")
+    else:
+        # Utilisateur non connecté : retirer de la session
+        cart = request.session.get('cart', {})
+        product_id_str = str(item_id)
+        if product_id_str in cart:
+            del cart[product_id_str]
+            request.session['cart'] = cart
+            request.session.modified = True
+            messages.success(request, "Article retiré du panier.")
+    
     return redirect('cart')
 
 
-@login_required
 def update_cart_item(request, item_id: int):
-    item = get_object_or_404(CartItem, pk=item_id, user=request.user)
+    """Met à jour la quantité d'un article du panier"""
     action = request.POST.get('action')
     qty = request.POST.get('quantity')
-    if action == 'inc':
-        item.quantity = F('quantity') + 1
-        item.save(update_fields=['quantity'])
-        item.refresh_from_db()
-    elif action == 'dec':
-        if item.quantity > 1:
-            item.quantity = F('quantity') - 1
+    
+    if request.user.is_authenticated:
+        # Utilisateur connecté : mise à jour BD
+        item = get_object_or_404(CartItem, pk=item_id, user=request.user)
+        
+        if action == 'inc':
+            item.quantity = F('quantity') + 1
             item.save(update_fields=['quantity'])
             item.refresh_from_db()
-        else:
-            item.delete()
-            messages.info(request, "Article retiré (quantité 0).")
-            return redirect('cart')
-    elif qty is not None:
-        try:
-            q = int(qty)
-            if q <= 0:
+        elif action == 'dec':
+            if item.quantity > 1:
+                item.quantity = F('quantity') - 1
+                item.save(update_fields=['quantity'])
+                item.refresh_from_db()
+            else:
                 item.delete()
                 messages.info(request, "Article retiré (quantité 0).")
                 return redirect('cart')
-            item.quantity = q
-            item.save(update_fields=['quantity'])
-        except ValueError:
-            messages.error(request, "Quantité invalide.")
+        elif qty is not None:
+            try:
+                q = int(qty)
+                if q <= 0:
+                    item.delete()
+                    messages.info(request, "Article retiré (quantité 0).")
+                    return redirect('cart')
+                item.quantity = q
+                item.save(update_fields=['quantity'])
+            except ValueError:
+                messages.error(request, "Quantité invalide.")
+    else:
+        # Utilisateur non connecté : mise à jour session
+        cart = request.session.get('cart', {})
+        product_id_str = str(item_id)
+        
+        if product_id_str in cart:
+            if action == 'inc':
+                cart[product_id_str] += 1
+            elif action == 'dec':
+                if cart[product_id_str] > 1:
+                    cart[product_id_str] -= 1
+                else:
+                    del cart[product_id_str]
+                    messages.info(request, "Article retiré (quantité 0).")
+            elif qty is not None:
+                try:
+                    q = int(qty)
+                    if q <= 0:
+                        del cart[product_id_str]
+                        messages.info(request, "Article retiré (quantité 0).")
+                    else:
+                        cart[product_id_str] = q
+                except ValueError:
+                    messages.error(request, "Quantité invalide.")
+            
+            request.session['cart'] = cart
+            request.session.modified = True
+    
     return redirect('cart')
 
 def inscription(request):

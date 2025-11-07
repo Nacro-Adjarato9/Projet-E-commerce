@@ -103,7 +103,10 @@
           <div class="col-xl-2 col-lg-2 col-md-6 col-8">
             <div class="bz-middle-right text-end">
               <a class="bz-middle-right-link" href="#0"><i class="fal fa-heart"></i><span>0</span></a>
-              <a class="bz-middle-right-link" href="{% url 'cart' %}"><i class="fal fa-shopping-cart"></i><span>0</span></a>
+              <a class="bz-middle-right-link" href="{% url 'cart' %}">
+                <i class="fal fa-shopping-cart"></i>
+                <span>{{ cart_count|default:0 }}</span>
+              </a>
               <div class="bz-user-wrapper d-inline-block">
                 <a class="bz-middle-right-link bz-user" href="#0"><i class="fal fa-user"></i></a>
                 <div class="bz-user-dropdown">
@@ -150,6 +153,18 @@
     </div>
   </header>
   <!-- header area end -->
+
+  <!-- Messages Django -->
+  {% if messages %}
+    <div class="container mt-3">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   <!-- main area start -->
   <main>

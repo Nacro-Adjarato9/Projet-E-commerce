@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="{% static 'assets/css/ui-range-slider.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/datepicker.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
 
     </head>
     
@@ -210,25 +211,30 @@
                             <div class="bz-header-menu">
                                 <nav id="bz-mobile-menu" class="bz-mobile-menu">
                                     <ul>
-                                        <li class="has-dropdown"><a href="index.html">Accuiel</a>
-                                            <ul class="submenu">
-                                                <li><a href="index.html">Accuiel</a></li>
-                                                
-                                            </ul>
-                                        </li>
-                                        <li class="has-dropdown">
-                                            <a href="#">Boutique</a>
-                                            
-                                            <ul class="submenu">    
-                                                <li><a href="{% url 'shop' %}">Boutique</a></li>
-                                                <li><a href="{% url 'cart' %}">Cart</a>panier</li>
-                                                <li><a href="{% url 'chechkout' %}">Checkout</a></li>
-                                            </ul>
-                                        </li>
-                                       
+                                        <li><a href="{% url 'index' %}">Accueil</a></li>
                                         
+                                        <li class="has-dropdown">
+                                            <a href="{% url 'shop' %}">Boutique</a>
+                                            <ul class="submenu">    
+                                                <li><a href="{% url 'shop' %}">Tous les produits</a></li>
+                                                <li><a href="{% url 'cart' %}">Mon panier</a></li>
+                                                <li><a href="{% url 'chechkout' %}">Commander</a></li>
+                                            </ul>
                                         </li>
+                                        
                                         <li><a href="{% url 'Apropos' %}">Qui sommes-nous</a></li>
+                                        
+                                        {% if user.is_authenticated %}
+                                            {% if user.profile.role == 'vendeur' %}
+                                                <li class="has-dropdown">
+                                                    <a href="{% url 'vendeur_dashboard' %}">Espace Vendeur</a>
+                                                    <ul class="submenu">
+                                                        <li><a href="{% url 'vendeur_dashboard' %}">Tableau de bord</a></li>
+                                                        <li><a href="{% url 'add_product' %}">Ajouter un article</a></li>
+                                                    </ul>
+                                                </li>
+                                            {% endif %}
+                                        {% endif %}
                                     </ul>
                                 </nav>
                             </div>

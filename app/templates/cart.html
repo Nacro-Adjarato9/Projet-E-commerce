@@ -223,29 +223,30 @@
                             <div class="bz-header-menu">
                                 <nav id="bz-mobile-menu" class="bz-mobile-menu">
                                     <ul>
-                                        <li class="has-dropdown"><a href="{% url 'index' %}">Accuiel</a>
-                                            <ul class="submenu">
-                                                <li><a href="{% url 'index' %}">Accuiel</a></li>
-                                                
-                                            </ul>
-                                        </li>
+                                        <li><a href="{% url 'index' %}">Accueil</a></li>
+                                        
                                         <li class="has-dropdown">
                                             <a href="{% url 'shop' %}">Boutique</a>
-                                            <ul class="submenu">
-                                                <li><a href="{% url 'shop' %}">Boutique</a></li>
-                                                
+                                            <ul class="submenu">    
+                                                <li><a href="{% url 'shop' %}">Tous les produits</a></li>
+                                                <li><a href="{% url 'cart' %}">Mon panier</a></li>
+                                                <li><a href="{% url 'chechkout' %}">Commander</a></li>
                                             </ul>
                                         </li>
                                         
+                                        <li><a href="{% url 'Apropos' %}">Qui sommes-nous</a></li>
                                         
-                                        <li class="has-dropdown">
-                                            <a href="#0">Pages </a>
-                                            <ul class="submenu">
-                                                <li><a href="{% url 'inscription' %}">Signup</a></li>
-                                                <li><a href="error.html">Error</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="contact.html">Contact</a></li>
+                                        {% if user.is_authenticated %}
+                                            {% if user.profile.role == 'vendeur' %}
+                                                <li class="has-dropdown">
+                                                    <a href="{% url 'vendeur_dashboard' %}">Espace Vendeur</a>
+                                                    <ul class="submenu">
+                                                        <li><a href="{% url 'vendeur_dashboard' %}">Tableau de bord</a></li>
+                                                        <li><a href="{% url 'add_product' %}">Ajouter un article</a></li>
+                                                    </ul>
+                                                </li>
+                                            {% endif %}
+                                        {% endif %}
                                     </ul>
                                 </nav>
                             </div>
@@ -303,70 +304,59 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="bz-shopping-cart-product-box">
-                                                <div class="action-close"><i class="fal fa-times"></i></div>
-                                                <div class="image">
-                                                    <img src="{% static 'assets/img/season/2.jpg' %}" alt="img">
+                                    {% if items %}
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>
+                                                <div class="bz-shopping-cart-product-box">
+                                                    <form method="post" action="{% url 'remove_from_cart' item.id %}" style="display:inline;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="action-close" style="border:none;background:none;cursor:pointer;">
+                                                            <i class="fal fa-times"></i>
+                                                        </button>
+                                                    </form>
+                                                    <div class="image">
+                                                        {% if item.product.image %}
+                                                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                                        {% else %}
+                                                            <img src="{% static 'assets/img/shop/default.jpg' %}" alt="{{ item.product.name }}">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="title-wrap">
+                                                        <h4 class="title"><a href="{% url 'shop' %}">{{ item.product.name }}</a></h4>
+                                                    </div>
                                                 </div>
-                                                <div class="title-wrap">
-                                                    <h4 class="title"><a href="{% url 'shop' %}">Armoir</a></h4>
+                                            </td>
+                                            <td>
+                                                <div class="bz-product-cart-price">
+                                                    <span>{{ item.product.price }} FCFA</span>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="bz-product-cart-price">
-                                                <span>$56.78</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="bz-shop-details-content-quantity-box">
-                                                <form action="#">
-                                                    <a href="#0" class="plus"><i class="fal fa-plus"></i></a>
-                                                    <input type="text" readonly name="quantity" value="1">
-                                                    <a  href="#0" class="minus"><i class="fal fa-minus"></i></a>
-                                                </form>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="bz-product-cart-price">
-                                                <span>100.000F</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="bz-shopping-cart-product-box">
-                                                <div class="action-close"><i class="fal fa-times"></i></div>
-                                                <div class="image">
-                                                    <img src="{% static 'assets/img/season/1.jpg' %}" alt="img">
+                                            </td>
+                                            <td>
+                                                <div class="bz-shop-details-content-quantity-box">
+                                                    <form method="post" action="{% url 'update_cart_item' item.id %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" name="action" value="inc" class="plus"><i class="fal fa-plus"></i></button>
+                                                        <input type="text" readonly name="quantity" value="{{ item.quantity }}">
+                                                        <button type="submit" name="action" value="dec" class="minus"><i class="fal fa-minus"></i></button>
+                                                    </form>
                                                 </div>
-                                                <div class="title-wrap">
-                                                    <h4 class="title"><a href="{% url 'shop' %}">Télévison</a></h4>
+                                            </td>
+                                            <td>
+                                                <div class="bz-product-cart-price">
+                                                    <span>{{ item.get_total_price }} FCFA</span>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="bz-product-cart-price">
-                                                <span>100.000F</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="bz-shop-details-content-quantity-box">
-                                                <form action="#">
-                                                    <a href="#0" class="plus"><i class="fal fa-plus"></i></a>
-                                                    <input type="text" readonly name="quantity" value="1">
-                                                    <a  href="#0" class="minus"><i class="fal fa-minus"></i></a>
-                                                </form>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="bz-product-cart-price">
-                                                <span>150000F</span>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="4" class="text-center py-5">
+                                                <p>Votre panier est vide.</p>
+                                                <a href="{% url 'shop' %}" class="btn btn-primary mt-3">Continuer vos achats</a>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
                                 </tbody>
                             </table>
                             <div class="apply-coupon-button mt-30">
@@ -381,31 +371,24 @@
                             <h4 class="bz-cart-total-box-title">Facture</h4>
                             <div class="bz-cart-total-box-inner-box">
                                 <ul>
-                                    <li class="b-bottom"><span class="cart-total-label">total</span><span class="cart-total-value">100.00FCFA</span></li>
-                                    <li><span class="cart-total-label">reduction</span><span class="cart-total-value">Free</span></li>
-                                    <li><span class="cart-total-label"></span><span class="cart-total-value">10%</span></li>
-                                    <li>
-                                        <div class="cart-total-change-address text-end">
-                                            <span class="cart-total-change-address-text">Change Address</span>
-                                            <div class="cart-total-change-address-values">
-                                                <select>
-                                                    <option>Selectionne la ville</option>
-                                                    <option>Grand-bassam</option>
-                                                    <option>Abidjan</option>
-                                                    <option>bouake</option>
-                                                </select>
-                                                <input type="text" placeholder="Town / City">
-                                                <input type="text" placeholder="ZIP Code">
-                                                <button class="cart-update-btn">Nouvelle Address</button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="b-top"><span class="cart-total-label">Total</span><span class="cart-total-value">150.000FCFA</span></li>
+                                    <li class="b-bottom"><span class="cart-total-label">Sous-total</span><span class="cart-total-value">{{ subtotal }} FCFA</span></li>
+                                    <li><span class="cart-total-label">Livraison</span><span class="cart-total-value">Gratuite</span></li>
+                                    <li class="b-top"><span class="cart-total-label">Total</span><span class="cart-total-value">{{ subtotal }} FCFA</span></li>
                                 </ul>
                             </div>
                             <div class="cart-total-button">
-                                <a href="{% url 'inscription' %}" class="cart-total-btn">Inscrition</a>
-                                <a href="{% url 'chechkout' %}" class="cart-total-btn">Proceder au Paiement</a>
+                                {% if user.is_authenticated %}
+                                    {% if items %}
+                                        <form method="post" action="{% url 'checkout' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="cart-total-btn">Passer commande</button>
+                                        </form>
+                                    {% else %}
+                                        <a href="{% url 'shop' %}" class="cart-total-btn">Continuer vos achats</a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{% url 'login' %}" class="cart-total-btn">Connexion requise</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
