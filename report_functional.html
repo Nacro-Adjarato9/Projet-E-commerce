@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title id="head-title">report_functional.html</title>
+      <style type="text/css">body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  /* do not increase min-width as some may use split screens */
+  min-width: 800px;
+  color: #999;
+}
+
+h1 {
+  font-size: 24px;
+  color: black;
+}
+
+h2 {
+  font-size: 16px;
+  color: black;
+}
+
+p {
+  color: black;
+}
+
+a {
+  color: #999;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/******************************
+ * SUMMARY INFORMATION
+ ******************************/
+#environment td {
+  padding: 5px;
+  border: 1px solid #e6e6e6;
+  vertical-align: top;
+}
+#environment tr:nth-child(odd) {
+  background-color: #f6f6f6;
+}
+#environment ul {
+  margin: 0;
+  padding: 0 20px;
+}
+
+/******************************
+ * TEST RESULT COLORS
+ ******************************/
+span.passed,
+.passed .col-result {
+  color: green;
+}
+
+span.skipped,
+span.xfailed,
+span.rerun,
+.skipped .col-result,
+.xfailed .col-result,
+.rerun .col-result {
+  color: orange;
+}
+
+span.error,
+span.failed,
+span.xpassed,
+.error .col-result,
+.failed .col-result,
+.xpassed .col-result {
+  color: red;
+}
+
+.col-links__extra {
+  margin-right: 3px;
+}
+
+/******************************
+ * RESULTS TABLE
+ *
+ * 1. Table Layout
+ * 2. Extra
+ * 3. Sorting items
+ *
+ ******************************/
+/*------------------
+ * 1. Table Layout
+ *------------------*/
+#results-table {
+  border: 1px solid #e6e6e6;
+  color: #999;
+  font-size: 12px;
+  width: 100%;
+}
+#results-table th,
+#results-table td {
+  padding: 5px;
+  border: 1px solid #e6e6e6;
+  text-align: left;
+}
+#results-table th {
+  font-weight: bold;
+}
+
+/*------------------
+ * 2. Extra
+ *------------------*/
+.logwrapper {
+  max-height: 230px;
+  overflow-y: scroll;
+  background-color: #e6e6e6;
+}
+.logwrapper.expanded {
+  max-height: none;
+}
+.logwrapper.expanded .logexpander:after {
+  content: "collapse [-]";
+}
+.logwrapper .logexpander {
+  z-index: 1;
+  position: sticky;
+  top: 10px;
+  width: max-content;
+  border: 1px solid;
+  border-radius: 3px;
+  padding: 5px 7px;
+  margin: 10px 0 10px calc(100% - 80px);
+  cursor: pointer;
+  background-color: #e6e6e6;
+}
+.logwrapper .logexpander:after {
+  content: "expand [+]";
+}
+.logwrapper .logexpander:hover {
+  color: #000;
+  border-color: #000;
+}
+.logwrapper .log {
+  min-height: 40px;
+  position: relative;
+  top: -50px;
+  height: calc(100% + 50px);
+  border: 1px solid #e6e6e6;
+  color: black;
+  display: block;
+  font-family: "Courier New", Courier, monospace;
+  padding: 5px;
+  padding-right: 80px;
+  white-space: pre-wrap;
+}
+
+div.media {
+  border: 1px solid #e6e6e6;
+  float: right;
+  height: 240px;
+  margin: 0 5px;
+  overflow: hidden;
+  width: 320px;
+}
+
+.media-container {
+  display: grid;
+  grid-template-columns: 25px auto 25px;
+  align-items: center;
+  flex: 1 1;
+  overflow: hidden;
+  height: 200px;
+}
+
+.media-container--fullscreen {
+  grid-template-columns: 0px auto 0px;
+}
+
+.media-container__nav--right,
+.media-container__nav--left {
+  text-align: center;
+  cursor: pointer;
+}
+
+.media-container__viewport {
+  cursor: pointer;
+  text-align: center;
+  height: inherit;
+}
+.media-container__viewport img,
+.media-container__viewport video {
+  object-fit: cover;
+  width: 100%;
+  max-height: 100%;
+}
+
+.media__name,
+.media__counter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex: 0 0 25px;
+  align-items: center;
+}
+
+.collapsible td:not(.col-links) {
+  cursor: pointer;
+}
+.collapsible td:not(.col-links):hover::after {
+  color: #bbb;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.col-result {
+  width: 130px;
+}
+.col-result:hover::after {
+  content: " (hide details)";
+}
+
+.col-result.collapsed:hover::after {
+  content: " (show details)";
+}
+
+#environment-header h2:hover::after {
+  content: " (hide details)";
+  color: #bbb;
+  font-style: italic;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#environment-header.collapsed h2:hover::after {
+  content: " (show details)";
+  color: #bbb;
+  font-style: italic;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/*------------------
+ * 3. Sorting items
+ *------------------*/
+.sortable {
+  cursor: pointer;
+}
+.sortable.desc:after {
+  content: " ";
+  position: relative;
+  left: 5px;
+  bottom: -12.5px;
+  border: 10px solid #4caf50;
+  border-bottom: 0;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+.sortable.asc:after {
+  content: " ";
+  position: relative;
+  left: 5px;
+  bottom: 12.5px;
+  border: 10px solid #4caf50;
+  border-top: 0;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.hidden, .summary__reload__button.hidden {
+  display: none;
+}
+
+.summary__data {
+  flex: 0 0 550px;
+}
+.summary__reload {
+  flex: 1 1;
+  display: flex;
+  justify-content: center;
+}
+.summary__reload__button {
+  flex: 0 0 300px;
+  display: flex;
+  color: white;
+  font-weight: bold;
+  background-color: #4caf50;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.summary__reload__button:hover {
+  background-color: #46a049;
+}
+.summary__spacer {
+  flex: 0 0 550px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filters,
+.collapse {
+  display: flex;
+  align-items: center;
+}
+.filters button,
+.collapse button {
+  color: #999;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.filters button:hover,
+.collapse button:hover {
+  color: #ccc;
+}
+
+.filter__label {
+  margin-right: 10px;
+}
+
+      </style>
+    
+  </head>
+  <body>
+    <h1 id="title">report_functional.html</h1>
+    <p>Report generated on 10-Nov-2025 at 06:21:19 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
+        v4.1.1</p>
+    <div id="environment-header">
+      <h2>Environment</h2>
+    </div>
+    <table id="environment"></table>
+    <!-- TEMPLATES -->
+      <template id="template_environment_row">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </template>
+    <template id="template_results-table__body--empty">
+      <tbody class="results-table-row">
+        <tr id="not-found-message">
+          <td colspan="4">No results found. Check the filters.</th>
+        </tr>
+    </template>
+    <template id="template_results-table__tbody">
+      <tbody class="results-table-row">
+        <tr class="collapsible">
+        </tr>
+        <tr class="extras-row">
+          <td class="extra" colspan="4">
+            <div class="extraHTML"></div>
+            <div class="media">
+              <div class="media-container">
+                  <div class="media-container__nav--left"><</div>
+                  <div class="media-container__viewport">
+                    <img src="" />
+                    <video controls>
+                      <source src="" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="media-container__nav--right">></div>
+                </div>
+                <div class="media__name"></div>
+                <div class="media__counter"></div>
+            </div>
+            <div class="logwrapper">
+              <div class="logexpander"></div>
+              <div class="log"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </template>
+    <!-- END TEMPLATES -->
+    <div class="summary">
+      <div class="summary__data">
+        <h2>Summary</h2>
+        <div class="additional-summary prefix">
+        </div>
+        <p class="run-count">30 tests took 00:02:40.</p>
+        <p class="filter">(Un)check the boxes to filter the results.</p>
+        <div class="summary__reload">
+          <div class="summary__reload__button hidden" onclick="location.reload()">
+            <div>There are still tests running. <br />Reload this page to get the latest results!</div>
+          </div>
+        </div>
+        <div class="summary__spacer"></div>
+        <div class="controls">
+          <div class="filters">
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="failed" />
+            <span class="failed">8 Failed,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="passed" />
+            <span class="passed">20 Passed,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="skipped" />
+            <span class="skipped">14 Skipped,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="xfailed" />
+            <span class="xfailed">2 Expected failures,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="xpassed" disabled/>
+            <span class="xpassed">0 Unexpected passes,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="error" disabled/>
+            <span class="error">0 Errors,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="rerun" disabled/>
+            <span class="rerun">0 Reruns</span>
+          </div>
+          <div class="collapse">
+            <button id="show_all_details">Show all details</button>&nbsp;/&nbsp;<button id="hide_all_details">Hide all details</button>
+          </div>
+        </div>
+      </div>
+      <div class="additional-summary summary">
+      </div>
+      <div class="additional-summary postfix">
+      </div>
+    </div>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable" data-column-type="result">Result</th>
+          <th class="sortable" data-column-type="testId">Test</th>
+          <th class="sortable" data-column-type="duration">Duration</th>
+          <th>Links</th>
+        </tr>
+      </thead>
+    </table>
+  </body>
+  <footer>
+    <div id="data-container" data-jsonblob="{&#34;environment&#34;: {&#34;Python&#34;: &#34;3.10.0rc2&#34;, &#34;Platform&#34;: &#34;Windows-10-10.0.26200-SP0&#34;, &#34;Packages&#34;: {&#34;pytest&#34;: &#34;8.4.2&#34;, &#34;pluggy&#34;: &#34;1.6.0&#34;}, &#34;Plugins&#34;: {&#34;locust&#34;: &#34;2.42.2&#34;, &#34;benchmark&#34;: &#34;5.2.3&#34;, &#34;django&#34;: &#34;4.11.1&#34;, &#34;html&#34;: &#34;4.1.1&#34;, &#34;metadata&#34;: &#34;3.1.1&#34;}}, &#34;tests&#34;: {&#34;app/tests.py::TestsVuesDeBase::test_deconnexion_redirige&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesDeBase::test_deconnexion_redirige&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesDeBase::test_deconnexion_redirige&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsVuesDeBase::test_login_get_connecte_redirige_selon_role&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesDeBase::test_login_get_connecte_redirige_selon_role&#34;, &#34;duration&#34;: &#34;00:00:07&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesDeBase::test_login_get_connecte_redirige_selon_role&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:07&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsVuesDeBase::test_login_post_invalide_message_erreur&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesDeBase::test_login_post_invalide_message_erreur&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesDeBase::test_login_post_invalide_message_erreur&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsVuesBoutiquePanier::test_ajout_au_panier_anonyme_puis_auth&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesBoutiquePanier::test_ajout_au_panier_anonyme_puis_auth&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesBoutiquePanier::test_ajout_au_panier_anonyme_puis_auth&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;app.tests.TestsVuesBoutiquePanier testMethod=test_ajout_au_panier_anonyme_puis_auth&amp;gt;\n\n    def test_ajout_au_panier_anonyme_puis_auth(self):\n        r = self.client.get(reverse(&amp;quot;add_to_cart&amp;quot;, args=[self.produit_actif.id]), follow=True)\n        self.assertEqual(r.status_code, 200)\n&amp;gt;       self.assertIn(str(self.produit_actif.id), self.client.session.get(&amp;quot;cart&amp;quot;, {}))\nE       AssertionError: &amp;#x27;1&amp;#x27; not found in {}\n\napp\\tests.py:124: AssertionError\n&#34;}], &#34;app/tests.py::TestsVuesBoutiquePanier::test_boutique_filtres_tri_pagination&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesBoutiquePanier::test_boutique_filtres_tri_pagination&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesBoutiquePanier::test_boutique_filtres_tri_pagination&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;Parser tokens=[&amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;    &amp;lt;/b...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;static &amp;#x27;assets/js/ma...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/scr...tatic...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;            &amp;lt;/div&amp;gt;...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;endfor...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;                   ...&amp;quot;&amp;gt;]&amp;gt;\nparse_until = []\n\n    def parse(self, parse_until=None):\n        &amp;quot;&amp;quot;&amp;quot;\n        Iterate through the parser tokens and compiles each one into a node.\n    \n        If parse_until is provided, parsing will stop once one of the\n        specified tokens has been reached. This is formatted as a list of\n        tokens, e.g. [&amp;#x27;elif&amp;#x27;, &amp;#x27;else&amp;#x27;, &amp;#x27;endif&amp;#x27;]. If no matching token is\n        reached, raise an exception with the unclosed block tag details.\n        &amp;quot;&amp;quot;&amp;quot;\n        if parse_until is None:\n            parse_until = []\n        nodelist = NodeList()\n        while self.tokens:\n            token = self.next_token()\n            # Use the raw values here for TokenType.* for a tiny performance boost.\n            token_type = token.token_type.value\n            if token_type == 0:  # TokenType.TEXT\n                self.extend_nodelist(nodelist, TextNode(token.contents), token)\n            elif token_type == 1:  # TokenType.VAR\n                if not token.contents:\n                    raise self.error(\n                        token, &amp;quot;Empty variable tag on line %d&amp;quot; % token.lineno\n                    )\n                try:\n                    filter_expression = self.compile_filter(token.contents)\n                except TemplateSyntaxError as e:\n                    raise self.error(token, e)\n                var_node = VariableNode(filter_expression)\n                self.extend_nodelist(nodelist, var_node, token)\n            elif token_type == 2:  # TokenType.BLOCK\n                try:\n                    command = token.contents.split()[0]\n                except IndexError:\n                    raise self.error(token, &amp;quot;Empty block tag on line %d&amp;quot; % token.lineno)\n                if command in parse_until:\n                    # A matching token has been reached. Return control to\n                    # the caller. Put the token back on the token list so the\n                    # caller knows where it terminated.\n                    self.prepend_token(token)\n                    return nodelist\n                # Add the token to the command stack. This is used for error\n                # messages if further parsing fails due to an unclosed block\n                # tag.\n                self.command_stack.append((command, token))\n                # Get the tag callback function from the ones registered with\n                # the parser.\n                try:\n&amp;gt;                   compile_func = self.tags[command]\nE                   KeyError: &amp;#x27;empty&amp;#x27;\n\n..\\venv\\lib\\site-packages\\django\\template\\base.py:510: KeyError\n\nDuring handling of the above exception, another exception occurred:\n\nself = &amp;lt;app.tests.TestsVuesBoutiquePanier testMethod=test_boutique_filtres_tri_pagination&amp;gt;\n\n    def test_boutique_filtres_tri_pagination(self):\n        for i in range(15):\n            Product.objects.create(\n                seller=self.utilisateur_vendeur,\n                category=self.categorie,\n                name=f&amp;quot;P{i}&amp;quot;,\n                price=Decimal(&amp;quot;10.00&amp;quot;) + i,\n                stock=3,\n                is_active=True\n            )\n&amp;gt;       r = self.client.get(reverse(&amp;quot;shop&amp;quot;), {&amp;quot;sort&amp;quot;: &amp;quot;price_asc&amp;quot;, &amp;quot;page&amp;quot;: 1})\n\napp\\tests.py:93: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\venv\\lib\\site-packages\\django\\test\\client.py:1124: in get\n    response = super().get(\n..\\venv\\lib\\site-packages\\django\\test\\client.py:475: in get\n    return self.generic(\n..\\venv\\lib\\site-packages\\django\\test\\client.py:671: in generic\n    return self.request(**r)\n..\\venv\\lib\\site-packages\\django\\test\\client.py:1087: in request\n    self.check_exception(response)\n..\\venv\\lib\\site-packages\\django\\test\\client.py:802: in check_exception\n    raise exc_value\n..\\venv\\lib\\site-packages\\django\\core\\handlers\\exception.py:55: in inner\n    response = get_response(request)\n..\\venv\\lib\\site-packages\\django\\core\\handlers\\base.py:197: in _get_response\n    response = wrapped_callback(request, *callback_args, **callback_kwargs)\n..\\venv\\lib\\site-packages\\django\\utils\\decorators.py:192: in _view_wrapper\n    result = _process_exception(request, e)\n..\\venv\\lib\\site-packages\\django\\utils\\decorators.py:190: in _view_wrapper\n    response = view_func(request, *args, **kwargs)\napp\\views.py:82: in shop\n    return render(request, &amp;#x27;shop.html&amp;#x27;, context)\n..\\venv\\lib\\site-packages\\django\\shortcuts.py:25: in render\n    content = loader.render_to_string(template_name, context, request, using=using)\n..\\venv\\lib\\site-packages\\django\\template\\loader.py:61: in render_to_string\n    template = get_template(template_name, using=using)\n..\\venv\\lib\\site-packages\\django\\template\\loader.py:15: in get_template\n    return engine.get_template(template_name)\n..\\venv\\lib\\site-packages\\django\\template\\backends\\django.py:79: in get_template\n    return Template(self.engine.get_template(template_name), self)\n..\\venv\\lib\\site-packages\\django\\template\\engine.py:177: in get_template\n    template, origin = self.find_template(template_name)\n..\\venv\\lib\\site-packages\\django\\template\\engine.py:159: in find_template\n    template = loader.get_template(name, skip=skip)\n..\\venv\\lib\\site-packages\\django\\template\\loaders\\cached.py:57: in get_template\n    template = super().get_template(template_name, skip)\n..\\venv\\lib\\site-packages\\django\\template\\loaders\\base.py:28: in get_template\n    return Template(\n..\\venv\\lib\\site-packages\\django\\template\\base.py:154: in __init__\n    self.nodelist = self.compile_nodelist()\n..\\venv\\lib\\site-packages\\django\\template\\base.py:196: in compile_nodelist\n    nodelist = parser.parse()\n..\\venv\\lib\\site-packages\\django\\template\\base.py:512: in parse\n    self.invalid_block_tag(token, command, parse_until)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = &amp;lt;Parser tokens=[&amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;    &amp;lt;/b...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;static &amp;#x27;assets/js/ma...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/scr...tatic...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;            &amp;lt;/div&amp;gt;...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;endfor...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;                   ...&amp;quot;&amp;gt;]&amp;gt;\ntoken = &amp;lt;Block token: &amp;quot;empty...&amp;quot;&amp;gt;, command = &amp;#x27;empty&amp;#x27;, parse_until = []\n\n    def invalid_block_tag(self, token, command, parse_until=None):\n        if parse_until:\n            raise self.error(\n                token,\n                &amp;quot;Invalid block tag on line %d: &amp;#x27;%s&amp;#x27;, expected %s. Did you &amp;quot;\n                &amp;quot;forget to register or load this tag?&amp;quot;\n                % (\n                    token.lineno,\n                    command,\n                    get_text_list([&amp;quot;&amp;#x27;%s&amp;#x27;&amp;quot; % p for p in parse_until], &amp;quot;or&amp;quot;),\n                ),\n            )\n&amp;gt;       raise self.error(\n            token,\n            &amp;quot;Invalid block tag on line %d: &amp;#x27;%s&amp;#x27;. Did you forget to register &amp;quot;\n            &amp;quot;or load this tag?&amp;quot; % (token.lineno, command),\n        )\nE       django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 66: &amp;#x27;empty&amp;#x27;. Did you forget to register or load this tag?\n\n..\\venv\\lib\\site-packages\\django\\template\\base.py:577: TemplateSyntaxError\n\n------------------------------ Captured log call -------------------------------\nERROR    django.request:log.py:253 Internal Server Error: /shop/\nTraceback (most recent call last):\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 510, in parse\n    compile_func = self.tags[command]\nKeyError: &amp;#x27;empty&amp;#x27;\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\core\\handlers\\exception.py&amp;quot;, line 55, in inner\n    response = get_response(request)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\core\\handlers\\base.py&amp;quot;, line 197, in _get_response\n    response = wrapped_callback(request, *callback_args, **callback_kwargs)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\utils\\decorators.py&amp;quot;, line 192, in _view_wrapper\n    result = _process_exception(request, e)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\utils\\decorators.py&amp;quot;, line 190, in _view_wrapper\n    response = view_func(request, *args, **kwargs)\n  File &amp;quot;D:\\Django_raissa\\projet_ecommerce\\app\\views.py&amp;quot;, line 82, in shop\n    return render(request, &amp;#x27;shop.html&amp;#x27;, context)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\shortcuts.py&amp;quot;, line 25, in render\n    content = loader.render_to_string(template_name, context, request, using=using)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loader.py&amp;quot;, line 61, in render_to_string\n    template = get_template(template_name, using=using)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loader.py&amp;quot;, line 15, in get_template\n    return engine.get_template(template_name)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\backends\\django.py&amp;quot;, line 79, in get_template\n    return Template(self.engine.get_template(template_name), self)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\engine.py&amp;quot;, line 177, in get_template\n    template, origin = self.find_template(template_name)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\engine.py&amp;quot;, line 159, in find_template\n    template = loader.get_template(name, skip=skip)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loaders\\cached.py&amp;quot;, line 57, in get_template\n    template = super().get_template(template_name, skip)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loaders\\base.py&amp;quot;, line 28, in get_template\n    return Template(\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 154, in __init__\n    self.nodelist = self.compile_nodelist()\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 196, in compile_nodelist\n    nodelist = parser.parse()\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 512, in parse\n    self.invalid_block_tag(token, command, parse_until)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 577, in invalid_block_tag\n    raise self.error(\ndjango.template.exceptions.TemplateSyntaxError: Invalid block tag on line 66: &amp;#x27;empty&amp;#x27;. Did you forget to register or load this tag?\n\n&#34;}], &#34;app/tests.py::TestsVuesBoutiquePanier::test_mise_a_jour_element_panier_anonyme_tous_chemins&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesBoutiquePanier::test_mise_a_jour_element_panier_anonyme_tous_chemins&#34;, &#34;duration&#34;: &#34;00:00:05&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesBoutiquePanier::test_mise_a_jour_element_panier_anonyme_tous_chemins&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:05&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;app.tests.TestsVuesBoutiquePanier testMethod=test_mise_a_jour_element_panier_anonyme_tous_chemins&amp;gt;\n\n    def test_mise_a_jour_element_panier_anonyme_tous_chemins(self):\n        session = self.client.session\n        session[&amp;quot;cart&amp;quot;] = {str(self.produit_actif.id): 1}\n        session.save()\n        pid = str(self.produit_actif.id)\n        r = self.client.post(reverse(&amp;quot;update_cart_item&amp;quot;, args=[self.produit_actif.id]), {&amp;quot;action&amp;quot;: &amp;quot;inc&amp;quot;}, follow=True)\n        self.assertEqual(r.status_code, 200)\n&amp;gt;       self.assertEqual(self.client.session[&amp;quot;cart&amp;quot;][pid], 2)\nE       AssertionError: 1 != 2\n\napp\\tests.py:174: AssertionError\n&#34;}], &#34;app/tests.py::TestsVuesBoutiquePanier::test_mise_a_jour_element_panier_auth_tous_chemins&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesBoutiquePanier::test_mise_a_jour_element_panier_auth_tous_chemins&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesBoutiquePanier::test_mise_a_jour_element_panier_auth_tous_chemins&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsVuesBoutiquePanier::test_panier_anonyme_session_et_produit_manquant&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesBoutiquePanier::test_panier_anonyme_session_et_produit_manquant&#34;, &#34;duration&#34;: &#34;00:00:05&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesBoutiquePanier::test_panier_anonyme_session_et_produit_manquant&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:05&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;app.tests.TestsVuesBoutiquePanier testMethod=test_panier_anonyme_session_et_produit_manquant&amp;gt;\n\n    def test_panier_anonyme_session_et_produit_manquant(self):\n        session = self.client.session\n        session[&amp;quot;cart&amp;quot;] = {str(self.produit_actif.id): 2, &amp;quot;999999&amp;quot;: 1}\n        session.save()\n        r = self.client.get(reverse(&amp;quot;cart&amp;quot;))\n        self.assertEqual(r.status_code, 200)\n        elements = r.context[&amp;quot;items&amp;quot;]\n&amp;gt;       self.assertTrue(any(getattr(it, &amp;quot;product&amp;quot;, None) == self.produit_actif for it in elements))\nE       AssertionError: False is not true\n\napp\\tests.py:111: AssertionError\n&#34;}], &#34;app/tests.py::TestsVuesBoutiquePanier::test_panier_auth_lecture_depuis_bd&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesBoutiquePanier::test_panier_auth_lecture_depuis_bd&#34;, &#34;duration&#34;: &#34;00:00:05&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesBoutiquePanier::test_panier_auth_lecture_depuis_bd&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:05&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsVuesBoutiquePanier::test_suppression_du_panier_anonyme_et_auth&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsVuesBoutiquePanier::test_suppression_du_panier_anonyme_et_auth&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsVuesBoutiquePanier::test_suppression_du_panier_anonyme_et_auth&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;app.tests.TestsVuesBoutiquePanier testMethod=test_suppression_du_panier_anonyme_et_auth&amp;gt;\n\n    def test_suppression_du_panier_anonyme_et_auth(self):\n        session = self.client.session\n        session[&amp;quot;cart&amp;quot;] = {str(self.produit_actif.id): 1}\n        session.save()\n        r = self.client.get(reverse(&amp;quot;remove_from_cart&amp;quot;, args=[self.produit_actif.id]), follow=True)\n        self.assertEqual(r.status_code, 200)\n&amp;gt;       self.assertNotIn(str(self.produit_actif.id), self.client.session.get(&amp;quot;cart&amp;quot;, {}))\nE       AssertionError: &amp;#x27;1&amp;#x27; unexpectedly found in {&amp;#x27;1&amp;#x27;: 1}\n\napp\\tests.py:136: AssertionError\n&#34;}], &#34;app/tests.py::TestsInscriptionEtCommande::test_checkout_panier_vide_puis_avec_articles&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsInscriptionEtCommande::test_checkout_panier_vide_puis_avec_articles&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsInscriptionEtCommande::test_checkout_panier_vide_puis_avec_articles&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsInscriptionEtCommande::test_inscription_get_puis_post_invalide&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsInscriptionEtCommande::test_inscription_get_puis_post_invalide&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsInscriptionEtCommande::test_inscription_get_puis_post_invalide&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsCatalogueBoutique::test_boutique_affiche_uniquement_produits_actifs&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsCatalogueBoutique::test_boutique_affiche_uniquement_produits_actifs&#34;, &#34;duration&#34;: &#34;00:00:05&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsCatalogueBoutique::test_boutique_affiche_uniquement_produits_actifs&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:05&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;Parser tokens=[&amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;    &amp;lt;/b...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;static &amp;#x27;assets/js/ma...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/scr...tatic...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;            &amp;lt;/div&amp;gt;...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;endfor...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;                   ...&amp;quot;&amp;gt;]&amp;gt;\nparse_until = []\n\n    def parse(self, parse_until=None):\n        &amp;quot;&amp;quot;&amp;quot;\n        Iterate through the parser tokens and compiles each one into a node.\n    \n        If parse_until is provided, parsing will stop once one of the\n        specified tokens has been reached. This is formatted as a list of\n        tokens, e.g. [&amp;#x27;elif&amp;#x27;, &amp;#x27;else&amp;#x27;, &amp;#x27;endif&amp;#x27;]. If no matching token is\n        reached, raise an exception with the unclosed block tag details.\n        &amp;quot;&amp;quot;&amp;quot;\n        if parse_until is None:\n            parse_until = []\n        nodelist = NodeList()\n        while self.tokens:\n            token = self.next_token()\n            # Use the raw values here for TokenType.* for a tiny performance boost.\n            token_type = token.token_type.value\n            if token_type == 0:  # TokenType.TEXT\n                self.extend_nodelist(nodelist, TextNode(token.contents), token)\n            elif token_type == 1:  # TokenType.VAR\n                if not token.contents:\n                    raise self.error(\n                        token, &amp;quot;Empty variable tag on line %d&amp;quot; % token.lineno\n                    )\n                try:\n                    filter_expression = self.compile_filter(token.contents)\n                except TemplateSyntaxError as e:\n                    raise self.error(token, e)\n                var_node = VariableNode(filter_expression)\n                self.extend_nodelist(nodelist, var_node, token)\n            elif token_type == 2:  # TokenType.BLOCK\n                try:\n                    command = token.contents.split()[0]\n                except IndexError:\n                    raise self.error(token, &amp;quot;Empty block tag on line %d&amp;quot; % token.lineno)\n                if command in parse_until:\n                    # A matching token has been reached. Return control to\n                    # the caller. Put the token back on the token list so the\n                    # caller knows where it terminated.\n                    self.prepend_token(token)\n                    return nodelist\n                # Add the token to the command stack. This is used for error\n                # messages if further parsing fails due to an unclosed block\n                # tag.\n                self.command_stack.append((command, token))\n                # Get the tag callback function from the ones registered with\n                # the parser.\n                try:\n&amp;gt;                   compile_func = self.tags[command]\nE                   KeyError: &amp;#x27;empty&amp;#x27;\n\n..\\venv\\lib\\site-packages\\django\\template\\base.py:510: KeyError\n\nDuring handling of the above exception, another exception occurred:\n\nself = &amp;lt;app.tests.TestsCatalogueBoutique testMethod=test_boutique_affiche_uniquement_produits_actifs&amp;gt;\n\n    def test_boutique_affiche_uniquement_produits_actifs(self):\n        url = reverse(&amp;quot;shop&amp;quot;)\n&amp;gt;       resp = self.client.get(url)\n\napp\\tests.py:230: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\venv\\lib\\site-packages\\django\\test\\client.py:1124: in get\n    response = super().get(\n..\\venv\\lib\\site-packages\\django\\test\\client.py:475: in get\n    return self.generic(\n..\\venv\\lib\\site-packages\\django\\test\\client.py:671: in generic\n    return self.request(**r)\n..\\venv\\lib\\site-packages\\django\\test\\client.py:1087: in request\n    self.check_exception(response)\n..\\venv\\lib\\site-packages\\django\\test\\client.py:802: in check_exception\n    raise exc_value\n..\\venv\\lib\\site-packages\\django\\core\\handlers\\exception.py:55: in inner\n    response = get_response(request)\n..\\venv\\lib\\site-packages\\django\\core\\handlers\\base.py:197: in _get_response\n    response = wrapped_callback(request, *callback_args, **callback_kwargs)\n..\\venv\\lib\\site-packages\\django\\utils\\decorators.py:192: in _view_wrapper\n    result = _process_exception(request, e)\n..\\venv\\lib\\site-packages\\django\\utils\\decorators.py:190: in _view_wrapper\n    response = view_func(request, *args, **kwargs)\napp\\views.py:82: in shop\n    return render(request, &amp;#x27;shop.html&amp;#x27;, context)\n..\\venv\\lib\\site-packages\\django\\shortcuts.py:25: in render\n    content = loader.render_to_string(template_name, context, request, using=using)\n..\\venv\\lib\\site-packages\\django\\template\\loader.py:61: in render_to_string\n    template = get_template(template_name, using=using)\n..\\venv\\lib\\site-packages\\django\\template\\loader.py:15: in get_template\n    return engine.get_template(template_name)\n..\\venv\\lib\\site-packages\\django\\template\\backends\\django.py:79: in get_template\n    return Template(self.engine.get_template(template_name), self)\n..\\venv\\lib\\site-packages\\django\\template\\engine.py:177: in get_template\n    template, origin = self.find_template(template_name)\n..\\venv\\lib\\site-packages\\django\\template\\engine.py:159: in find_template\n    template = loader.get_template(name, skip=skip)\n..\\venv\\lib\\site-packages\\django\\template\\loaders\\cached.py:57: in get_template\n    template = super().get_template(template_name, skip)\n..\\venv\\lib\\site-packages\\django\\template\\loaders\\base.py:28: in get_template\n    return Template(\n..\\venv\\lib\\site-packages\\django\\template\\base.py:154: in __init__\n    self.nodelist = self.compile_nodelist()\n..\\venv\\lib\\site-packages\\django\\template\\base.py:196: in compile_nodelist\n    nodelist = parser.parse()\n..\\venv\\lib\\site-packages\\django\\template\\base.py:512: in parse\n    self.invalid_block_tag(token, command, parse_until)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = &amp;lt;Parser tokens=[&amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;    &amp;lt;/b...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;static &amp;#x27;assets/js/ma...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/scr...tatic...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;            &amp;lt;/div&amp;gt;...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;endfor...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;                   ...&amp;quot;&amp;gt;]&amp;gt;\ntoken = &amp;lt;Block token: &amp;quot;empty...&amp;quot;&amp;gt;, command = &amp;#x27;empty&amp;#x27;, parse_until = []\n\n    def invalid_block_tag(self, token, command, parse_until=None):\n        if parse_until:\n            raise self.error(\n                token,\n                &amp;quot;Invalid block tag on line %d: &amp;#x27;%s&amp;#x27;, expected %s. Did you &amp;quot;\n                &amp;quot;forget to register or load this tag?&amp;quot;\n                % (\n                    token.lineno,\n                    command,\n                    get_text_list([&amp;quot;&amp;#x27;%s&amp;#x27;&amp;quot; % p for p in parse_until], &amp;quot;or&amp;quot;),\n                ),\n            )\n&amp;gt;       raise self.error(\n            token,\n            &amp;quot;Invalid block tag on line %d: &amp;#x27;%s&amp;#x27;. Did you forget to register &amp;quot;\n            &amp;quot;or load this tag?&amp;quot; % (token.lineno, command),\n        )\nE       django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 66: &amp;#x27;empty&amp;#x27;. Did you forget to register or load this tag?\n\n..\\venv\\lib\\site-packages\\django\\template\\base.py:577: TemplateSyntaxError\n\n------------------------------ Captured log call -------------------------------\nERROR    django.request:log.py:253 Internal Server Error: /shop/\nTraceback (most recent call last):\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 510, in parse\n    compile_func = self.tags[command]\nKeyError: &amp;#x27;empty&amp;#x27;\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\core\\handlers\\exception.py&amp;quot;, line 55, in inner\n    response = get_response(request)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\core\\handlers\\base.py&amp;quot;, line 197, in _get_response\n    response = wrapped_callback(request, *callback_args, **callback_kwargs)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\utils\\decorators.py&amp;quot;, line 192, in _view_wrapper\n    result = _process_exception(request, e)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\utils\\decorators.py&amp;quot;, line 190, in _view_wrapper\n    response = view_func(request, *args, **kwargs)\n  File &amp;quot;D:\\Django_raissa\\projet_ecommerce\\app\\views.py&amp;quot;, line 82, in shop\n    return render(request, &amp;#x27;shop.html&amp;#x27;, context)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\shortcuts.py&amp;quot;, line 25, in render\n    content = loader.render_to_string(template_name, context, request, using=using)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loader.py&amp;quot;, line 61, in render_to_string\n    template = get_template(template_name, using=using)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loader.py&amp;quot;, line 15, in get_template\n    return engine.get_template(template_name)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\backends\\django.py&amp;quot;, line 79, in get_template\n    return Template(self.engine.get_template(template_name), self)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\engine.py&amp;quot;, line 177, in get_template\n    template, origin = self.find_template(template_name)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\engine.py&amp;quot;, line 159, in find_template\n    template = loader.get_template(name, skip=skip)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loaders\\cached.py&amp;quot;, line 57, in get_template\n    template = super().get_template(template_name, skip)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loaders\\base.py&amp;quot;, line 28, in get_template\n    return Template(\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 154, in __init__\n    self.nodelist = self.compile_nodelist()\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 196, in compile_nodelist\n    nodelist = parser.parse()\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 512, in parse\n    self.invalid_block_tag(token, command, parse_until)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 577, in invalid_block_tag\n    raise self.error(\ndjango.template.exceptions.TemplateSyntaxError: Invalid block tag on line 66: &amp;#x27;empty&amp;#x27;. Did you forget to register or load this tag?\n\n&#34;}], &#34;app/tests.py::TestsCatalogueBoutique::test_boutique_paginate_et_accepte_tris&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsCatalogueBoutique::test_boutique_paginate_et_accepte_tris&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsCatalogueBoutique::test_boutique_paginate_et_accepte_tris&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;Parser tokens=[&amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;    &amp;lt;/b...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;static &amp;#x27;assets/js/ma...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/scr...tatic...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;            &amp;lt;/div&amp;gt;...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;endfor...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;                   ...&amp;quot;&amp;gt;]&amp;gt;\nparse_until = []\n\n    def parse(self, parse_until=None):\n        &amp;quot;&amp;quot;&amp;quot;\n        Iterate through the parser tokens and compiles each one into a node.\n    \n        If parse_until is provided, parsing will stop once one of the\n        specified tokens has been reached. This is formatted as a list of\n        tokens, e.g. [&amp;#x27;elif&amp;#x27;, &amp;#x27;else&amp;#x27;, &amp;#x27;endif&amp;#x27;]. If no matching token is\n        reached, raise an exception with the unclosed block tag details.\n        &amp;quot;&amp;quot;&amp;quot;\n        if parse_until is None:\n            parse_until = []\n        nodelist = NodeList()\n        while self.tokens:\n            token = self.next_token()\n            # Use the raw values here for TokenType.* for a tiny performance boost.\n            token_type = token.token_type.value\n            if token_type == 0:  # TokenType.TEXT\n                self.extend_nodelist(nodelist, TextNode(token.contents), token)\n            elif token_type == 1:  # TokenType.VAR\n                if not token.contents:\n                    raise self.error(\n                        token, &amp;quot;Empty variable tag on line %d&amp;quot; % token.lineno\n                    )\n                try:\n                    filter_expression = self.compile_filter(token.contents)\n                except TemplateSyntaxError as e:\n                    raise self.error(token, e)\n                var_node = VariableNode(filter_expression)\n                self.extend_nodelist(nodelist, var_node, token)\n            elif token_type == 2:  # TokenType.BLOCK\n                try:\n                    command = token.contents.split()[0]\n                except IndexError:\n                    raise self.error(token, &amp;quot;Empty block tag on line %d&amp;quot; % token.lineno)\n                if command in parse_until:\n                    # A matching token has been reached. Return control to\n                    # the caller. Put the token back on the token list so the\n                    # caller knows where it terminated.\n                    self.prepend_token(token)\n                    return nodelist\n                # Add the token to the command stack. This is used for error\n                # messages if further parsing fails due to an unclosed block\n                # tag.\n                self.command_stack.append((command, token))\n                # Get the tag callback function from the ones registered with\n                # the parser.\n                try:\n&amp;gt;                   compile_func = self.tags[command]\nE                   KeyError: &amp;#x27;empty&amp;#x27;\n\n..\\venv\\lib\\site-packages\\django\\template\\base.py:510: KeyError\n\nDuring handling of the above exception, another exception occurred:\n\nself = &amp;lt;app.tests.TestsCatalogueBoutique testMethod=test_boutique_paginate_et_accepte_tris&amp;gt;\n\n    def test_boutique_paginate_et_accepte_tris(self):\n        for i in range(20):\n            Product.objects.create(\n                seller=self.utilisateur_vendeur,\n                category=self.categorie,\n                name=f&amp;quot;P{i}&amp;quot;,\n                price=Decimal(&amp;quot;100.00&amp;quot;) + i,\n                stock=5,\n                is_active=True,\n            )\n&amp;gt;       resp = self.client.get(reverse(&amp;quot;shop&amp;quot;), {&amp;quot;page&amp;quot;: 1, &amp;quot;sort&amp;quot;: &amp;quot;price_desc&amp;quot;})\n\napp\\tests.py:247: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\venv\\lib\\site-packages\\django\\test\\client.py:1124: in get\n    response = super().get(\n..\\venv\\lib\\site-packages\\django\\test\\client.py:475: in get\n    return self.generic(\n..\\venv\\lib\\site-packages\\django\\test\\client.py:671: in generic\n    return self.request(**r)\n..\\venv\\lib\\site-packages\\django\\test\\client.py:1087: in request\n    self.check_exception(response)\n..\\venv\\lib\\site-packages\\django\\test\\client.py:802: in check_exception\n    raise exc_value\n..\\venv\\lib\\site-packages\\django\\core\\handlers\\exception.py:55: in inner\n    response = get_response(request)\n..\\venv\\lib\\site-packages\\django\\core\\handlers\\base.py:197: in _get_response\n    response = wrapped_callback(request, *callback_args, **callback_kwargs)\n..\\venv\\lib\\site-packages\\django\\utils\\decorators.py:192: in _view_wrapper\n    result = _process_exception(request, e)\n..\\venv\\lib\\site-packages\\django\\utils\\decorators.py:190: in _view_wrapper\n    response = view_func(request, *args, **kwargs)\napp\\views.py:82: in shop\n    return render(request, &amp;#x27;shop.html&amp;#x27;, context)\n..\\venv\\lib\\site-packages\\django\\shortcuts.py:25: in render\n    content = loader.render_to_string(template_name, context, request, using=using)\n..\\venv\\lib\\site-packages\\django\\template\\loader.py:61: in render_to_string\n    template = get_template(template_name, using=using)\n..\\venv\\lib\\site-packages\\django\\template\\loader.py:15: in get_template\n    return engine.get_template(template_name)\n..\\venv\\lib\\site-packages\\django\\template\\backends\\django.py:79: in get_template\n    return Template(self.engine.get_template(template_name), self)\n..\\venv\\lib\\site-packages\\django\\template\\engine.py:177: in get_template\n    template, origin = self.find_template(template_name)\n..\\venv\\lib\\site-packages\\django\\template\\engine.py:159: in find_template\n    template = loader.get_template(name, skip=skip)\n..\\venv\\lib\\site-packages\\django\\template\\loaders\\cached.py:57: in get_template\n    template = super().get_template(template_name, skip)\n..\\venv\\lib\\site-packages\\django\\template\\loaders\\base.py:28: in get_template\n    return Template(\n..\\venv\\lib\\site-packages\\django\\template\\base.py:154: in __init__\n    self.nodelist = self.compile_nodelist()\n..\\venv\\lib\\site-packages\\django\\template\\base.py:196: in compile_nodelist\n    nodelist = parser.parse()\n..\\venv\\lib\\site-packages\\django\\template\\base.py:512: in parse\n    self.invalid_block_tag(token, command, parse_until)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = &amp;lt;Parser tokens=[&amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;    &amp;lt;/b...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;static &amp;#x27;assets/js/ma...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;&amp;quot;&amp;gt;&amp;lt;/scr...tatic...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;            &amp;lt;/div&amp;gt;...&amp;quot;&amp;gt;, &amp;lt;Block token: &amp;quot;endfor...&amp;quot;&amp;gt;, &amp;lt;Text token: &amp;quot;                   ...&amp;quot;&amp;gt;]&amp;gt;\ntoken = &amp;lt;Block token: &amp;quot;empty...&amp;quot;&amp;gt;, command = &amp;#x27;empty&amp;#x27;, parse_until = []\n\n    def invalid_block_tag(self, token, command, parse_until=None):\n        if parse_until:\n            raise self.error(\n                token,\n                &amp;quot;Invalid block tag on line %d: &amp;#x27;%s&amp;#x27;, expected %s. Did you &amp;quot;\n                &amp;quot;forget to register or load this tag?&amp;quot;\n                % (\n                    token.lineno,\n                    command,\n                    get_text_list([&amp;quot;&amp;#x27;%s&amp;#x27;&amp;quot; % p for p in parse_until], &amp;quot;or&amp;quot;),\n                ),\n            )\n&amp;gt;       raise self.error(\n            token,\n            &amp;quot;Invalid block tag on line %d: &amp;#x27;%s&amp;#x27;. Did you forget to register &amp;quot;\n            &amp;quot;or load this tag?&amp;quot; % (token.lineno, command),\n        )\nE       django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 66: &amp;#x27;empty&amp;#x27;. Did you forget to register or load this tag?\n\n..\\venv\\lib\\site-packages\\django\\template\\base.py:577: TemplateSyntaxError\n\n------------------------------ Captured log call -------------------------------\nERROR    django.request:log.py:253 Internal Server Error: /shop/\nTraceback (most recent call last):\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 510, in parse\n    compile_func = self.tags[command]\nKeyError: &amp;#x27;empty&amp;#x27;\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\core\\handlers\\exception.py&amp;quot;, line 55, in inner\n    response = get_response(request)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\core\\handlers\\base.py&amp;quot;, line 197, in _get_response\n    response = wrapped_callback(request, *callback_args, **callback_kwargs)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\utils\\decorators.py&amp;quot;, line 192, in _view_wrapper\n    result = _process_exception(request, e)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\utils\\decorators.py&amp;quot;, line 190, in _view_wrapper\n    response = view_func(request, *args, **kwargs)\n  File &amp;quot;D:\\Django_raissa\\projet_ecommerce\\app\\views.py&amp;quot;, line 82, in shop\n    return render(request, &amp;#x27;shop.html&amp;#x27;, context)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\shortcuts.py&amp;quot;, line 25, in render\n    content = loader.render_to_string(template_name, context, request, using=using)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loader.py&amp;quot;, line 61, in render_to_string\n    template = get_template(template_name, using=using)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loader.py&amp;quot;, line 15, in get_template\n    return engine.get_template(template_name)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\backends\\django.py&amp;quot;, line 79, in get_template\n    return Template(self.engine.get_template(template_name), self)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\engine.py&amp;quot;, line 177, in get_template\n    template, origin = self.find_template(template_name)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\engine.py&amp;quot;, line 159, in find_template\n    template = loader.get_template(name, skip=skip)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loaders\\cached.py&amp;quot;, line 57, in get_template\n    template = super().get_template(template_name, skip)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loaders\\base.py&amp;quot;, line 28, in get_template\n    return Template(\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 154, in __init__\n    self.nodelist = self.compile_nodelist()\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 196, in compile_nodelist\n    nodelist = parser.parse()\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 512, in parse\n    self.invalid_block_tag(token, command, parse_until)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 577, in invalid_block_tag\n    raise self.error(\ndjango.template.exceptions.TemplateSyntaxError: Invalid block tag on line 66: &amp;#x27;empty&amp;#x27;. Did you forget to register or load this tag?\n\n&#34;}], &#34;app/tests.py::TestsConnexion::test_login_transfere_panier_session_et_redirige&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsConnexion::test_login_transfere_panier_session_et_redirige&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsConnexion::test_login_transfere_panier_session_et_redirige&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;app.tests.TestsConnexion testMethod=test_login_transfere_panier_session_et_redirige&amp;gt;\n\n    def test_login_transfere_panier_session_et_redirige(self):\n        session = self.client.session\n        session[&amp;quot;cart&amp;quot;] = {str(self.produit_actif.id): 2}\n        session.save()\n        resp = self.client.post(\n            reverse(&amp;quot;login&amp;quot;),\n            {&amp;quot;username&amp;quot;: self.utilisateur_client.username, &amp;quot;password&amp;quot;: &amp;quot;pass1234&amp;quot;},\n            follow=True,\n        )\n        self.assertEqual(resp.status_code, 200)\n&amp;gt;       self.assertEqual(self.client.session.get(&amp;quot;cart&amp;quot;, {}), {})\nE       AssertionError: {&amp;#x27;1&amp;#x27;: 2} != {}\nE       - {&amp;#x27;1&amp;#x27;: 2}\nE       + {}\n\napp\\tests.py:265: AssertionError\n&#34;}], &#34;app/tests.py::TestsInscription::test_vue_inscription_cree_utilisateur_et_profil&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsInscription::test_vue_inscription_cree_utilisateur_et_profil&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsInscription::test_vue_inscription_cree_utilisateur_et_profil&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsDroitsAcces::test_ajout_produit_requiert_role_vendeur&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsDroitsAcces::test_ajout_produit_requiert_role_vendeur&#34;, &#34;duration&#34;: &#34;00:00:07&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsDroitsAcces::test_ajout_produit_requiert_role_vendeur&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:07&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsDroitsAcces::test_tableau_de_bord_admin_requiert_staff&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsDroitsAcces::test_tableau_de_bord_admin_requiert_staff&#34;, &#34;duration&#34;: &#34;00:00:08&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsDroitsAcces::test_tableau_de_bord_admin_requiert_staff&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:08&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsTableauBordVendeur::test_acces_vendeur_200_et_bloque_client&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsTableauBordVendeur::test_acces_vendeur_200_et_bloque_client&#34;, &#34;duration&#34;: &#34;00:00:07&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsTableauBordVendeur::test_acces_vendeur_200_et_bloque_client&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:07&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFormulaires::test_inscription_email_deja_utilise&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFormulaires::test_inscription_email_deja_utilise&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFormulaires::test_inscription_email_deja_utilise&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFormulaires::test_inscription_mots_de_passe_differents&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFormulaires::test_inscription_mots_de_passe_differents&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFormulaires::test_inscription_mots_de_passe_differents&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFormulaires::test_inscription_pseudo_deja_pris&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFormulaires::test_inscription_pseudo_deja_pris&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFormulaires::test_inscription_pseudo_deja_pris&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFormulaires::test_inscription_save_cree_client_et_met_a_jour_profil&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFormulaires::test_inscription_save_cree_client_et_met_a_jour_profil&#34;, &#34;duration&#34;: &#34;00:00:05&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFormulaires::test_inscription_save_cree_client_et_met_a_jour_profil&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:05&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFormulaires::test_inscription_save_vendeur_renseigne_champs_entreprise&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFormulaires::test_inscription_save_vendeur_renseigne_champs_entreprise&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFormulaires::test_inscription_save_vendeur_renseigne_champs_entreprise&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFormulaires::test_inscription_vendeur_champs_requis_manquants&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFormulaires::test_inscription_vendeur_champs_requis_manquants&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFormulaires::test_inscription_vendeur_champs_requis_manquants&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFormulaires::test_loginform_identifiants_invalides_validationerror&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFormulaires::test_loginform_identifiants_invalides_validationerror&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFormulaires::test_loginform_identifiants_invalides_validationerror&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFormulaires::test_loginform_identifiants_valides_contient_user&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFormulaires::test_loginform_identifiants_valides_contient_user&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFormulaires::test_loginform_identifiants_valides_contient_user&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFormulaires::test_product_form_attributs_attendus&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFormulaires::test_product_form_attributs_attendus&#34;, &#34;duration&#34;: &#34;00:00:04&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFormulaires::test_product_form_attributs_attendus&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:04&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_confirmation_email_apres_paiement&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_confirmation_email_apres_paiement&#34;, &#34;duration&#34;: &#34;5 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_confirmation_email_apres_paiement&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;5 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 577, &amp;#x27;Skipped: 18 Confirmation email apr\u00e8s paiement : non impl\u00e9ment\u00e9e.&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_consultation_revenus&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_consultation_revenus&#34;, &#34;duration&#34;: &#34;6 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_consultation_revenus&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;6 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 581, &amp;#x27;Skipped: 19 Consultation des revenus : non impl\u00e9ment\u00e9e.&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_coupons&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_coupons&#34;, &#34;duration&#34;: &#34;5 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_coupons&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;5 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 573, &amp;#x27;Skipped: 16 Gestion des coupons : non impl\u00e9ment\u00e9e.&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_favoris&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_favoris&#34;, &#34;duration&#34;: &#34;4 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_favoris&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;4 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 541, &amp;#x27;Skipped: 06 Syst\u00e8me de favoris : non impl\u00e9ment\u00e9.&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_flux_ajout_panier_non_impl&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;XFailed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_flux_ajout_panier_non_impl&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;XFailed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_flux_ajout_panier_non_impl&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;TestCaseFunction test_flux_ajout_panier_non_impl&amp;gt;, testcase = &amp;lt;app.tests.TestsFonctionnalitesNonImpl testMethod=test_flux_ajout_panier_non_impl&amp;gt;\nrawexcinfo = (&amp;lt;class &amp;#x27;AssertionError&amp;#x27;&amp;gt;, AssertionError(&amp;#x27;1 != 0&amp;#x27;), &amp;lt;traceback object at 0x0000022D98091640&amp;gt;), reason = &amp;#x27;&amp;#x27;\n\n    def addExpectedFailure(\n        self,\n        testcase: unittest.TestCase,\n        rawexcinfo: _SysExcInfoType,\n        reason: str = &amp;quot;&amp;quot;,\n    ) -&amp;gt; None:\n        try:\n&amp;gt;           xfail(str(reason))\nE           _pytest.outcomes.XFailed\n\n..\\venv\\lib\\site-packages\\_pytest\\unittest.py:295: XFailed\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_gestion_categories&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_gestion_categories&#34;, &#34;duration&#34;: &#34;3 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_gestion_categories&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;3 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 569, &amp;#x27;Skipped: 15 Gestion des cat\u00e9gories : non impl\u00e9ment\u00e9e (pas de vues/back-office public).&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_gestion_complete_produits&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_gestion_complete_produits&#34;, &#34;duration&#34;: &#34;3 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_gestion_complete_produits&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;3 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 565, &amp;#x27;Skipped: 14 Gestion des produits : partiel seulement (ajout ok, pas d\u2019\u00e9dition/suppression/liste d\u00e9di\u00e9e).&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_historique_commandes&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_historique_commandes&#34;, &#34;duration&#34;: &#34;3 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_historique_commandes&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;3 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 561, &amp;#x27;Skipped: 13 Historique des commandes : non impl\u00e9ment\u00e9 (pas de vue d\u00e9di\u00e9e).&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_page_commande&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_page_commande&#34;, &#34;duration&#34;: &#34;3 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_page_commande&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;3 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 545, &amp;#x27;Skipped: 07 Page de commande : non impl\u00e9ment\u00e9e.&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_page_detail_produit&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_page_detail_produit&#34;, &#34;duration&#34;: &#34;4 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_page_detail_produit&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;4 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 521, &amp;#x27;Skipped: 02 Page de produit d\u00e9taill\u00e9e : non impl\u00e9ment\u00e9e (aucune URL/view fournie).&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_paiement&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_paiement&#34;, &#34;duration&#34;: &#34;3 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_paiement&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;3 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 553, &amp;#x27;Skipped: 09 Paiement d\u2019une commande : non impl\u00e9ment\u00e9 (pas de passerelle de paiement).&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_recherche_non_impl&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;XFailed&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_recherche_non_impl&#34;, &#34;duration&#34;: &#34;00:00:05&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;XFailed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_recherche_non_impl&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:05&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;TestCaseFunction test_recherche_non_impl&amp;gt;, testcase = &amp;lt;app.tests.TestsFonctionnalitesNonImpl testMethod=test_recherche_non_impl&amp;gt;\nrawexcinfo = (&amp;lt;class &amp;#x27;django.template.exceptions.TemplateSyntaxError&amp;#x27;&amp;gt;, TemplateSyntaxError(&amp;quot;Invalid block tag on line 66: &amp;#x27;empty&amp;#x27;. Did you forget to register or load this tag?&amp;quot;), &amp;lt;traceback object at 0x0000022D97BBA740&amp;gt;)\nreason = &amp;#x27;&amp;#x27;\n\n    def addExpectedFailure(\n        self,\n        testcase: unittest.TestCase,\n        rawexcinfo: _SysExcInfoType,\n        reason: str = &amp;quot;&amp;quot;,\n    ) -&amp;gt; None:\n        try:\n&amp;gt;           xfail(str(reason))\nE           _pytest.outcomes.XFailed\n\n..\\venv\\lib\\site-packages\\_pytest\\unittest.py:295: XFailed\n\n------------------------------ Captured log call -------------------------------\nERROR    django.request:log.py:253 Internal Server Error: /shop/\nTraceback (most recent call last):\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 510, in parse\n    compile_func = self.tags[command]\nKeyError: &amp;#x27;empty&amp;#x27;\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\core\\handlers\\exception.py&amp;quot;, line 55, in inner\n    response = get_response(request)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\core\\handlers\\base.py&amp;quot;, line 197, in _get_response\n    response = wrapped_callback(request, *callback_args, **callback_kwargs)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\utils\\decorators.py&amp;quot;, line 192, in _view_wrapper\n    result = _process_exception(request, e)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\utils\\decorators.py&amp;quot;, line 190, in _view_wrapper\n    response = view_func(request, *args, **kwargs)\n  File &amp;quot;D:\\Django_raissa\\projet_ecommerce\\app\\views.py&amp;quot;, line 82, in shop\n    return render(request, &amp;#x27;shop.html&amp;#x27;, context)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\shortcuts.py&amp;quot;, line 25, in render\n    content = loader.render_to_string(template_name, context, request, using=using)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loader.py&amp;quot;, line 61, in render_to_string\n    template = get_template(template_name, using=using)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loader.py&amp;quot;, line 15, in get_template\n    return engine.get_template(template_name)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\backends\\django.py&amp;quot;, line 79, in get_template\n    return Template(self.engine.get_template(template_name), self)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\engine.py&amp;quot;, line 177, in get_template\n    template, origin = self.find_template(template_name)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\engine.py&amp;quot;, line 159, in find_template\n    template = loader.get_template(name, skip=skip)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loaders\\cached.py&amp;quot;, line 57, in get_template\n    template = super().get_template(template_name, skip)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\loaders\\base.py&amp;quot;, line 28, in get_template\n    return Template(\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 154, in __init__\n    self.nodelist = self.compile_nodelist()\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 196, in compile_nodelist\n    nodelist = parser.parse()\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 512, in parse\n    self.invalid_block_tag(token, command, parse_until)\n  File &amp;quot;D:\\Django_raissa\\venv\\lib\\site-packages\\django\\template\\base.py&amp;quot;, line 577, in invalid_block_tag\n    raise self.error(\ndjango.template.exceptions.TemplateSyntaxError: Invalid block tag on line 66: &amp;#x27;empty&amp;#x27;. Did you forget to register or load this tag?\n\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_recuperation_mot_de_passe&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_recuperation_mot_de_passe&#34;, &#34;duration&#34;: &#34;4 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_recuperation_mot_de_passe&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;4 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 557, &amp;#x27;Skipped: 12 R\u00e9cup\u00e9ration du mot de passe : non configur\u00e9e.&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_suivi_commande&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_suivi_commande&#34;, &#34;duration&#34;: &#34;5 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_suivi_commande&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;5 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 549, &amp;#x27;Skipped: 08 Suivi de commande : non impl\u00e9ment\u00e9.&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_validation_panier&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_validation_panier&#34;, &#34;duration&#34;: &#34;7 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_validation_panier&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;7 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 537, &amp;#x27;Skipped: 05 Validation du panier : non finalis\u00e9e c\u00f4t\u00e9 UI/processus.&amp;#x27;)\n&#34;}], &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_validation_produits_admin&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Skipped&#34;, &#34;testId&#34;: &#34;app/tests.py::TestsFonctionnalitesNonImpl::test_validation_produits_admin&#34;, &#34;duration&#34;: &#34;9 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Skipped&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;app/tests.py::TestsFonctionnalitesNonImpl::test_validation_produits_admin&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;9 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;(&amp;#x27;D:\\\\Django_raissa\\\\projet_ecommerce\\\\app\\\\tests.py&amp;#x27;, 585, &amp;#x27;Skipped: 21 Validation des produits par l\u2019admin : non impl\u00e9ment\u00e9e (workflow d\u2019approbation absent).&amp;#x27;)\n&#34;}]}, &#34;renderCollapsed&#34;: [&#34;passed&#34;], &#34;initialSort&#34;: &#34;result&#34;, &#34;title&#34;: &#34;report_functional.html&#34;}"></div>
+    <script>
+      (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+const { getCollapsedCategory, setCollapsedIds } = require('./storage.js')
+
+class DataManager {
+    setManager(data) {
+        const collapsedCategories = [...getCollapsedCategory(data.renderCollapsed)]
+        const collapsedIds = []
+        const tests = Object.values(data.tests).flat().map((test, index) => {
+            const collapsed = collapsedCategories.includes(test.result.toLowerCase())
+            const id = `test_${index}`
+            if (collapsed) {
+                collapsedIds.push(id)
+            }
+            return {
+                ...test,
+                id,
+                collapsed,
+            }
+        })
+        const dataBlob = { ...data, tests }
+        this.data = { ...dataBlob }
+        this.renderData = { ...dataBlob }
+        setCollapsedIds(collapsedIds)
+    }
+
+    get allData() {
+        return { ...this.data }
+    }
+
+    resetRender() {
+        this.renderData = { ...this.data }
+    }
+
+    setRender(data) {
+        this.renderData.tests = [...data]
+    }
+
+    toggleCollapsedItem(id) {
+        this.renderData.tests = this.renderData.tests.map((test) =>
+            test.id === id ? { ...test, collapsed: !test.collapsed } : test,
+        )
+    }
+
+    set allCollapsed(collapsed) {
+        this.renderData = { ...this.renderData, tests: [...this.renderData.tests.map((test) => (
+            { ...test, collapsed }
+        ))] }
+    }
+
+    get testSubset() {
+        return [...this.renderData.tests]
+    }
+
+    get environment() {
+        return this.renderData.environment
+    }
+
+    get initialSort() {
+        return this.data.initialSort
+    }
+}
+
+module.exports = {
+    manager: new DataManager(),
+}
+
+},{"./storage.js":8}],2:[function(require,module,exports){
+const mediaViewer = require('./mediaviewer.js')
+const templateEnvRow = document.getElementById('template_environment_row')
+const templateResult = document.getElementById('template_results-table__tbody')
+
+function htmlToElements(html) {
+    const temp = document.createElement('template')
+    temp.innerHTML = html
+    return temp.content.childNodes
+}
+
+const find = (selector, elem) => {
+    if (!elem) {
+        elem = document
+    }
+    return elem.querySelector(selector)
+}
+
+const findAll = (selector, elem) => {
+    if (!elem) {
+        elem = document
+    }
+    return [...elem.querySelectorAll(selector)]
+}
+
+const dom = {
+    getStaticRow: (key, value) => {
+        const envRow = templateEnvRow.content.cloneNode(true)
+        const isObj = typeof value === 'object' && value !== null
+        const values = isObj ? Object.keys(value).map((k) => `${k}: ${value[k]}`) : null
+
+        const valuesElement = htmlToElements(
+            values ? `<ul>${values.map((val) => `<li>${val}</li>`).join('')}<ul>` : `<div>${value}</div>`)[0]
+        const td = findAll('td', envRow)
+        td[0].textContent = key
+        td[1].appendChild(valuesElement)
+
+        return envRow
+    },
+    getResultTBody: ({ testId, id, log, extras, resultsTableRow, tableHtml, result, collapsed }) => {
+        const resultBody = templateResult.content.cloneNode(true)
+        resultBody.querySelector('tbody').classList.add(result.toLowerCase())
+        resultBody.querySelector('tbody').id = testId
+        resultBody.querySelector('.collapsible').dataset.id = id
+
+        resultsTableRow.forEach((html) => {
+            const t = document.createElement('template')
+            t.innerHTML = html
+            resultBody.querySelector('.collapsible').appendChild(t.content)
+        })
+
+        if (log) {
+            // Wrap lines starting with "E" with span.error to color those lines red
+            const wrappedLog = log.replace(/^E.*$/gm, (match) => `<span class="error">${match}</span>`)
+            resultBody.querySelector('.log').innerHTML = wrappedLog
+        } else {
+            resultBody.querySelector('.log').remove()
+        }
+
+        if (collapsed) {
+            resultBody.querySelector('.collapsible > td')?.classList.add('collapsed')
+            resultBody.querySelector('.extras-row').classList.add('hidden')
+        } else {
+            resultBody.querySelector('.collapsible > td')?.classList.remove('collapsed')
+        }
+
+        const media = []
+        extras?.forEach(({ name, format_type, content }) => {
+            if (['image', 'video'].includes(format_type)) {
+                media.push({ path: content, name, format_type })
+            }
+
+            if (format_type === 'html') {
+                resultBody.querySelector('.extraHTML').insertAdjacentHTML('beforeend', `<div>${content}</div>`)
+            }
+        })
+        mediaViewer.setup(resultBody, media)
+
+        // Add custom html from the pytest_html_results_table_html hook
+        tableHtml?.forEach((item) => {
+            resultBody.querySelector('td[class="extra"]').insertAdjacentHTML('beforeend', item)
+        })
+
+        return resultBody
+    },
+}
+
+module.exports = {
+    dom,
+    htmlToElements,
+    find,
+    findAll,
+}
+
+},{"./mediaviewer.js":6}],3:[function(require,module,exports){
+const { manager } = require('./datamanager.js')
+const { doSort } = require('./sort.js')
+const storageModule = require('./storage.js')
+
+const getFilteredSubSet = (filter) =>
+    manager.allData.tests.filter(({ result }) => filter.includes(result.toLowerCase()))
+
+const doInitFilter = () => {
+    const currentFilter = storageModule.getVisible()
+    const filteredSubset = getFilteredSubSet(currentFilter)
+    manager.setRender(filteredSubset)
+}
+
+const doFilter = (type, show) => {
+    if (show) {
+        storageModule.showCategory(type)
+    } else {
+        storageModule.hideCategory(type)
+    }
+
+    const currentFilter = storageModule.getVisible()
+    const filteredSubset = getFilteredSubSet(currentFilter)
+    manager.setRender(filteredSubset)
+
+    const sortColumn = storageModule.getSort()
+    doSort(sortColumn, true)
+}
+
+module.exports = {
+    doFilter,
+    doInitFilter,
+}
+
+},{"./datamanager.js":1,"./sort.js":7,"./storage.js":8}],4:[function(require,module,exports){
+const { redraw, bindEvents, renderStatic } = require('./main.js')
+const { doInitFilter } = require('./filter.js')
+const { doInitSort } = require('./sort.js')
+const { manager } = require('./datamanager.js')
+const data = JSON.parse(document.getElementById('data-container').dataset.jsonblob)
+
+function init() {
+    manager.setManager(data)
+    doInitFilter()
+    doInitSort()
+    renderStatic()
+    redraw()
+    bindEvents()
+}
+
+init()
+
+},{"./datamanager.js":1,"./filter.js":3,"./main.js":5,"./sort.js":7}],5:[function(require,module,exports){
+const { dom, find, findAll } = require('./dom.js')
+const { manager } = require('./datamanager.js')
+const { doSort } = require('./sort.js')
+const { doFilter } = require('./filter.js')
+const {
+    getVisible,
+    getCollapsedIds,
+    setCollapsedIds,
+    getSort,
+    getSortDirection,
+    possibleFilters,
+} = require('./storage.js')
+
+const removeChildren = (node) => {
+    while (node.firstChild) {
+        node.removeChild(node.firstChild)
+    }
+}
+
+const renderStatic = () => {
+    const renderEnvironmentTable = () => {
+        const environment = manager.environment
+        const rows = Object.keys(environment).map((key) => dom.getStaticRow(key, environment[key]))
+        const table = document.getElementById('environment')
+        removeChildren(table)
+        rows.forEach((row) => table.appendChild(row))
+    }
+    renderEnvironmentTable()
+}
+
+const addItemToggleListener = (elem) => {
+    elem.addEventListener('click', ({ target }) => {
+        const id = target.parentElement.dataset.id
+        manager.toggleCollapsedItem(id)
+
+        const collapsedIds = getCollapsedIds()
+        if (collapsedIds.includes(id)) {
+            const updated = collapsedIds.filter((item) => item !== id)
+            setCollapsedIds(updated)
+        } else {
+            collapsedIds.push(id)
+            setCollapsedIds(collapsedIds)
+        }
+        redraw()
+    })
+}
+
+const renderContent = (tests) => {
+    const sortAttr = getSort(manager.initialSort)
+    const sortAsc = JSON.parse(getSortDirection())
+    const rows = tests.map(dom.getResultTBody)
+    const table = document.getElementById('results-table')
+    const tableHeader = document.getElementById('results-table-head')
+
+    const newTable = document.createElement('table')
+    newTable.id = 'results-table'
+
+    // remove all sorting classes and set the relevant
+    findAll('.sortable', tableHeader).forEach((elem) => elem.classList.remove('asc', 'desc'))
+    tableHeader.querySelector(`.sortable[data-column-type="${sortAttr}"]`)?.classList.add(sortAsc ? 'desc' : 'asc')
+    newTable.appendChild(tableHeader)
+
+    if (!rows.length) {
+        const emptyTable = document.getElementById('template_results-table__body--empty').content.cloneNode(true)
+        newTable.appendChild(emptyTable)
+    } else {
+        rows.forEach((row) => {
+            if (!!row) {
+                findAll('.collapsible td:not(.col-links', row).forEach(addItemToggleListener)
+                find('.logexpander', row).addEventListener('click',
+                    (evt) => evt.target.parentNode.classList.toggle('expanded'),
+                )
+                newTable.appendChild(row)
+            }
+        })
+    }
+
+    table.replaceWith(newTable)
+}
+
+const renderDerived = () => {
+    const currentFilter = getVisible()
+    possibleFilters.forEach((result) => {
+        const input = document.querySelector(`input[data-test-result="${result}"]`)
+        input.checked = currentFilter.includes(result)
+    })
+}
+
+const bindEvents = () => {
+    const filterColumn = (evt) => {
+        const { target: element } = evt
+        const { testResult } = element.dataset
+
+        doFilter(testResult, element.checked)
+        const collapsedIds = getCollapsedIds()
+        const updated = manager.renderData.tests.map((test) => {
+            return {
+                ...test,
+                collapsed: collapsedIds.includes(test.id),
+            }
+        })
+        manager.setRender(updated)
+        redraw()
+    }
+
+    const header = document.getElementById('environment-header')
+    header.addEventListener('click', () => {
+        const table = document.getElementById('environment')
+        table.classList.toggle('hidden')
+        header.classList.toggle('collapsed')
+    })
+
+    findAll('input[name="filter_checkbox"]').forEach((elem) => {
+        elem.addEventListener('click', filterColumn)
+    })
+
+    findAll('.sortable').forEach((elem) => {
+        elem.addEventListener('click', (evt) => {
+            const { target: element } = evt
+            const { columnType } = element.dataset
+            doSort(columnType)
+            redraw()
+        })
+    })
+
+    document.getElementById('show_all_details').addEventListener('click', () => {
+        manager.allCollapsed = false
+        setCollapsedIds([])
+        redraw()
+    })
+    document.getElementById('hide_all_details').addEventListener('click', () => {
+        manager.allCollapsed = true
+        const allIds = manager.renderData.tests.map((test) => test.id)
+        setCollapsedIds(allIds)
+        redraw()
+    })
+}
+
+const redraw = () => {
+    const { testSubset } = manager
+
+    renderContent(testSubset)
+    renderDerived()
+}
+
+module.exports = {
+    redraw,
+    bindEvents,
+    renderStatic,
+}
+
+},{"./datamanager.js":1,"./dom.js":2,"./filter.js":3,"./sort.js":7,"./storage.js":8}],6:[function(require,module,exports){
+class MediaViewer {
+    constructor(assets) {
+        this.assets = assets
+        this.index = 0
+    }
+
+    nextActive() {
+        this.index = this.index === this.assets.length - 1 ? 0 : this.index + 1
+        return [this.activeFile, this.index]
+    }
+
+    prevActive() {
+        this.index = this.index === 0 ? this.assets.length - 1 : this.index -1
+        return [this.activeFile, this.index]
+    }
+
+    get currentIndex() {
+        return this.index
+    }
+
+    get activeFile() {
+        return this.assets[this.index]
+    }
+}
+
+
+const setup = (resultBody, assets) => {
+    if (!assets.length) {
+        resultBody.querySelector('.media').classList.add('hidden')
+        return
+    }
+
+    const mediaViewer = new MediaViewer(assets)
+    const container = resultBody.querySelector('.media-container')
+    const leftArrow = resultBody.querySelector('.media-container__nav--left')
+    const rightArrow = resultBody.querySelector('.media-container__nav--right')
+    const mediaName = resultBody.querySelector('.media__name')
+    const counter = resultBody.querySelector('.media__counter')
+    const imageEl = resultBody.querySelector('img')
+    const sourceEl = resultBody.querySelector('source')
+    const videoEl = resultBody.querySelector('video')
+
+    const setImg = (media, index) => {
+        if (media?.format_type === 'image') {
+            imageEl.src = media.path
+
+            imageEl.classList.remove('hidden')
+            videoEl.classList.add('hidden')
+        } else if (media?.format_type === 'video') {
+            sourceEl.src = media.path
+
+            videoEl.classList.remove('hidden')
+            imageEl.classList.add('hidden')
+        }
+
+        mediaName.innerText = media?.name
+        counter.innerText = `${index + 1} / ${assets.length}`
+    }
+    setImg(mediaViewer.activeFile, mediaViewer.currentIndex)
+
+    const moveLeft = () => {
+        const [media, index] = mediaViewer.prevActive()
+        setImg(media, index)
+    }
+    const doRight = () => {
+        const [media, index] = mediaViewer.nextActive()
+        setImg(media, index)
+    }
+    const openImg = () => {
+        window.open(mediaViewer.activeFile.path, '_blank')
+    }
+    if (assets.length === 1) {
+        container.classList.add('media-container--fullscreen')
+    } else {
+        leftArrow.addEventListener('click', moveLeft)
+        rightArrow.addEventListener('click', doRight)
+    }
+    imageEl.addEventListener('click', openImg)
+}
+
+module.exports = {
+    setup,
+}
+
+},{}],7:[function(require,module,exports){
+const { manager } = require('./datamanager.js')
+const storageModule = require('./storage.js')
+
+const genericSort = (list, key, ascending, customOrder) => {
+    let sorted
+    if (customOrder) {
+        sorted = list.sort((a, b) => {
+            const aValue = a.result.toLowerCase()
+            const bValue = b.result.toLowerCase()
+
+            const aIndex = customOrder.findIndex((item) => item.toLowerCase() === aValue)
+            const bIndex = customOrder.findIndex((item) => item.toLowerCase() === bValue)
+
+            // Compare the indices to determine the sort order
+            return aIndex - bIndex
+        })
+    } else {
+        sorted = list.sort((a, b) => a[key] === b[key] ? 0 : a[key] > b[key] ? 1 : -1)
+    }
+
+    if (ascending) {
+        sorted.reverse()
+    }
+    return sorted
+}
+
+const durationSort = (list, ascending) => {
+    const parseDuration = (duration) => {
+        if (duration.includes(':')) {
+            // If it's in the format "HH:mm:ss"
+            const [hours, minutes, seconds] = duration.split(':').map(Number)
+            return (hours * 3600 + minutes * 60 + seconds) * 1000
+        } else {
+            // If it's in the format "nnn ms"
+            return parseInt(duration)
+        }
+    }
+    const sorted = list.sort((a, b) => parseDuration(a['duration']) - parseDuration(b['duration']))
+    if (ascending) {
+        sorted.reverse()
+    }
+    return sorted
+}
+
+const doInitSort = () => {
+    const type = storageModule.getSort(manager.initialSort)
+    const ascending = storageModule.getSortDirection()
+    const list = manager.testSubset
+    const initialOrder = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed', 'Skipped', 'Passed']
+
+    storageModule.setSort(type)
+    storageModule.setSortDirection(ascending)
+
+    if (type?.toLowerCase() === 'original') {
+        manager.setRender(list)
+    } else {
+        let sortedList
+        switch (type) {
+        case 'duration':
+            sortedList = durationSort(list, ascending)
+            break
+        case 'result':
+            sortedList = genericSort(list, type, ascending, initialOrder)
+            break
+        default:
+            sortedList = genericSort(list, type, ascending)
+            break
+        }
+        manager.setRender(sortedList)
+    }
+}
+
+const doSort = (type, skipDirection) => {
+    const newSortType = storageModule.getSort(manager.initialSort) !== type
+    const currentAsc = storageModule.getSortDirection()
+    let ascending
+    if (skipDirection) {
+        ascending = currentAsc
+    } else {
+        ascending = newSortType ? false : !currentAsc
+    }
+    storageModule.setSort(type)
+    storageModule.setSortDirection(ascending)
+
+    const list = manager.testSubset
+    const sortedList = type === 'duration' ? durationSort(list, ascending) : genericSort(list, type, ascending)
+    manager.setRender(sortedList)
+}
+
+module.exports = {
+    doInitSort,
+    doSort,
+}
+
+},{"./datamanager.js":1,"./storage.js":8}],8:[function(require,module,exports){
+const possibleFilters = [
+    'passed',
+    'skipped',
+    'failed',
+    'error',
+    'xfailed',
+    'xpassed',
+    'rerun',
+]
+
+const getVisible = () => {
+    const url = new URL(window.location.href)
+    const settings = new URLSearchParams(url.search).get('visible')
+    const lower = (item) => {
+        const lowerItem = item.toLowerCase()
+        if (possibleFilters.includes(lowerItem)) {
+            return lowerItem
+        }
+        return null
+    }
+    return settings === null ?
+        possibleFilters :
+        [...new Set(settings?.split(',').map(lower).filter((item) => item))]
+}
+
+const hideCategory = (categoryToHide) => {
+    const url = new URL(window.location.href)
+    const visibleParams = new URLSearchParams(url.search).get('visible')
+    const currentVisible = visibleParams ? visibleParams.split(',') : [...possibleFilters]
+    const settings = [...new Set(currentVisible)].filter((f) => f !== categoryToHide).join(',')
+
+    url.searchParams.set('visible', settings)
+    window.history.pushState({}, null, unescape(url.href))
+}
+
+const showCategory = (categoryToShow) => {
+    if (typeof window === 'undefined') {
+        return
+    }
+    const url = new URL(window.location.href)
+    const currentVisible = new URLSearchParams(url.search).get('visible')?.split(',').filter(Boolean) ||
+        [...possibleFilters]
+    const settings = [...new Set([categoryToShow, ...currentVisible])]
+    const noFilter = possibleFilters.length === settings.length || !settings.length
+
+    noFilter ? url.searchParams.delete('visible') : url.searchParams.set('visible', settings.join(','))
+    window.history.pushState({}, null, unescape(url.href))
+}
+
+const getSort = (initialSort) => {
+    const url = new URL(window.location.href)
+    let sort = new URLSearchParams(url.search).get('sort')
+    if (!sort) {
+        sort = initialSort || 'result'
+    }
+    return sort
+}
+
+const setSort = (type) => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('sort', type)
+    window.history.pushState({}, null, unescape(url.href))
+}
+
+const getCollapsedCategory = (renderCollapsed) => {
+    let categories
+    if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href)
+        const collapsedItems = new URLSearchParams(url.search).get('collapsed')
+        switch (true) {
+        case !renderCollapsed && collapsedItems === null:
+            categories = ['passed']
+            break
+        case collapsedItems?.length === 0 || /^["']{2}$/.test(collapsedItems):
+            categories = []
+            break
+        case /^all$/.test(collapsedItems) || collapsedItems === null && /^all$/.test(renderCollapsed):
+            categories = [...possibleFilters]
+            break
+        default:
+            categories = collapsedItems?.split(',').map((item) => item.toLowerCase()) || renderCollapsed
+            break
+        }
+    } else {
+        categories = []
+    }
+    return categories
+}
+
+const getSortDirection = () => JSON.parse(sessionStorage.getItem('sortAsc')) || false
+const setSortDirection = (ascending) => sessionStorage.setItem('sortAsc', ascending)
+
+const getCollapsedIds = () => JSON.parse(sessionStorage.getItem('collapsedIds')) || []
+const setCollapsedIds = (list) => sessionStorage.setItem('collapsedIds', JSON.stringify(list))
+
+module.exports = {
+    getVisible,
+    hideCategory,
+    showCategory,
+    getCollapsedIds,
+    setCollapsedIds,
+    getSort,
+    setSort,
+    getSortDirection,
+    setSortDirection,
+    getCollapsedCategory,
+    possibleFilters,
+}
+
+},{}]},{},[4]);
+    </script>
+  </footer>
+</html>
